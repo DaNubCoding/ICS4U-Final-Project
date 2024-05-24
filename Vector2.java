@@ -204,6 +204,30 @@ public class Vector2 {
     }
 
     /**
+     * Clamp the magnitude of this vector to the given value.
+     *
+     * @param maxMagnitude the maximum magnitude
+     * @return the clamped vector
+     */
+    public Vector2 clampMagnitude(double maxMagnitude) {
+        return clampMagnitude(0, maxMagnitude);
+    }
+
+    /**
+     * Clamp the magnitude of this vector to the given range.
+     *
+     * @param minMagnitude the minimum magnitude
+     * @param maxMagnitude the maximum magnitude
+     * @return the clamped vector
+     */
+    public Vector2 clampMagnitude(double minMagnitude, double maxMagnitude) {
+        double magnitude = magnitude();
+        if (magnitude < minMagnitude) return scaleToMagnitude(minMagnitude);
+        if (magnitude > maxMagnitude) return scaleToMagnitude(maxMagnitude);
+        return this;
+    }
+
+    /**
      * Check if this vector is equal to the given object.
      * <p>
      * This will return true if the object is a Vector2 and has the same x and y
