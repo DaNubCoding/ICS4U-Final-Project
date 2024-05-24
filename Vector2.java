@@ -174,6 +174,36 @@ public class Vector2 {
     }
 
     /**
+     * Move this vector towards the given target vector by the given amount.
+     *
+     * @param target the target vector
+     * @param amount the amount to move by
+     * @return the new vector after moving
+     */
+    public Vector2 moveTowards(Vector2 target, double amount) {
+        Vector2 delta = target.subtract(this);
+        double dist = delta.magnitude();
+        if (dist <= amount) return target;
+        return add(delta.scaleToMagnitude(amount));
+    }
+
+    /**
+     * Linearly interpolate between this vector and a target vector by the given
+     * alpha value.
+     * <p>
+     * The alpha value should be between 0 and 1. Representing how far between
+     * this vector and the target vector the resulting vector should be.
+     *
+     * @param target the target vector
+     * @param alpha the alpha value
+     * @return the interpolated vector
+     */
+    public Vector2 lerp(Vector2 target, double alpha) {
+        alpha = Math.max(0, Math.min(1, alpha));
+        return add(target.subtract(this).multiply(alpha));
+    }
+
+    /**
      * Check if this vector is equal to the given object.
      * <p>
      * This will return true if the object is a Vector2 and has the same x and y
