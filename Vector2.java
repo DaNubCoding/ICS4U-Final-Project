@@ -177,14 +177,14 @@ public class Vector2 {
      * Move this vector towards the given target vector by the given amount.
      *
      * @param target the target vector
-     * @param amount the amount to move by
+     * @param maxDistanceDelta the amount to move by
      * @return the new vector after moving
      */
-    public Vector2 moveTowards(Vector2 target, double amount) {
+    public Vector2 moveTowards(Vector2 target, double maxDistanceDelta) {
         Vector2 delta = target.subtract(this);
         double dist = delta.magnitude();
-        if (dist <= amount) return target;
-        return add(delta.scaleToMagnitude(amount));
+        if (dist <= maxDistanceDelta) return target;
+        return add(delta.scaleToMagnitude(maxDistanceDelta));
     }
 
     /**
