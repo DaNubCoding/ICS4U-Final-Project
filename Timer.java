@@ -51,7 +51,7 @@ public class Timer {
     }
 
     /**
-     * Check if the timer has ended (whether it has reached the specified number
+     * Check if the Timer has ended (whether it has reached the specified number
      * of frames).
      *
      * @return true if ended, false otherwise
@@ -61,7 +61,7 @@ public class Timer {
     }
 
     /**
-     * Get the progress of the timer as a percentage (i.e. 20% would be 0.2).
+     * Get the progress of the Timer as a percentage (i.e. 20% would be 0.2).
      *
      * @return the progress as a percentage
      */
@@ -70,17 +70,16 @@ public class Timer {
     }
 
     /**
-     * Call if you want to restart the timer once it ends, creating a looping
-     * timer.
+     * Restart the Timer with the same total number of frames as before.
      */
     public void restart() {
         startFrame = currentAct;
     }
 
     /**
-     * Restart the timer with a new total number of frames before it ends.
+     * Restart the Timer with a new total number of frames before it ends.
      *
-     * @param newTotalFrames the number of frames before the timer ends again
+     * @param newTotalFrames the number of frames before the Timer ends again
      */
     public void restart(int newTotalFrames) {
         startFrame = currentAct;
