@@ -19,7 +19,7 @@ public class SpriteStackingWorld extends PixelWorld {
         for (int i = 0; i < 100; i++) {
             Sprack sprack = new Sprack("crate");
             addSprite(sprack, 0, 0);
-            sprack.setWorldLocation(Greenfoot.getRandomNumber(OBJECT_SPAWN_RANGE) - OBJECT_SPAWN_RANGE / 2, Greenfoot.getRandomNumber(OBJECT_SPAWN_RANGE) - OBJECT_SPAWN_RANGE / 2);
+            sprack.setWorldPos(Greenfoot.getRandomNumber(OBJECT_SPAWN_RANGE) - OBJECT_SPAWN_RANGE / 2, Greenfoot.getRandomNumber(OBJECT_SPAWN_RANGE) - OBJECT_SPAWN_RANGE / 2);
         }
         /*
         for (int i = 0; i < 100; i++) {
@@ -36,10 +36,10 @@ public class SpriteStackingWorld extends PixelWorld {
 
     @Override
     public void update() {
-        if (Greenfoot.isKeyDown("w")) {
+        if (Greenfoot.isKeyDown("=")) {
             Camera.setZoom(Camera.getZoom() * 1.01);
         }
-        if (Greenfoot.isKeyDown("s")) {
+        if (Greenfoot.isKeyDown("-")) {
             Camera.setZoom(Camera.getZoom() * 0.99);
         }
 

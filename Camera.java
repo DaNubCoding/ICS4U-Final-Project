@@ -16,7 +16,7 @@ public class Camera {
     private static double closeness;
 
     /**
-     * Set the factor by which the {@link #targetLocation} and {@link targetRotation}
+     * Set the factor by which the {@link #targetPosition} and {@link targetRotation}
      * methods try to match their given values. The specified closeness factor
      * must be in the range [0.0, 1.0], where 0.0 corresponds to no movement and
      * 1.0 corresponds to snapping directly to targets.
@@ -31,14 +31,23 @@ public class Camera {
     }
 
     /**
-     * Move towards the specified location by a factor specified by {@link setCloseness closeness}.
+     * Move towards the specified position by a factor specified by {@link setCloseness closeness}.
      *
      * @param x the x position to interpolate towards
      * @param y the y position to interpolate towards
      */
-    public static void targetLocation(double x, double y) {
+    public static void targetPosition(double x, double y) {
         Camera.x += (x - Camera.x) * closeness;
         Camera.y += (y - Camera.y) * closeness;
+    }
+
+    /**
+     * Move towards the specified position by a factor specified by {@link setCloseness closeness}.
+     *
+     * @param position the position to interpolate towards
+     */
+    public static void targetPosition(Vector2 position) {
+        targetPosition(position.x, position.y);
     }
 
     /**

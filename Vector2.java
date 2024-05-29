@@ -41,7 +41,7 @@ public class Vector2 {
      * @param angle the angle
      */
     public Vector2(double angle) {
-        this(Math.cos(angle), Math.sin(angle));
+        this(Math.cos(Math.toRadians(angle)), Math.sin(Math.toRadians(angle)));
     }
 
     /**

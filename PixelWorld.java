@@ -134,8 +134,8 @@ public abstract class PixelWorld extends World {
      * Add a Sprite to this world, storing it for efficient access.
      *
      * @param sprite the sprite to add
-     * @param x the x coordinate of the location where the sprite is added
-     * @param y the y coordinate of the location where the sprite is added
+     * @param x the x coordinate of the position where the sprite is added
+     * @param y the y coordinate of the position where the sprite is added
      */
     public void addSprite(Sprite sprite, int x, int y) {
         // Add this sprite to the list for its class
@@ -151,7 +151,7 @@ public abstract class PixelWorld extends World {
 
         sprite.addedToWorld(this);
         sprite.setWorld(this);
-        sprite.setScreenLocation(x, y);
+        sprite.setScreenPos(x, y);
     }
 
     /**
@@ -226,7 +226,7 @@ public abstract class PixelWorld extends World {
     /**
      * Return all Sprites of the specified class within a specified radius
      * around a point. An Sprite is within range if the distance between its
-     * screen location and the given point is less than or equal to the given
+     * screen position and the given point is less than or equal to the given
      * radius.
      *
      * @param radius the radius of the circle, in canvas pixels
