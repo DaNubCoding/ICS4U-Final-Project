@@ -21,7 +21,7 @@ public class SprackView {
     private static final ConcurrentMap<String, SprackView> viewMap = new ConcurrentHashMap<>();
 
     /** The number of different rotation angles, evenly spaced, to make available in the cache. */
-    private static final int IMAGE_CACHE_ANGLE_COUNT = 90;
+    private static final int IMAGE_CACHE_ANGLE_COUNT = 180;
 
     /**
      * Load and cache all SprackView objects to be used in the game.
