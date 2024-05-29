@@ -83,8 +83,10 @@ public class SprackView {
      * Create a new cache for a sprite stack created by layering the specified
      * number of layers from the given layer sheet image.
      *
-     * @param layerSheet a GreenfootImage containing individual layers arranged vertically from bottom to top
-     * @param layerCount the number of layers to extract from the given layer sheet
+     * @param layerSheet a GreenfootImage containing individual layers arranged
+     *                   vertically from bottom to top
+     * @param layerCount the number of layers to extract from the given layer
+     *                   sheet
      */
     public SprackView(GreenfootImage layerSheet, int layerCount) {
         // Create individual layer images from sheet
@@ -98,7 +100,8 @@ public class SprackView {
 
         // Create rotated image cache
         rotCache = new CacheEntry[IMAGE_CACHE_ANGLE_COUNT];
-        ExecutorService service = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
+        final int processors = Runtime.getRuntime().availableProcessors();
+        ExecutorService service = Executors.newFixedThreadPool(processors);
         for (int i = 0; i < IMAGE_CACHE_ANGLE_COUNT; i++) {
             final int index = i;
             final double rot = 360.0 / IMAGE_CACHE_ANGLE_COUNT * index;
@@ -194,12 +197,14 @@ public class SprackView {
      * Return the screen width of the sprite stack of this SprackView rotated
      * and scaled by the specified amounts.
      * <p>
-     * This is a less expensive operation compared to calling {@link GreenfootImage#getWidth}
-     * on the image returned by {@link #getTransformedImage}.
+     * This is a less expensive operation compared to calling
+     * {@link GreenfootImage#getWidth} on the image returned by
+     * {@link #getTransformedImage}.
      *
      * @param rotation the rotation angle of the sprite stack, in degrees
      * @param scale the scale factor of the sprite stack
-     * @return the width of the image that would be used if the same parameters were passed to {@link #getTransformedImage}
+     * @return the width of the image that would be used if the same parameters
+     *         were passed to {@link #getTransformedImage}
      */
     public int getTransformedWidth(double rotation, double scale) {
         return (int) (rotCache[getCacheIndex(rotation)].image.getWidth() * scale);
@@ -209,12 +214,14 @@ public class SprackView {
      * Return the screen height of the sprite stack of this SprackView rotated
      * and scaled by the specified amounts.
      * <p>
-     * This is a less expensive operation compared to calling {@link GreenfootImage#getHeight}
-     * on the image returned by {@link #getTransformedImage}.
+     * This is a less expensive operation compared to calling
+     * {@link GreenfootImage#getHeight} on the image returned by
+     * {@link #getTransformedImage}.
      *
      * @param rotation the rotation angle of the sprite stack, in degrees
      * @param scale the scale factor of the sprite stack
-     * @return the height of the image that would be used if the same parameters were passed to {@link #getTransformedImage}
+     * @return the height of the image that would be used if the same parameters
+     *         were passed to {@link #getTransformedImage}
      */
     public int getTransformedHeight(double rotation, double scale) {
         return (int) (rotCache[getCacheIndex(rotation)].image.getHeight() * scale);
@@ -228,7 +235,9 @@ public class SprackView {
      *
      * @param rotation the rotation angle of the sprite stack, in degrees
      * @param scale the scale factor of the sprite stack
-     * @return the screen x offset of the sprite stack's center, relative to the image that would be used if the same parameters were passed to {@link #getTransformedImage}
+     * @return the screen x offset of the sprite stack's center, relative to the
+     *         image that would be used if the same parameters were passed to
+     *         {@link #getTransformedImage}
      */
     public int getCenterX(double rotation, double scale) {
         return (int) (rotCache[getCacheIndex(rotation)].centerX * scale);
@@ -243,7 +252,9 @@ public class SprackView {
      *
      * @param rotation the rotation angle of the sprite stack, in degrees
      * @param scale the scale factor of the sprite stack
-     * @return the screen y offset of the sprite stack's center, relative to the image that would be used if the same parameters were passed to {@link #getTransformedImage}
+     * @return the screen y offset of the sprite stack's center, relative to the
+     *         image that would be used if the same parameters were passed to
+     *         {@link #getTransformedImage}
      */
     public int getCenterY(double rotation, double scale) {
         return (int) (rotCache[getCacheIndex(rotation)].centerY * scale);
