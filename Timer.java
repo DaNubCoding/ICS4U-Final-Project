@@ -1,5 +1,3 @@
-import greenfoot.*;
-
 /**
  * A timer object that keeps track of a set amount of time in frames.
  * <p>

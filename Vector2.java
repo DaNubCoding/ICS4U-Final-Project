@@ -152,6 +152,17 @@ public class Vector2 {
     }
 
     /**
+     * Get the distance between the tip of this vector and the given point.
+     *
+     * @param x the x coordinate of the point
+     * @param y the y coordinate of the point
+     * @return the distance between the vector and the point
+     */
+    public double distanceTo(double x, double y) {
+        return distanceTo(new Vector2(x, y));
+    }
+
+    /**
      * Rotate this vector by the given angle.
      *
      * @param angle the angle to rotate by
@@ -266,5 +277,22 @@ public class Vector2 {
     @Override
     public String toString() {
         return String.format("Vector2(" + x + ", " + y + ")");
+    }
+
+    /**
+     * Normalize an angle in degrees to the range [0.0, 360.0).
+     *
+     * @param angle the angle to normalize, in degrees
+     * @return an equivalent angle in degrees within the range [0.0, 360.0)
+     */
+    public static double normalizeAngle(double angle) {
+        angle %= 360.0;
+        if (angle < 0.0) {
+            angle += 360.0;
+        }
+        // The above addition may result in a value of 360.0 due to floating point error
+        // Take the remainder again to prevent returning 360.0
+        angle %= 360.0;
+        return angle;
     }
 }
