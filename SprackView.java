@@ -39,7 +39,7 @@ public class SprackView {
             sheetInfo.put("log", 16);
             sheetInfo.put("tower", 200);
 
-            ExecutorService service = Executors.newFixedThreadPool(10);
+            ExecutorService service = Executors.newFixedThreadPool(sheetInfo.size());
             for (Map.Entry<String, Integer> entry : sheetInfo.entrySet()) {
                 final String name = entry.getKey();
                 final GreenfootImage sheet = new GreenfootImage(name + ".png");
@@ -102,7 +102,7 @@ public class SprackView {
 
         // Create rotated image cache
         rotCache = new CacheEntry[IMAGE_CACHE_ANGLE_COUNT];
-        ExecutorService service = Executors.newFixedThreadPool(10);
+        ExecutorService service = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
         for (int i = 0; i < IMAGE_CACHE_ANGLE_COUNT; i++) {
             final int index = i;
             final double rot = 360.0 / IMAGE_CACHE_ANGLE_COUNT * index;
