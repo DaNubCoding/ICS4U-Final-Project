@@ -1,32 +1,79 @@
 import greenfoot.*;
 
+/**
+ * A sprite stack (Sprack) is a sprite made up of multiple layers of 2D images,
+ * each rotated to the same angle, but with a varying vertical offset. This
+ * creates the illusion of a 3D object.
+ * <p>
+ * Note that the Spracks are not actually dynamically rendered layer by layer,
+ * but are instead pre-rendered and stored in a {@link SprackView} object.
+ *
+ * @author Martin Baldwin
+ * @version May 2024
+ *
+ * @see SprackView
+ */
 public class Sprack extends Sprite {
     private final String sheetName;
 
     private Vector2 worldPos;
     private double rotation;
 
+    /**
+     * Create a new Sprack with the given sheet name.
+     * <p>
+     * The sheet name is used to look up the {@link SprackView} object that
+     * contains the pre-rendered images for this Sprack.
+     *
+     * @param sheetName the name of the Sprack sheet
+     */
     public Sprack(String sheetName) {
         super(Layer.SPRACK_DEFAULT);
-        /*
-        view = SprackView.getView(sheetName);
-        */
         this.sheetName = sheetName;
         worldPos = new Vector2();
     }
 
+    /**
+     * Set the rotation of the Sprack.
+     *
+     * @param rotation the rotation of the Sprack, in degrees
+     */
     public void setSpriteRotation(double rotation) {
         this.rotation = Vector2.normalizeAngle(rotation);
     }
 
+    /**
+     * Get the rotation of the Sprack.
+     * <p>
+     * The rotation is in degrees, and is normalized to the range [0, 360).
+     *
+     * @return the rotation of the Sprack, in degrees
+     */
     public double getSpriteRotation() {
         return rotation;
     }
 
+    /**
+     * Set the world position of the Sprack.
+     * <p>
+     * The world position is the position of the Sprack in the game world, not
+     * the screen position.
+     *
+     * @param x the x position
+     * @param y the y position
+     */
     public void setWorldPos(double x, double y) {
         worldPos = new Vector2(x, y);
     }
 
+    /**
+     * Set the world position of the Sprack.
+     * <p>
+     * The world position is the position of the Sprack in the game world, not
+     * the screen position.
+     *
+     * @param position the position
+     */
     public void setWorldPos(Vector2 position) {
         worldPos = position;
     }
@@ -66,14 +113,29 @@ public class Sprack extends Sprite {
         canvas.drawImage(image, (int) screenX - centerX, (int) screenY - centerY);
     }
 
+    /**
+     * Get the x position of the Sprack in the world.
+     *
+     * @return the x position of the Sprack
+     */
     public double getWorldX() {
         return worldPos.x;
     }
 
+    /**
+     * Get the y position of the Sprack in the world.
+     *
+     * @return the y position of the Sprack
+     */
     public double getWorldY() {
         return worldPos.y;
     }
 
+    /**
+     * Get the world position of the Sprack.
+     *
+     * @return the world position of the Sprack
+     */
     public Vector2 getWorldPos() {
         return worldPos;
     }

@@ -31,11 +31,7 @@ public class SprackView {
             Map<String, Integer> sheetInfo = new HashMap<>();
             sheetInfo.put("car", 9);
             sheetInfo.put("crate", 16);
-            /*
-            sheetInfo.put("building", 11);
-            sheetInfo.put("tree", 40);
             sheetInfo.put("monu3", 79);
-            */
             sheetInfo.put("log", 16);
             sheetInfo.put("tower", 200);
 
@@ -118,6 +114,17 @@ public class SprackView {
         }
     }
 
+    /**
+     * Create a new cache entry for a sprite stack given the rotation angle and
+     * individual layer images.
+     *
+     * @param imageDegrees the rotation angle of the sprite stack, in degrees
+     * @param layers the individual layer images of the sprite stack
+     * @param layerWidth the width of an untransformed layer
+     * @param layerHeight the height of an untransformed layer
+     * @return a new CacheEntry object containing the pre-rendered sprite stack
+     *         image
+     */
     public static CacheEntry createCacheEntry(double imageDegrees, GreenfootImage[] layers, int layerWidth, int layerHeight) {
         double imageRad = Math.toRadians(imageDegrees);
         // Get rotated dimensions of layer images
@@ -140,14 +147,13 @@ public class SprackView {
         return new CacheEntry(image, rotWidth / 2, image.getHeight() - rotHeight / 2);
     }
 
+    /**
+     * Get the SprackView objects with the given name.
+     *
+     * @param sheetName the name of the SprackView object
+     * @return the SprackView with the given name, or null if it doesn't exist
+     */
     public static SprackView getView(String sheetName) {
-        /*
-        SprackView view = viewMap.get(sheetName);
-        if (view == null) {
-            throw new IllegalArgumentException("No preloaded SprackView for sheet \"" + sheetName + "\" exists");
-        }
-        return view;
-        */
         return viewMap.get(sheetName);
     }
 

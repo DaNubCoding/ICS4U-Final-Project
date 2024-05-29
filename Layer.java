@@ -6,7 +6,6 @@
  * earlier-defined layers.
  *
  * @author Martin Baldwin
- * @author Andrew Wang
  * @version May 2024
  */
 public enum Layer {

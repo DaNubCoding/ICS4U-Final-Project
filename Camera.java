@@ -3,25 +3,27 @@
  * where spracks are rendered on the visible viewport.
  *
  * @author Martin Baldwin
+ * @author Andrew Wang
  * @version May 2024
  */
 public class Camera {
     // Don't let anyone instantiate this class
     private Camera() {}
 
-    private static double x;
-    private static double y;
+    private static Vector2 position;
     private static double rotation;
     private static double zoom;
     private static double closeness;
 
     /**
-     * Set the factor by which the {@link #targetPosition} and {@link targetRotation}
-     * methods try to match their given values. The specified closeness factor
-     * must be in the range [0.0, 1.0], where 0.0 corresponds to no movement and
-     * 1.0 corresponds to snapping directly to targets.
+     * Set the factor by which the {@link #targetPosition} and
+     * {@link #targetRotation} methods try to match their given values. The
+     * specified closeness factor must be in the range [0.0, 1.0], where 0.0
+     * corresponds to no movement and 1.0 corresponds to snapping directly to
+     * targets.
      *
-     * @param closeness the interpolation factor of position and rotation, in the range [0.0, 1.0]
+     * @param closeness the interpolation factor of position and rotation, in
+     *                  the range [0.0, 1.0]
      */
     public static void setCloseness(double closeness) {
         if (closeness < 0.0 || closeness > 1.0) {
@@ -31,27 +33,30 @@ public class Camera {
     }
 
     /**
-     * Move towards the specified position by a factor specified by {@link setCloseness closeness}.
+     * Move towards the specified position by a factor specified by
+     * {@link setCloseness closeness}.
      *
      * @param x the x position to interpolate towards
      * @param y the y position to interpolate towards
      */
     public static void targetPosition(double x, double y) {
-        Camera.x += (x - Camera.x) * closeness;
-        Camera.y += (y - Camera.y) * closeness;
+        targetPosition(new Vector2(x, y));
     }
 
     /**
-     * Move towards the specified position by a factor specified by {@link setCloseness closeness}.
+     * Move towards the specified position by a factor specified by
+     * {@link setCloseness closeness}.
      *
      * @param position the position to interpolate towards
      */
     public static void targetPosition(Vector2 position) {
-        targetPosition(position.x, position.y);
+        Vector2 delta = position.subtract(Camera.position);
+        Camera.position = Camera.position.add(delta.multiply(closeness));
     }
 
     /**
-     * Rotate towards the specified rotation by a factor specified by {@link setCloseness closeness}.
+     * Rotate towards the specified rotation by a factor specified by
+     * {@link setCloseness closeness}.
      *
      * @param rotation the angle to interpolate towards, in degrees
      */
@@ -78,13 +83,8 @@ public class Camera {
     public static void setZoom(double zoom) {
         if (zoom < 0) {
             throw new IllegalArgumentException("Zoom factor must not be negative");
-            /*
-        } else if (zoom > SprackView.IMAGE_CACHE_SCALE) {
-            Camera.zoom = SprackView.IMAGE_CACHE_SCALE;
-            */
-        } else {
-            Camera.zoom = zoom;
         }
+        Camera.zoom = zoom;
     }
 
     /**
@@ -96,8 +96,7 @@ public class Camera {
      * @param zoom the zoom factor to set the camera to
      */
     public static void resetTo(double x, double y, double rotation, double zoom) {
-        Camera.x = x;
-        Camera.y = y;
+        Camera.position = new Vector2(x, y);
         Camera.rotation = Vector2.normalizeAngle(rotation);
         setZoom(zoom);
     }
@@ -108,7 +107,7 @@ public class Camera {
      * @return the x position of the camera, in world coordinates
      */
     public static double getX() {
-        return x;
+        return position.x;
     }
 
     /**
@@ -117,7 +116,16 @@ public class Camera {
      * @return the y position of the camera, in world coordinates
      */
     public static double getY() {
-        return y;
+        return position.y;
+    }
+
+    /**
+     * Return the position of the camera as a {@link Vector2}.
+     *
+     * @return the position of the camera, in world coordinates
+     */
+    public static Vector2 getPosition() {
+        return position;
     }
 
     /**

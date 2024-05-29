@@ -15,21 +15,18 @@ public class SpriteStackingWorld extends PixelWorld {
         Camera.resetTo(0, 0, 0, 3);
         Camera.setCloseness(0.2);
 
-        addSprite(new Player(), 0, 0);
+        addSprack(new Player(), 0, 0);
+        addSprack(new Sprack("tower"), 0, -100);
+        addSprack(new Sprack("monu3"), 100, 0);
         for (int i = 0; i < 100; i++) {
-            Sprack sprack = new Sprack("crate");
-            addSprite(sprack, 0, 0);
-            sprack.setWorldPos(Greenfoot.getRandomNumber(OBJECT_SPAWN_RANGE) - OBJECT_SPAWN_RANGE / 2, Greenfoot.getRandomNumber(OBJECT_SPAWN_RANGE) - OBJECT_SPAWN_RANGE / 2);
+            addSprack(new Sprack("crate"), Greenfoot.getRandomNumber(OBJECT_SPAWN_RANGE) - OBJECT_SPAWN_RANGE / 2, Greenfoot.getRandomNumber(OBJECT_SPAWN_RANGE) - OBJECT_SPAWN_RANGE / 2);
         }
-        /*
-        for (int i = 0; i < 100; i++) {
-            addObject(new Sprack("building"), Greenfoot.getRandomNumber(OBJECT_SPAWN_RANGE) - OBJECT_SPAWN_RANGE / 2, Greenfoot.getRandomNumber(OBJECT_SPAWN_RANGE) - OBJECT_SPAWN_RANGE / 2);
+        for (int i = 0; i < 30; i++) {
+            addSprack(new Sprack("log"), Greenfoot.getRandomNumber(OBJECT_SPAWN_RANGE) - OBJECT_SPAWN_RANGE / 2, Greenfoot.getRandomNumber(OBJECT_SPAWN_RANGE) - OBJECT_SPAWN_RANGE / 2);
         }
-        for (int i = 0; i < 100; i++) {
-            addObject(new Sprack("tree"), Greenfoot.getRandomNumber(OBJECT_SPAWN_RANGE) - OBJECT_SPAWN_RANGE / 2, Greenfoot.getRandomNumber(OBJECT_SPAWN_RANGE) - OBJECT_SPAWN_RANGE / 2);
-        }
-        */
-        addSprite(new Sprack("tower"), 0, 0);
+        // for (int i = 0; i < 100; i++) {
+        //     addSprack(new Sprack("tree"), Greenfoot.getRandomNumber(OBJECT_SPAWN_RANGE) - OBJECT_SPAWN_RANGE / 2, Greenfoot.getRandomNumber(OBJECT_SPAWN_RANGE) - OBJECT_SPAWN_RANGE / 2);
+        // }
 
         render();
     }
@@ -56,5 +53,20 @@ public class SpriteStackingWorld extends PixelWorld {
         background.setColor(new Color(56, 56, 56));
         background.fill();
         renderSprites();
+    }
+
+    /**
+     * Add a Sprack to the world at the given world position.
+     * <p>
+     * This is equivalent to calling {@link #addSprite(Sprite, int, int)}
+     * followed by {@link Sprack#setWorldPos(double, double)}.
+     *
+     * @param sprack the Sprack to add
+     * @param x the x position
+     * @param y the y position
+     */
+    public void addSprack(Sprack sprack, int x, int y) {
+        addSprite(sprack, x, y);
+        sprack.setWorldPos(x, y);
     }
 }

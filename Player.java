@@ -1,5 +1,12 @@
 import greenfoot.*;
 
+/**
+ * The player controlled by the user.
+ *
+ * @author Martin Baldwin
+ * @author Andrew Wang
+ * @version May 2024
+ */
 public class Player extends Sprack {
     private static final double ACCEL = 0.2;
     private static final double FRIC_ACCEL = 0.08;
