@@ -38,17 +38,7 @@ public class Player extends Sprack {
         rotSpeed = Math.copySign(Math.min(Math.abs(rotSpeed), MAX_ROT_SPEED), rotSpeed);
         setSpriteRotation(getSpriteRotation() + rotSpeed);
 
-        MouseInfo mouse = Greenfoot.getMouseInfo();
-        if (mouse != null && mouse.getButton() == 1) {
-            if (Greenfoot.mousePressed(null)) {
-                MouseManager.initMouseLock();
-            }
-        }
-        if (Greenfoot.mouseClicked(null)) {
-            MouseManager.releaseMouseLock();
-        }
         updateCameraRotation();
-        Camera.targetRotation(cameraTargetRotation);
 
         if (Greenfoot.isKeyDown("w")) {
             speed += ACCEL;
@@ -66,9 +56,21 @@ public class Player extends Sprack {
     }
 
     private void updateCameraRotation() {
+        MouseInfo mouse = Greenfoot.getMouseInfo();
+        if (mouse != null && mouse.getButton() == 1) {
+            if (Greenfoot.mousePressed(null)) {
+                MouseManager.initMouseLock();
+            }
+        }
+        if (Greenfoot.mouseClicked(null)) {
+            MouseManager.releaseMouseLock();
+        }
         if (!MouseManager.isLocked()) return;
         Vector2 mouseRel = MouseManager.getMouseRel();
         MouseManager.lockMouse();
         cameraTargetRotation += mouseRel.x * 0.13;
+        double zoom = Camera.getZoom() * (1 + mouseRel.y * 0.002);
+        Camera.setZoom(Math.max(0.8, Math.min(6, zoom)));
+        Camera.targetRotation(cameraTargetRotation);
     }
 }
