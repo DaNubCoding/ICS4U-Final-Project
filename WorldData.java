@@ -1,10 +1,17 @@
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
+import java.util.Scanner;
+import java.util.StringTokenizer;
 
 /**
  * A class that stores and handles all the data to be used inside the world.
- * TODO: get some actual documentation in
+ * TODO: determine spawn chance, maybe group spawns together?
  * @author Lucas Fu
  * @version May 2024
  */
@@ -12,18 +19,30 @@ public class WorldData {
     private Random worldRand;
     private Random rand;
     
+    // personal DIY macros for indices (don't know how to use enums)
+    private final int TREE = 0;
+
     // settings
     private final int generationRadius = 5;
     private final int treePercentChance = 10;
+    private final int[] allChances = new int[] {
+        treePercentChance,
+        // objects with spawn chances go here
+    };
+    private final HashMap<Vector2, WorldElement> landmarks = new HashMap<>(){{
+        put(new Vector2(0, 0), new WorldElement(0,"tower"));
+        // more landmarks can be placed here
+    }};
 
     // storage variables
     private long seed;
     private Vector2 playerLocation;
     private ArrayList<Long> modifiedElementIDs;
     private HashMap<Vector2, WorldElement> surroundings;
+    private int[] prefixSumChances = new int[allChances.length];
 
     /**
-     * Create a new WorldData class with default settings.
+     * Create a new WorldData object with default settings.
      */
     public WorldData(){
         worldRand = new Random();
@@ -31,6 +50,37 @@ public class WorldData {
         playerLocation = new Vector2(0, 0);
         surroundings = new HashMap<Vector2, WorldElement>();
         modifiedElementIDs = new ArrayList<Long>();
+        prefixSumChances[0] = allChances[0];
+        for(int i=1; i<prefixSumChances.length; i++){
+            prefixSumChances[i] = prefixSumChances[i-1] + allChances[i];
+        }
+    }
+
+    /**
+     * Create a WorldData object from a seed.
+     * <p>
+     * This attempts to load a file using the seed number. If this fails to find
+     * such a file, this creates a new WorldData with the specified seed.
+     * @param seed the seed to be used when creating the WorldData
+     */
+    public WorldData(long seed){
+        this();
+        Scanner scf;
+        try{
+            scf = new Scanner(new File("saves/save_"+seed+".csv"));
+            // get the seed
+            this.seed = Long.valueOf(scf.nextLine());
+            // get the player coordinates
+            long x = scf.nextLong(), y = scf.nextLong(); scf.nextLine();
+            playerLocation = new Vector2(x, y);
+            // get the list of modified elements
+            StringTokenizer st = new StringTokenizer(scf.nextLine(), ",");
+            while(st.hasMoreTokens()){
+                modifiedElementIDs.add(Long.valueOf(st.nextToken()));
+            }
+        } catch(FileNotFoundException e){
+            this.seed = seed;
+        }
     }
 
     /**
@@ -46,6 +96,10 @@ public class WorldData {
                 Vector2 elementPos = playerLocation.add(new Vector2(dx, dy));
                 long localID = seed + elementPos.getSzudzikValue();
                 surroundings.put(elementPos, generateElement(localID));
+                if(landmarks.containsKey(elementPos)){
+                    surroundings.remove(elementPos);
+                    surroundings.put(elementPos, landmarks.get(elementPos));
+                }
                 if(modifiedElementIDs.contains(localID)){
                     surroundings.get(elementPos).modify();
                 }
@@ -56,7 +110,7 @@ public class WorldData {
     private WorldElement generateElement(long id){
         rand = new Random(id);
         int roll = rand.nextInt(100);
-        if(roll < treePercentChance){
+        if(roll < prefixSumChances[TREE]){
             return new Tree(id);
         }
         return null;
@@ -90,6 +144,12 @@ public class WorldData {
                 if(modifiedElementIDs.contains(localID)){
                     surroundings.get(elementPos).modify();
                 }
+
+                // replace element if it is a landmark
+                if(landmarks.containsKey(elementPos)){
+                    surroundings.remove(elementPos);
+                    surroundings.put(elementPos, landmarks.get(elementPos));
+                }
             }
             
             // remove all elements on old border
@@ -115,6 +175,12 @@ public class WorldData {
                 surroundings.put(elementPos, generateElement(localID));
                 if(modifiedElementIDs.contains(localID)){
                     surroundings.get(elementPos).modify();
+                }
+
+                // replace item if it is a landmark
+                if(landmarks.containsKey(elementPos)){
+                    surroundings.remove(elementPos);
+                    surroundings.put(elementPos, landmarks.get(elementPos));
                 }
             }
 
@@ -153,5 +219,26 @@ public class WorldData {
      */
     public HashMap<Vector2, WorldElement> getSurroundings(){
         return surroundings;
+    }
+
+    /**
+     * Save the data to a csv file called save_{seed}.
+     * <p>
+     * The file contains the seed, the player location, and the modified elements.
+     */
+    public void saveData(){
+        PrintWriter fileOutput;
+        try {
+            fileOutput = new PrintWriter(new FileWriter("saves/save_"+seed+".csv"));
+        } catch (IOException e) {
+            System.out.println(e);
+            return;
+        }
+        fileOutput.println(seed);
+        fileOutput.printf("%d,%d\n", playerLocation.x, playerLocation.y);
+        for(long l : modifiedElementIDs){
+            fileOutput.print(l+",");
+        }
+        fileOutput.close();
     }
 }

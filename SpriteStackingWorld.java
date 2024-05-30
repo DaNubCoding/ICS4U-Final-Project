@@ -3,7 +3,7 @@ import java.util.List;
 import java.util.Comparator;
 
 public class SpriteStackingWorld extends PixelWorld {
-    private static final int OBJECT_SPAWN_RANGE = 2000;
+    // private static final int OBJECT_SPAWN_RANGE = 2000;
     private WorldData wd;
 
     static {
