@@ -69,6 +69,6 @@ public class Player extends Sprack {
         if (!MouseManager.isLocked()) return;
         Vector2 mouseRel = MouseManager.getMouseRel();
         MouseManager.lockMouse();
-        cameraTargetRotation += mouseRel.x * 0.1;
+        cameraTargetRotation += mouseRel.x * 0.13;
     }
 }
