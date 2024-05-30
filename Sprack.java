@@ -34,22 +34,22 @@ public class Sprack extends Sprite {
     }
 
     /**
-     * Set the rotation of the Sprack.
+     * Set the in-world rotation of the Sprack.
      *
      * @param rotation the rotation of the Sprack, in degrees
      */
-    public void setSpriteRotation(double rotation) {
+    public void setWorldRotation(double rotation) {
         this.rotation = Vector2.normalizeAngle(rotation);
     }
 
     /**
-     * Get the rotation of the Sprack.
+     * Get the in-world rotation of the Sprack.
      * <p>
      * The rotation is in degrees, and is normalized to the range [0, 360).
      *
      * @return the rotation of the Sprack, in degrees
      */
-    public double getSpriteRotation() {
+    public double getWorldRotation() {
         return rotation;
     }
 

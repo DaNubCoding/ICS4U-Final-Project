@@ -16,42 +16,61 @@ public class Player extends Sprack {
     private static final double ROT_FRIC_ACCEL = 0.1;
     private static final double MAX_ROT_SPEED = 3.0;
 
-    private double speed;
-    private double rotSpeed;
+    private Vector2 velocity;
+    private double facing;
     private double cameraTargetRotation;
 
     public Player() {
         super("car");
+        velocity = new Vector2(0, 0);
+        facing = 0;
     }
 
     @Override
     public void update() {
-        if (Greenfoot.isKeyDown("a")) {
-            rotSpeed -= ROT_ACCEL;
-        }
-        if (Greenfoot.isKeyDown("d")) {
-            rotSpeed += ROT_ACCEL;
-        }
-        // Apply acceleration due to friction
-        rotSpeed -= Math.copySign(Math.min(Math.abs(rotSpeed), ROT_FRIC_ACCEL), rotSpeed);
-        // Cap rotation speed
-        rotSpeed = Math.copySign(Math.min(Math.abs(rotSpeed), MAX_ROT_SPEED), rotSpeed);
-        setSpriteRotation(getSpriteRotation() + rotSpeed);
-
         updateCameraRotation();
 
+        // Get input acceleration
+        Vector2 accel = new Vector2(0, 0);
         if (Greenfoot.isKeyDown("w")) {
-            speed += ACCEL;
+            accel = accel.add(new Vector2(0, -1));
         }
         if (Greenfoot.isKeyDown("s")) {
-            speed -= ACCEL;
+            accel = accel.add(new Vector2(0, 1));
         }
-        // Apply acceleration due to friction
-        speed -= Math.copySign(Math.min(Math.abs(speed), FRIC_ACCEL), speed);
-        // Cap speed
-        speed = Math.copySign(Math.min(Math.abs(speed), MAX_SPEED), speed);
-        Vector2 forward = new Vector2(getSpriteRotation() - 90);
-        setWorldPos(getWorldPos().add(forward.multiply(speed)));
+        if (Greenfoot.isKeyDown("a")) {
+            accel = accel.add(new Vector2(-1, 0));
+        }
+        if (Greenfoot.isKeyDown("d")) {
+            accel = accel.add(new Vector2(1, 0));
+        }
+        try {
+            // Normalize diagonal movement
+            accel = accel.normalize().multiply(ACCEL);
+        } catch (ArithmeticException e) {
+            accel = new Vector2(0, 0);
+        }
+        accel = accel.rotate(Camera.getRotation());
+
+        velocity = velocity.add(accel);
+
+        // Apply friction
+        try {
+            double fricMag = Math.min(velocity.magnitude(), FRIC_ACCEL);
+            Vector2 fric = velocity.scaleToMagnitude(fricMag);
+            velocity = velocity.subtract(fric);
+        } catch (ArithmeticException e) {} // Do nothing if velocity is zero
+
+        // Clamp velocity to max speed
+        velocity = velocity.clampMagnitude(MAX_SPEED);
+
+        // Face the direction of movement
+        if (velocity.magnitude() != 0) {
+            facing = Vector2.lerpAngle(facing, velocity.angle(), ROT_ACCEL);
+            setWorldRotation(facing + 90);
+        }
+
+        setWorldPos(getWorldPos().add(velocity));
         Camera.targetPosition(getWorldPos());
     }
 

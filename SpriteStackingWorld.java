@@ -30,13 +30,6 @@ public class SpriteStackingWorld extends PixelWorld {
 
     @Override
     public void update() {
-        if (Greenfoot.isKeyDown("e")) {
-            Camera.setZoom(Camera.getZoom() * 1.01);
-        }
-        if (Greenfoot.isKeyDown("q")) {
-            Camera.setZoom(Camera.getZoom() * 0.99);
-        }
-
         List<? extends Sprite> spracks = getSpritesByLayer(Layer.SPRACK_DEFAULT);
         spracks.sort(Comparator.comparing(Sprite::getScreenY));
 
