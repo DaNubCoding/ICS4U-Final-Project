@@ -13,7 +13,7 @@ public class SpriteStackingWorld extends PixelWorld {
         super(256, 196);
 
         Camera.resetTo(0, 0, 0, 3);
-        Camera.setCloseness(0.2);
+        Camera.setCloseness(0.3);
 
         addSprack(new Player(), 0, 0);
         addSprack(new Sprack("tower"), 0, -100);
@@ -33,10 +33,10 @@ public class SpriteStackingWorld extends PixelWorld {
 
     @Override
     public void update() {
-        if (Greenfoot.isKeyDown("=")) {
+        if (Greenfoot.isKeyDown("e")) {
             Camera.setZoom(Camera.getZoom() * 1.01);
         }
-        if (Greenfoot.isKeyDown("-")) {
+        if (Greenfoot.isKeyDown("q")) {
             Camera.setZoom(Camera.getZoom() * 0.99);
         }
 

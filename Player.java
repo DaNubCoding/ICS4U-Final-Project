@@ -14,10 +14,11 @@ public class Player extends Sprack {
 
     private static final double ROT_ACCEL = 0.2;
     private static final double ROT_FRIC_ACCEL = 0.1;
-    private static final double MAX_ROT_SPEED = 1.5;
+    private static final double MAX_ROT_SPEED = 3.0;
 
     private double speed;
     private double rotSpeed;
+    private double cameraTargetRotation;
 
     public Player() {
         super("car");
@@ -35,9 +36,19 @@ public class Player extends Sprack {
         rotSpeed -= Math.copySign(Math.min(Math.abs(rotSpeed), ROT_FRIC_ACCEL), rotSpeed);
         // Cap rotation speed
         rotSpeed = Math.copySign(Math.min(Math.abs(rotSpeed), MAX_ROT_SPEED), rotSpeed);
-        final double rotation = getSpriteRotation() + rotSpeed;
-        setSpriteRotation(rotation);
-        Camera.targetRotation(rotation);
+        setSpriteRotation(getSpriteRotation() + rotSpeed);
+
+        MouseInfo mouse = Greenfoot.getMouseInfo();
+        if (mouse != null && mouse.getButton() == 1) {
+            if (Greenfoot.mousePressed(null)) {
+                MouseManager.initMouseLock();
+            }
+        }
+        if (Greenfoot.mouseClicked(null)) {
+            MouseManager.releaseMouseLock();
+        }
+        updateCameraRotation();
+        Camera.targetRotation(cameraTargetRotation);
 
         if (Greenfoot.isKeyDown("w")) {
             speed += ACCEL;
@@ -49,8 +60,15 @@ public class Player extends Sprack {
         speed -= Math.copySign(Math.min(Math.abs(speed), FRIC_ACCEL), speed);
         // Cap speed
         speed = Math.copySign(Math.min(Math.abs(speed), MAX_SPEED), speed);
-        Vector2 forward = new Vector2(rotation - 90);
+        Vector2 forward = new Vector2(getSpriteRotation() - 90);
         setWorldPos(getWorldPos().add(forward.multiply(speed)));
         Camera.targetPosition(getWorldPos());
+    }
+
+    private void updateCameraRotation() {
+        if (!MouseManager.isLocked()) return;
+        Vector2 mouseRel = MouseManager.getMouseRel();
+        MouseManager.lockMouse();
+        cameraTargetRotation += mouseRel.x * 0.1;
     }
 }
