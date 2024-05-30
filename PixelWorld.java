@@ -167,6 +167,7 @@ public abstract class PixelWorld extends World {
         spritesByLayer.get(sprite.getLayer()).remove(sprite);
 
         sprite.setWorld(null);
+        sprite.removedFromWorld(this);
     }
 
     /**
