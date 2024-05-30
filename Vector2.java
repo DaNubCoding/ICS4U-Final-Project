@@ -129,6 +129,7 @@ public class Vector2 {
      *
      * @param magnitude the magnitude to scale to
      * @return the scaled vector
+     * @throws ArithmeticException if the magnitude of the vector is 0
      */
     public Vector2 scaleToMagnitude(double magnitude) {
         return normalize().multiply(magnitude);
@@ -284,23 +285,6 @@ public class Vector2 {
     }
 
     /**
-     * Normalize an angle in degrees to the range [0.0, 360.0).
-     *
-     * @param angle the angle to normalize, in degrees
-     * @return an equivalent angle in degrees within the range [0.0, 360.0)
-     */
-    public static double normalizeAngle(double angle) {
-        angle %= 360.0;
-        if (angle < 0.0) {
-            angle += 360.0;
-        }
-        // The above addition may result in a value of 360.0 due to floating point error
-        // Take the remainder again to prevent returning 360.0
-        angle %= 360.0;
-        return angle;
-    }
-
-    /**
      * Get the encoded value of the integer coordinates after passing through
      * the Szudzik pairing function, modified to support negative values.
      * <p>
@@ -318,5 +302,53 @@ public class Vector2 {
         long Y = (long)(y >= 0 ? 2 * (long)y : -2 * (long)y - 1);
         long C = (long)((X >= Y ? X * X + X + Y : X + Y * Y) / 2);
         return x < 0 && y < 0 || x >= 0 && y >= 0 ? C : -C - 1;
+    }
+
+    /**
+     * Normalize an angle in degrees to the range [0.0, 360.0).
+     *
+     * @param angle the angle to normalize, in degrees
+     * @return an equivalent angle in degrees within the range [0.0, 360.0)
+     */
+    public static double normalizeAngle(double angle) {
+        angle %= 360.0;
+        if (angle < 0.0) {
+            angle += 360.0;
+        }
+        // The above addition may result in a value of 360.0 due to floating
+        // point error, take the remainder again to prevent returning 360.0
+        angle %= 360.0;
+        return angle;
+    }
+
+    /**
+     * Move a current angle towards an end angle by the given amount via the
+     * shortest path.
+     *
+     * @param current the current angle, in degrees
+     * @param target the target angle, in degrees
+     * @param maxDelta the maximum amount to move by
+     * @return the new angle after moving
+     */
+    public static double moveTowardsAngle(double current, double target, double maxDelta) {
+        double difference = Math.floorMod((int) (target - current + 180), 360) - 180;
+        return current + Math.copySign(Math.min(maxDelta, Math.abs(difference)), difference);
+    }
+
+    /**
+     * Linearly interpolate between two angles by the given alpha value via the
+     * shortest path.
+     * <p>
+     * The alpha value should be between 0 and 1. Representing how far between
+     * the current angle and the target angle the resulting angle should be.
+     *
+     * @param current the current angle, in degrees
+     * @param target the target angle, in degrees
+     * @param alpha the alpha value
+     * @return the interpolated angle
+     */
+    public static double lerpAngle(double current, double target, double alpha) {
+        double difference = Math.floorMod((int) (target - current + 180), 360) - 180;
+        return current + difference * alpha;
     }
 }
