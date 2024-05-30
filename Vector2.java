@@ -112,7 +112,11 @@ public class Vector2 {
      * @throws ArithmeticException if the magnitude of the vector is 0
      */
     public Vector2 normalize() {
-        return divide(magnitude());
+        double mag = magnitude();
+        if (mag == 0) {
+            throw new ArithmeticException("Cannot normalize a zero vector");
+        }
+        return divide(mag);
     }
 
     /**
@@ -297,7 +301,7 @@ public class Vector2 {
     }
 
     /**
-     * Get the encoded value of the integer coordinates after passing through 
+     * Get the encoded value of the integer coordinates after passing through
      * the Szudzik pairing function, modified to support negative values.
      * <p>
      * Note: the coordinates must not contain decimals.
@@ -307,7 +311,7 @@ public class Vector2 {
      * @throws UnsupportedOperationException if the values of this vector2 contain decimals
      */
     public long getSzudzikValue(){
-        if(x!=(long)x||y!=(long)y) 
+        if(x!=(long)x||y!=(long)y)
             throw new UnsupportedOperationException("This method does not support decimals.");
 
         long X = (long)(x >= 0 ? 2 * (long)x : -2 * (long)x - 1);
