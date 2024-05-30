@@ -18,15 +18,12 @@ public class SpriteStackingWorld extends PixelWorld {
         addSprack(new Player(), 0, 0);
         addSprack(new Sprack("tower"), 0, -100);
         addSprack(new Sprack("monu3"), 100, 0);
-        for (int i = 0; i < 100; i++) {
-            addSprack(new Sprack("crate"), Greenfoot.getRandomNumber(OBJECT_SPAWN_RANGE) - OBJECT_SPAWN_RANGE / 2, Greenfoot.getRandomNumber(OBJECT_SPAWN_RANGE) - OBJECT_SPAWN_RANGE / 2);
+        for (int i = 0; i < 1000; i++) {
+            addSprack(new Sprack("crate"), (
+                Greenfoot.getRandomNumber(OBJECT_SPAWN_RANGE / 20) - OBJECT_SPAWN_RANGE / 20 / 2) * 20,
+                (Greenfoot.getRandomNumber(OBJECT_SPAWN_RANGE / 20) - OBJECT_SPAWN_RANGE / 20 / 2) * 20
+            );
         }
-        for (int i = 0; i < 30; i++) {
-            addSprack(new Sprack("log"), Greenfoot.getRandomNumber(OBJECT_SPAWN_RANGE) - OBJECT_SPAWN_RANGE / 2, Greenfoot.getRandomNumber(OBJECT_SPAWN_RANGE) - OBJECT_SPAWN_RANGE / 2);
-        }
-        // for (int i = 0; i < 100; i++) {
-        //     addSprack(new Sprack("tree"), Greenfoot.getRandomNumber(OBJECT_SPAWN_RANGE) - OBJECT_SPAWN_RANGE / 2, Greenfoot.getRandomNumber(OBJECT_SPAWN_RANGE) - OBJECT_SPAWN_RANGE / 2);
-        // }
 
         render();
     }
