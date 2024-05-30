@@ -9,6 +9,6 @@ public class Tree extends WorldElement{
      * @param id the unique id that is given to this tree
      */
     public Tree(long id){
-        super(id, "tree");
+        super(id, "crate");
     }
 }
