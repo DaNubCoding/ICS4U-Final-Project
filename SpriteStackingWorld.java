@@ -1,4 +1,5 @@
 import greenfoot.*;
+
 import java.util.List;
 import java.util.Comparator;
 
@@ -37,7 +38,9 @@ public class SpriteStackingWorld extends PixelWorld {
         updateSprites();
         Timer.incrementAct();
 
-        if(worldData.updatePlayerLocation((int)(Camera.getX()/20), (int)(Camera.getY()/20))) {
+        int cameraGridX = (int) (Camera.getX() / 20);
+        int cameraGridY = (int) (Camera.getY() / 20);
+        if(worldData.updatePlayerLocation(cameraGridX, cameraGridY, WorldData.generationRadius, WorldData::addFeature, WorldData::removeFeature)) {
             List<? extends Sprite> features = getSprites(Feature.class);
             // remove objects not present in world data
             for(Sprite sprite : features){

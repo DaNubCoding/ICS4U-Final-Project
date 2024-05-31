@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.Random;
 import java.util.Scanner;
 import java.util.StringTokenizer;
+import java.util.function.BiConsumer;
 
 /**
  * A class that stores and handles all the data to be used inside the world.
@@ -17,11 +18,11 @@ import java.util.StringTokenizer;
  */
 public class WorldData {
     private Random worldRand;
-    private Random rand;
+    private static Random rand;
 
     // settings
-    private final int generationRadius = 5;
-    private final HashMap<Vector2, Feature> landmarks = new HashMap<>() {{
+    public static final int generationRadius = 5;
+    private static final HashMap<Vector2, Feature> landmarks = new HashMap<>() {{
         put(new Vector2(0, 0), new Feature(0,"tower"));
         // more landmarks can be placed here
     }};
@@ -94,7 +95,7 @@ public class WorldData {
         }
     }
 
-    private Feature generateElement(long id){
+    private static Feature generateElement(long id){
         rand = new Random(id);
         int roll = rand.nextInt(100);
         for (int i = 0; i < Feature.Type.length(); i++){
@@ -112,94 +113,102 @@ public class WorldData {
      * @param y the y-value of grid location of the new player location
      * @return false if the update did not affect anything, true otherwise
      */
-    public boolean updatePlayerLocation(int x, int y){
+    public boolean updatePlayerLocation(int x, int y, int radius, BiConsumer<WorldData, Vector2> adder, BiConsumer<WorldData, Vector2> remover){
         if (x == playerLocation.x && y == playerLocation.y) return false;
         if (x != playerLocation.x){
             boolean bigger = x > playerLocation.x;
-            int topBorder = (int) Math.max(y, playerLocation.y) + generationRadius;
-            int btmBorder = (int) Math.min(y, playerLocation.y) - generationRadius;
-            double oldBorder = playerLocation.x - generationRadius * (bigger ? 1 : -1);
-            double newBorder = x + generationRadius * (bigger ? 1 : -1);
+            int topBorder = (int) Math.max(y, playerLocation.y) + radius;
+            int btmBorder = (int) Math.min(y, playerLocation.y) - radius;
+            double oldBorder = playerLocation.x - radius * (bigger ? 1 : -1);
+            double newBorder = x + radius * (bigger ? 1 : -1);
 
             // add all elements on new border
             for (int i = (int) topBorder; i >= (int) btmBorder; i--){
 
                 // initialize element information
                 Vector2 elementPos = new Vector2(newBorder, i);
-                long localID = seed + elementPos.getSzudzikValue();
-
-                // add element to the list
-                surroundings.put(elementPos, generateElement(localID));
-                if(modifiedElementIDs.contains(localID)){
-                    surroundings.get(elementPos).modify();
-                }
-
-                // replace element if it is a landmark
-                if(landmarks.containsKey(elementPos)){
-                    surroundings.remove(elementPos);
-                    surroundings.put(elementPos, landmarks.get(elementPos));
-                }
+                adder.accept(this, elementPos);
             }
 
             // remove all elements on old border
             for (int i = topBorder + 2; i >= (int) btmBorder - 2; i--){
-                surroundings.remove(new Vector2(oldBorder, i));
+                remover.accept(this, new Vector2(oldBorder, i));
             }
         }
         if(y != playerLocation.y){
             boolean bigger = y > playerLocation.y;
-            int leftBorder = (int) Math.min(x, playerLocation.x) - generationRadius;
-            int rightBorder = (int) Math.max(x, playerLocation.x) + generationRadius;
-            double oldBorder = playerLocation.y - generationRadius * (bigger ? 1 : -1);
-            double newBorder = y + generationRadius * (bigger ? 1 : -1);
+            int leftBorder = (int) Math.min(x, playerLocation.x) - radius;
+            int rightBorder = (int) Math.max(x, playerLocation.x) + radius;
+            double oldBorder = playerLocation.y - radius * (bigger ? 1 : -1);
+            double newBorder = y + radius * (bigger ? 1 : -1);
 
             // add all elements on new border
             for(int i = rightBorder; i >= leftBorder; i--){
 
                 // initlize element information
                 Vector2 elementPos = new Vector2(i, newBorder);
-                long localID = seed + elementPos.getSzudzikValue();
-
-                // add element to the list
-                surroundings.put(elementPos, generateElement(localID));
-                if(modifiedElementIDs.contains(localID)){
-                    surroundings.get(elementPos).modify();
-                }
-
-                // replace item if it is a landmark
-                if(landmarks.containsKey(elementPos)){
-                    surroundings.remove(elementPos);
-                    surroundings.put(elementPos, landmarks.get(elementPos));
-                }
+                adder.accept(this, elementPos);
             }
 
             // remove all elements on old border
             for(int i = rightBorder + 2; i >= leftBorder - 2; i--){
-                surroundings.remove(new Vector2(i, oldBorder));
+                remover.accept(this, new Vector2(i, oldBorder));
             }
         }
 
         // edge case where some terrain is left behind
         if(x != playerLocation.x && y != playerLocation.y){
-            int leftBorder = (int) x - generationRadius - 1;
-            int rightBorder = (int) x + generationRadius + 1;
-            int topBorder = (int) y + generationRadius + 1;
-            int btmBorder = (int) y - generationRadius - 1;
+            int leftBorder = (int) x - radius - 1;
+            int rightBorder = (int) x + radius + 1;
+            int topBorder = (int) y + radius + 1;
+            int btmBorder = (int) y - radius - 1;
 
             // remove the top and bottom borders
             for(int i = leftBorder; i <= rightBorder; i++){
-                surroundings.remove(new Vector2(i, topBorder));
-                surroundings.remove(new Vector2(i, btmBorder));
+                remover.accept(this, new Vector2(i, topBorder));
+                remover.accept(this, new Vector2(i, btmBorder));
             }
 
             // remove the left and right borders
             for(int i = btmBorder; i <= topBorder; i++){
-                surroundings.remove(new Vector2(leftBorder, i));
-                surroundings.remove(new Vector2(rightBorder, i));
+                remover.accept(this, new Vector2(leftBorder, i));
+                remover.accept(this, new Vector2(rightBorder, i));
             }
         }
         playerLocation = new Vector2(x, y);
         return true;
+    }
+
+    /**
+     * Add a feature at the specified coordinate and apply necessary
+     * modifications.
+     *
+     * @param data the WorldData object on which to operate
+     * @param coord the coordinate of the {@link Feature} to add
+     */
+    public static void addFeature(WorldData data, Vector2 coord) {
+        long localID = data.getSeed() + coord.getSzudzikValue();
+
+        HashMap<Vector2, Feature> surroundings = data.getSurroundings();
+        // add element to the list
+        surroundings.put(coord, generateElement(localID));
+        if(data.getModifiedElementIDs().contains(localID)){
+            surroundings.get(coord).modify();
+        }
+
+        // replace element if it is a landmark
+        if(landmarks.containsKey(coord)){
+            surroundings.put(coord, landmarks.get(coord));
+        }
+    }
+
+    /**
+     * Remove a feature at the specified coordinates.
+     *
+     * @param coord the coordinate of the {@link Feature} to remove
+     */
+    public void removeFeature(Vector2 coord) {
+        surroundings.remove(coord);
     }
 
     /**
@@ -208,6 +217,24 @@ public class WorldData {
      */
     public HashMap<Vector2, Feature> getSurroundings(){
         return surroundings;
+    }
+
+    /**
+     * Get the array of modified element IDs.
+     *
+     * @return the modified element IDs
+     */
+    public ArrayList<Long> getModifiedElementIDs() {
+        return modifiedElementIDs;
+    }
+
+    /**
+     * Get the seed of the world.
+     *
+     * @return the seed of the world
+     */
+    public long getSeed() {
+        return seed;
     }
 
     /**
