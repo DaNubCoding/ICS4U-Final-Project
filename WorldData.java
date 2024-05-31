@@ -18,19 +18,11 @@ import java.util.StringTokenizer;
 public class WorldData {
     private Random worldRand;
     private Random rand;
-    
-    // personal DIY macros for indices (don't know how to use enums)
-    private final int TREE = 0;
 
     // settings
     private final int generationRadius = 5;
-    private final int treePercentChance = 10;
-    private final int[] allChances = new int[] {
-        treePercentChance,
-        // objects with spawn chances go here
-    };
-    private final HashMap<Vector2, WorldElement> landmarks = new HashMap<>(){{
-        put(new Vector2(0, 0), new WorldElement(0,"tower"));
+    private final HashMap<Vector2, Feature> landmarks = new HashMap<>() {{
+        put(new Vector2(0, 0), new Feature(0,"tower"));
         // more landmarks can be placed here
     }};
 
@@ -38,8 +30,7 @@ public class WorldData {
     private long seed;
     private Vector2 playerLocation;
     private ArrayList<Long> modifiedElementIDs;
-    private HashMap<Vector2, WorldElement> surroundings;
-    private int[] prefixSumChances = new int[allChances.length];
+    private HashMap<Vector2, Feature> surroundings;
 
     /**
      * Create a new WorldData object with default settings.
@@ -48,12 +39,8 @@ public class WorldData {
         worldRand = new Random();
         seed = worldRand.nextLong();
         playerLocation = new Vector2(0, 0);
-        surroundings = new HashMap<Vector2, WorldElement>();
+        surroundings = new HashMap<Vector2, Feature>();
         modifiedElementIDs = new ArrayList<Long>();
-        prefixSumChances[0] = allChances[0];
-        for(int i=1; i<prefixSumChances.length; i++){
-            prefixSumChances[i] = prefixSumChances[i-1] + allChances[i];
-        }
     }
 
     /**
@@ -107,11 +94,13 @@ public class WorldData {
         }
     }
 
-    private WorldElement generateElement(long id){
+    private Feature generateElement(long id){
         rand = new Random(id);
         int roll = rand.nextInt(100);
-        if(roll < prefixSumChances[TREE]){
-            return new Tree(id);
+        for (int i = 0; i < Feature.Type.length(); i++){
+            if (roll < Feature.Type.getSpawnRate(i)) {
+                return Feature.Type.createFeature(i, id);
+            }
         }
         return null;
     }
@@ -151,7 +140,7 @@ public class WorldData {
                     surroundings.put(elementPos, landmarks.get(elementPos));
                 }
             }
-            
+
             // remove all elements on old border
             for (int i = topBorder + 2; i >= (int) btmBorder - 2; i--){
                 surroundings.remove(new Vector2(oldBorder, i));
@@ -217,7 +206,7 @@ public class WorldData {
      * Get the hashmap that represents elements surrounding the player.
      * @return the hashmap that represents elements surrounding the player
      */
-    public HashMap<Vector2, WorldElement> getSurroundings(){
+    public HashMap<Vector2, Feature> getSurroundings(){
         return surroundings;
     }
 

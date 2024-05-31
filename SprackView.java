@@ -33,6 +33,7 @@ public class SprackView {
             sheetInfo.put("crate", 16);
             sheetInfo.put("monu3", 79);
             sheetInfo.put("log", 16);
+            sheetInfo.put("tree", 40);
             sheetInfo.put("tower", 200);
 
             ExecutorService service = Executors.newFixedThreadPool(sheetInfo.size());
