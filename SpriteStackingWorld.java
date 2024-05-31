@@ -19,8 +19,8 @@ public class SpriteStackingWorld extends PixelWorld {
         worldData = new WorldData();
 
         worldData.generateWorld();
-        for(Vector2 coord : worldData.getSurroundings().keySet()){
-            if(worldData.getSurroundings().get(coord)!=null){
+        for(Vector2 coord : worldData.getSurroundings().keySet()) {
+            if(worldData.getSurroundings().get(coord)!=null) {
                 final int x = (int) coord.x * 20, y = (int) coord.y * 20;
                 addSprack(worldData.getSurroundings().get(coord), x, y);
             }
@@ -40,19 +40,19 @@ public class SpriteStackingWorld extends PixelWorld {
 
         int cameraGridX = (int) (Camera.getX() / 20);
         int cameraGridY = (int) (Camera.getY() / 20);
-        if(worldData.updatePlayerLocation(cameraGridX, cameraGridY, WorldData.generationRadius, WorldData::addFeature, WorldData::removeFeature)) {
+        if(worldData.updatePlayerLocation(cameraGridX, cameraGridY)) {
             List<? extends Sprite> features = getSprites(Feature.class);
             // remove objects not present in world data
-            for(Sprite sprite : features){
+            for(Sprite sprite : features) {
                 Feature feature = (Feature) sprite;
-                if(!worldData.getSurroundings().containsValue(feature)){
+                if(!worldData.getSurroundings().containsValue(feature)) {
                     removeSprite(feature);
                 }
             }
             // add objects not already in world
-            for(Vector2 coord : worldData.getSurroundings().keySet()){
+            for(Vector2 coord : worldData.getSurroundings().keySet()) {
                 if(worldData.getSurroundings().get(coord) != null
-                && !features.contains(worldData.getSurroundings().get(coord))){
+                && !features.contains(worldData.getSurroundings().get(coord))) {
                     final int x = (int) coord.x * 20, y = (int) coord.y * 20;
                     addSprack(worldData.getSurroundings().get(coord), x, y);
                 }

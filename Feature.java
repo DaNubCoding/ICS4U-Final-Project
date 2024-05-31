@@ -18,26 +18,26 @@ public class Feature extends Sprack {
          * @param id the id of the new Feature
          * @return a new Feature with the given id
          */
-        public Feature create(long id);
+        public Feature create();
     }
 
     /**
      * An enum that represents the different types of features that can be
      * spawned, along with their spawnrates.
-     *
+     * 
      * @author Andrew Wang
      * @version May 2024
      */
     public static enum Type {
-        TREE(Tree::new, 10),
+        TREE(Tree::new, 1),
         CRATE(Crate::new, 4);
 
         private static int[] spawnRates = new int[Type.length()];
 
         static {
             spawnRates[0] = values()[0].spawnRate;
-            for (int i = 1; i < Type.length(); i++) {
-                spawnRates[i] = spawnRates[i - 1] + values()[i].spawnRate;
+            for (int i = 0; i < Type.length(); i++) {
+                spawnRates[i] = values()[i].spawnRate;
             }
         }
 
@@ -51,14 +51,13 @@ public class Feature extends Sprack {
         }
 
         /**
-         * Create a new Feature of the given type with the given id.
+         * Create a new Feature of the given type.
          *
          * @param i the index of the type to create
-         * @param id the id of the new Feature
          * @return a new Feature of the given type
          */
-        public static Feature createFeature(int i, long id) {
-            return values()[i].factory.create(id);
+        public static Feature createFeature(int i) {
+            return values()[i].factory.create();
         }
 
         /**
@@ -80,13 +79,11 @@ public class Feature extends Sprack {
          */
         public final int spawnRate;
 
-        private Type(Factory factory, int spawnRate){
+        private Type(Factory factory, int spawnRate) {
             this.factory = factory;
             this.spawnRate = spawnRate;
         }
     }
-
-    private long id; // note: this might not be necessary
 
     /**
      * Create a new WorldElement with the given id and the given sheet name.
@@ -94,12 +91,11 @@ public class Feature extends Sprack {
      * Refer to {@link Sprack#Sprack}
      * @param id the unique id used to identify this element when regenerating the world
      */
-    public Feature(long id, String sheetName){
+    public Feature(String sheetName) {
         super(sheetName);
-        this.id = id;
     }
 
-    public void modify(){
+    public void modify() {
         /**
          * ideally this should be part of an interface, but I'm not well versed
          * enough in interfaces to deal with this. This should modify the world

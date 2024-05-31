@@ -21,9 +21,10 @@ public class WorldData {
     private static Random rand;
 
     // settings
-    public static final int generationRadius = 5;
+    private static final int generationRadius = 13;
+    private static final int emptyFeatureChance = 100;
     private static final HashMap<Vector2, Feature> landmarks = new HashMap<>() {{
-        put(new Vector2(0, 0), new Feature(0,"tower"));
+        put(new Vector2(0, 0), new Feature("tower"));
         // more landmarks can be placed here
     }};
 
@@ -32,15 +33,17 @@ public class WorldData {
     private Vector2 playerLocation;
     private ArrayList<Long> modifiedElementIDs;
     private HashMap<Vector2, Feature> surroundings;
+    private HashMap<Vector2, Forest> forestCenters;
 
     /**
      * Create a new WorldData object with default settings.
      */
-    public WorldData(){
+    public WorldData() {
         worldRand = new Random();
         seed = worldRand.nextLong();
         playerLocation = new Vector2(0, 0);
         surroundings = new HashMap<Vector2, Feature>();
+        forestCenters = new HashMap<Vector2, Forest>();
         modifiedElementIDs = new ArrayList<Long>();
     }
 
@@ -51,7 +54,7 @@ public class WorldData {
      * such a file, this creates a new WorldData with the specified seed.
      * @param seed the seed to be used when creating the WorldData
      */
-    public WorldData(long seed){
+    public WorldData(long seed) {
         this();
         Scanner scf;
         try{
@@ -63,10 +66,10 @@ public class WorldData {
             playerLocation = new Vector2(x, y);
             // get the list of modified elements
             StringTokenizer st = new StringTokenizer(scf.nextLine(), ",");
-            while(st.hasMoreTokens()){
+            while(st.hasMoreTokens()) {
                 modifiedElementIDs.add(Long.valueOf(st.nextToken()));
             }
-        } catch(FileNotFoundException e){
+        } catch(FileNotFoundException e) {
             this.seed = seed;
         }
     }
@@ -75,55 +78,109 @@ public class WorldData {
      * Generate the world around the player in a fixed radius.
      * <p>
      * This should only be used when initially generating the world.
+     * TODO: generate forest centers in starting position?
      */
-    public void generateWorld(){
-        for(int i = 0; i < (2 * generationRadius + 1); i++){
-            for(int j = 0; j < (2 * generationRadius + 1); j++){
+    public void generateWorld() {
+        for(int i = 0; i < (2 * generationRadius + 1); i++) {
+            for(int j = 0; j < (2 * generationRadius + 1); j++) {
                 int dx = j - generationRadius;
                 int dy = i - generationRadius;
                 Vector2 elementPos = playerLocation.add(new Vector2(dx, dy));
                 long localID = seed + elementPos.getSzudzikValue();
-                surroundings.put(elementPos, generateElement(localID));
-                if(landmarks.containsKey(elementPos)){
+                surroundings.put(elementPos, generateFeature(this, localID, elementPos));
+                if(landmarks.containsKey(elementPos)) {
                     surroundings.remove(elementPos);
                     surroundings.put(elementPos, landmarks.get(elementPos));
                 }
-                if(modifiedElementIDs.contains(localID)){
+                if(modifiedElementIDs.contains(localID)) {
                     surroundings.get(elementPos).modify();
                 }
             }
         }
     }
 
-    private static Feature generateElement(long id){
+    private static Feature generateFeature(WorldData data, long id, Vector2 coord) {
         rand = new Random(id);
-        int roll = rand.nextInt(100);
-        for (int i = 0; i < Feature.Type.length(); i++){
-            if (roll < Feature.Type.getSpawnRate(i)) {
-                return Feature.Type.createFeature(i, id);
+
+        // init spawn rates
+        int[] spawnRates = new int[Feature.Type.length()];
+
+        // spawn rate for the elements
+        for(int i = 0; i < Feature.Type.length(); i++) {
+
+            // init object's spawn rate
+            if(i == 0) spawnRates[0] = Feature.Type.getSpawnRate(0);
+            else spawnRates[i] = spawnRates[i-1] + Feature.Type.getSpawnRate(i);
+
+            // if element is a tree, apply forest rules
+            if(Feature.Type.createFeature(i) instanceof Tree) {
+
+                // init type of tree
+                String type = ((Tree) (Feature.Type.createFeature(0))).getTreeType();
+
+                // loop over all forests
+                for(Vector2 v : data.forestCenters.keySet()) {
+                    Forest f = data.forestCenters.get(v);
+
+                    // if type of tree does not match the kind of forest, skip this forest
+                    if(type != f.treeType) continue;
+
+                    // apply closeness and density
+                    int closenessMult = Math.max(f.maxRadius - (int)v.distanceTo(coord), 0);
+                    spawnRates[i] += closenessMult * f.density;
+                }            
+            }
+        }
+
+        // maximum roll value is increased by the fixed empty weight
+        int roll = rand.nextInt(spawnRates[spawnRates.length-1]+emptyFeatureChance);
+
+        // apply spawn rate
+        for (int i = 0; i < Feature.Type.length(); i++) {
+            if (roll < spawnRates[i]) {
+                return Feature.Type.createFeature(i);
+            }
+        }
+
+        // if nothing spawned, return null
+        return null;
+    }
+
+    private static Forest generateForest(long id) {
+        rand = new Random(id);
+        // forests currently use a probability system
+        int roll = rand.nextInt(500);
+        for(int i = 0; i < Forest.length(); i++) {
+            if(roll < Forest.getSpawnRate(i)) {
+                return Forest.values()[i];
             }
         }
         return null;
     }
 
     /**
-     * Update the player location, freeing up the unloaded terrain and generating
-     * new terrain.
-     * @param x the x-value of the grid location of the new player location
-     * @param y the y-value of grid location of the new player location
-     * @return false if the update did not affect anything, true otherwise
+     * Update features, freeing up the unloaded terrain and generating new terrain.
+     * @param dx the change in x-value of the grid location of the player location
+     * @param dy the change in y-value of grid location of the player location
+     * @param radius the radius in which the update takes place
+     * @param adder the operation used to add a feature
+     * @param remove the operation used to remove a feature
      */
-    public boolean updatePlayerLocation(int x, int y, int radius, BiConsumer<WorldData, Vector2> adder, BiConsumer<WorldData, Vector2> remover){
-        if (x == playerLocation.x && y == playerLocation.y) return false;
-        if (x != playerLocation.x){
-            boolean bigger = x > playerLocation.x;
-            int topBorder = (int) Math.max(y, playerLocation.y) + radius;
-            int btmBorder = (int) Math.min(y, playerLocation.y) - radius;
+    private void updateFeatures(int dx, int dy, int radius, BiConsumer<WorldData, Vector2> adder, BiConsumer<WorldData, Vector2> remover) {
+        double x = playerLocation.x + dx;
+        double y = playerLocation.y + dy;
+        int topBorder = (int) Math.max(y, playerLocation.y) + radius;
+        int btmBorder = (int) Math.min(y, playerLocation.y) - radius;
+        int leftBorder = (int) Math.min(x, playerLocation.x) - radius;
+        int rightBorder = (int) Math.max(x, playerLocation.x) + radius;
+
+        if (dx != 0) {
+            boolean bigger = dx > 0;
             double oldBorder = playerLocation.x - radius * (bigger ? 1 : -1);
             double newBorder = x + radius * (bigger ? 1 : -1);
 
             // add all elements on new border
-            for (int i = (int) topBorder; i >= (int) btmBorder; i--){
+            for (int i = (int) topBorder; i >= (int) btmBorder; i--) {
 
                 // initialize element information
                 Vector2 elementPos = new Vector2(newBorder, i);
@@ -131,19 +188,17 @@ public class WorldData {
             }
 
             // remove all elements on old border
-            for (int i = topBorder + 2; i >= (int) btmBorder - 2; i--){
+            for (int i = topBorder; i >= (int) btmBorder; i--) {
                 remover.accept(this, new Vector2(oldBorder, i));
             }
         }
-        if(y != playerLocation.y){
-            boolean bigger = y > playerLocation.y;
-            int leftBorder = (int) Math.min(x, playerLocation.x) - radius;
-            int rightBorder = (int) Math.max(x, playerLocation.x) + radius;
+        if(dy != 0) {
+            boolean bigger = dy > 0;
             double oldBorder = playerLocation.y - radius * (bigger ? 1 : -1);
             double newBorder = y + radius * (bigger ? 1 : -1);
 
             // add all elements on new border
-            for(int i = rightBorder; i >= leftBorder; i--){
+            for(int i = rightBorder; i >= leftBorder; i--) {
 
                 // initlize element information
                 Vector2 elementPos = new Vector2(i, newBorder);
@@ -151,30 +206,42 @@ public class WorldData {
             }
 
             // remove all elements on old border
-            for(int i = rightBorder + 2; i >= leftBorder - 2; i--){
+            for(int i = rightBorder; i >= leftBorder; i--) {
                 remover.accept(this, new Vector2(i, oldBorder));
             }
         }
 
         // edge case where some terrain is left behind
-        if(x != playerLocation.x && y != playerLocation.y){
-            int leftBorder = (int) x - radius - 1;
-            int rightBorder = (int) x + radius + 1;
-            int topBorder = (int) y + radius + 1;
-            int btmBorder = (int) y - radius - 1;
+        if(x != playerLocation.x && y != playerLocation.y) {
+            leftBorder = (int) x - radius - 1;
+            rightBorder = (int) x + radius + 1;
+            topBorder = (int) y + radius + 1;
+            btmBorder = (int) y - radius - 1;
 
             // remove the top and bottom borders
-            for(int i = leftBorder; i <= rightBorder; i++){
+            for(int i = leftBorder; i <= rightBorder; i++) {
                 remover.accept(this, new Vector2(i, topBorder));
                 remover.accept(this, new Vector2(i, btmBorder));
             }
 
             // remove the left and right borders
-            for(int i = btmBorder; i <= topBorder; i++){
+            for(int i = btmBorder; i <= topBorder; i++) {
                 remover.accept(this, new Vector2(leftBorder, i));
                 remover.accept(this, new Vector2(rightBorder, i));
             }
         }
+    }
+
+    /**
+     * Update the player location and the surrounding features.
+     * @param x the new player x-location
+     * @param y the new player y-location
+     * @return whether the update affected anything
+     */
+    public boolean updatePlayerLocation(int x, int y) {
+        if(x == playerLocation.x && y == playerLocation.y) return false;
+        updateFeatures((int) (x - playerLocation.x), (int) (y - playerLocation.y), generationRadius, WorldData::addFeature, WorldData::removeFeature);
+        updateFeatures((int) (x - playerLocation.x), (int) (y - playerLocation.y), 3 * generationRadius, WorldData::addForest, WorldData::removeForest);
         playerLocation = new Vector2(x, y);
         return true;
     }
@@ -186,19 +253,35 @@ public class WorldData {
      * @param data the WorldData object on which to operate
      * @param coord the coordinate of the {@link Feature} to add
      */
-    public static void addFeature(WorldData data, Vector2 coord) {
+    private static void addFeature(WorldData data, Vector2 coord) {
         long localID = data.getSeed() + coord.getSzudzikValue();
 
         HashMap<Vector2, Feature> surroundings = data.getSurroundings();
-        // add element to the list
-        surroundings.put(coord, generateElement(localID));
-        if(data.getModifiedElementIDs().contains(localID)){
-            surroundings.get(coord).modify();
+
+        // add landmark if possible
+        if(landmarks.containsKey(coord)) {
+            surroundings.put(coord, landmarks.get(coord));
+            return;
         }
 
-        // replace element if it is a landmark
-        if(landmarks.containsKey(coord)){
-            surroundings.put(coord, landmarks.get(coord));
+        // add element to the list
+        surroundings.put(coord, generateFeature(data, localID, coord));
+        if(data.getModifiedElementIDs().contains(localID)) {
+            surroundings.get(coord).modify();
+        }
+    }
+
+    /**
+     * Add an invisible forest marker at the specified coordinate.
+     *
+     * @param data the WorldData object on which to operate
+     * @param coord the coordinate of the {@link Forest} to add
+     */
+    private static void addForest(WorldData data, Vector2 coord) {
+        long localID = data.getSeed() + coord.getSzudzikValue();
+        Forest toBeAdded = generateForest(localID);
+        if(toBeAdded != null) {
+            data.forestCenters.put(coord, generateForest(localID));
         }
     }
 
@@ -207,15 +290,24 @@ public class WorldData {
      *
      * @param coord the coordinate of the {@link Feature} to remove
      */
-    public void removeFeature(Vector2 coord) {
+    private void removeFeature(Vector2 coord) {
         surroundings.remove(coord);
+    }
+
+    /**
+     * Remove a forest marker at the specified coordinates.
+     *
+     * @param coord the coordinate of the {@link Forest} to remove
+     */
+    private void removeForest(Vector2 coord) {
+        forestCenters.remove(coord);
     }
 
     /**
      * Get the hashmap that represents elements surrounding the player.
      * @return the hashmap that represents elements surrounding the player
      */
-    public HashMap<Vector2, Feature> getSurroundings(){
+    public HashMap<Vector2, Feature> getSurroundings() {
         return surroundings;
     }
 
@@ -242,7 +334,7 @@ public class WorldData {
      * <p>
      * The file contains the seed, the player location, and the modified elements.
      */
-    public void saveData(){
+    public void saveData() {
         PrintWriter fileOutput;
         try {
             fileOutput = new PrintWriter(new FileWriter("saves/save_"+seed+".csv"));
@@ -252,7 +344,7 @@ public class WorldData {
         }
         fileOutput.println(seed);
         fileOutput.printf("%d,%d\n", playerLocation.x, playerLocation.y);
-        for(long l : modifiedElementIDs){
+        for(long l : modifiedElementIDs) {
             fileOutput.print(l+",");
         }
         fileOutput.close();

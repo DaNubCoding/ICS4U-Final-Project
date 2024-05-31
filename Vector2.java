@@ -294,7 +294,7 @@ public class Vector2 {
      * @return the encoded value after passing through the Szudzik pairing function
      * @throws UnsupportedOperationException if the values of this vector2 contain decimals
      */
-    public long getSzudzikValue(){
+    public long getSzudzikValue() {
         if(x!=(long)x||y!=(long)y)
             throw new UnsupportedOperationException("This method does not support decimals.");
 
