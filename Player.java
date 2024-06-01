@@ -20,10 +20,14 @@ public class Player extends Sprack {
     private double facing;
     private double cameraTargetRotation;
 
+    private Weapon weapon;
+
     public Player() {
         super("car");
         velocity = new Vector2(0, 0);
         facing = 0;
+
+        weapon = new TestPistol(this);
     }
 
     @Override
@@ -67,11 +71,19 @@ public class Player extends Sprack {
         // Face the direction of movement
         if (velocity.magnitude() != 0) {
             facing = Vector2.lerpAngle(facing, velocity.angle(), ROT_ACCEL);
-            setWorldRotation(facing + 90);
+            setWorldRotation(facing);
         }
 
         setWorldPos(getWorldPos().add(velocity));
         Camera.targetPosition(getWorldPos());
+
+        weapon.update();
+    }
+
+    @Override
+    public void render(GreenfootImage canvas) {
+        super.render(canvas);
+        weapon.render(canvas);
     }
 
     private void updateCameraRotation() {

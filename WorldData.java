@@ -12,7 +12,8 @@ import java.util.function.BiConsumer;
 
 /**
  * A class that stores and handles all the data to be used inside the world.
- * TODO: determine spawn chance, maybe group spawns together?
+ *
+ *\ODO: determine spawn chance, maybe group spawns together?
  * @author Lucas Fu
  * @version May 2024
  */

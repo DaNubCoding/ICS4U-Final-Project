@@ -139,4 +139,14 @@ public class Sprack extends Sprite {
     public Vector2 getWorldPos() {
         return worldPos;
     }
+
+    /**
+     * Get the rotation of the Sprack as it appears on the screen, relative to
+     * the camera rotation.
+     *
+     * @return the visual rotation of the Sprack
+     */
+    public double getVisualRotation() {
+        return Vector2.normalizeAngle(rotation - Camera.getRotation());
+    }
 }

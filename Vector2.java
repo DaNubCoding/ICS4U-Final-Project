@@ -14,11 +14,11 @@
  */
 public class Vector2 {
     /**
-     * The x value of the vector.
+     * The x component of the vector.
      */
     public final double x;
     /**
-     * The y value of the vector.
+     * The y component of the vector.
      */
     public final double y;
 
@@ -51,6 +51,26 @@ public class Vector2 {
      */
     public Vector2() {
         this(0, 0);
+    }
+
+    /**
+     * Set the x value of this vector and return the resulting vector.
+     *
+     * @param x the new x value
+     * @return the new vector with the x value set
+     */
+    public Vector2 setX(double x) {
+        return new Vector2(x, y);
+    }
+
+    /**
+     * Set the y value of this vector and return the resulting vector.
+     *
+     * @param y the new y value
+     * @return the new vector with the y value set
+     */
+    public Vector2 setY(double y) {
+        return new Vector2(x, y);
     }
 
     /**
@@ -281,7 +301,7 @@ public class Vector2 {
      */
     @Override
     public String toString() {
-        return String.format("Vector2(" + x + ", " + y + ")");
+        return "Vector2(" + x + ", " + y + ")";
     }
 
     /**
