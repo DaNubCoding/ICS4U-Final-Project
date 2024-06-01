@@ -16,7 +16,7 @@ import greenfoot.*;
 public class Sprack extends Sprite {
     private final String sheetName;
 
-    private Vector2 worldPos;
+    private Vector3 worldPos;
     private double rotation;
 
     /**
@@ -30,7 +30,22 @@ public class Sprack extends Sprite {
     public Sprack(String sheetName) {
         super(Layer.SPRACK_DEFAULT);
         this.sheetName = sheetName;
-        worldPos = new Vector2();
+        worldPos = new Vector3();
+    }
+
+    /**
+     * Create a new Sprack with the given sheet name and layer.
+     * <p>
+     * The sheet name is used to look up the {@link SprackView} object that
+     * contains the pre-rendered images for this Sprack.
+     *
+     * @param sheetName the name of the Sprack sheet
+     * @param layer the layer to render the Sprack on
+     */
+    public Sprack(String sheetName, Layer layer) {
+        super(layer);
+        this.sheetName = sheetName;
+        worldPos = new Vector3();
     }
 
     /**
@@ -61,9 +76,10 @@ public class Sprack extends Sprite {
      *
      * @param x the x position
      * @param y the y position
+     * @param z the z position
      */
-    public void setWorldPos(double x, double y) {
-        worldPos = new Vector2(x, y);
+    public void setWorldPos(double x, double y, double z) {
+        worldPos = new Vector3(x, y, z);
     }
 
     /**
@@ -74,7 +90,7 @@ public class Sprack extends Sprite {
      *
      * @param position the position
      */
-    public void setWorldPos(Vector2 position) {
+    public void setWorldPos(Vector3 position) {
         worldPos = position;
     }
 
@@ -89,9 +105,11 @@ public class Sprack extends Sprite {
         double scale = Camera.getZoom();
         double offsetX = (worldPos.x - Camera.getX()) * scale;
         double offsetY = (worldPos.y - Camera.getY()) * scale;
+        double offsetZ = (worldPos.z - Camera.getZ()) * scale;
         double screenRad = Math.toRadians(-Camera.getRotation());
-        double screenX = getWorld().getWidth() / 2 + offsetX * Math.cos(screenRad) - offsetY * Math.sin(screenRad);
-        double screenY = getWorld().getHeight() / 2 + offsetX * Math.sin(screenRad) + offsetY * Math.cos(screenRad);
+        double screenX = getWorld().getWidth() / 2 + offsetX * Math.cos(screenRad) - offsetZ * Math.sin(screenRad);
+        double screenY = getWorld().getHeight() / 2 + offsetX * Math.sin(screenRad) + offsetZ * Math.cos(screenRad);
+        screenY -= offsetY;
         setScreenPos(screenX, screenY);
 
         // Don't render if offscreen
@@ -132,11 +150,20 @@ public class Sprack extends Sprite {
     }
 
     /**
+     * Get the z position of the Sprack in the world.
+     *
+     * @return the z position of the Sprack
+     */
+    public double getWorldZ() {
+        return worldPos.z;
+    }
+
+    /**
      * Get the world position of the Sprack.
      *
      * @return the world position of the Sprack
      */
-    public Vector2 getWorldPos() {
+    public Vector3 getWorldPos() {
         return worldPos;
     }
 

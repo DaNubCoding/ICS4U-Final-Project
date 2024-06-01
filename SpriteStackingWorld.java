@@ -14,18 +14,18 @@ public class SpriteStackingWorld extends PixelWorld {
     public SpriteStackingWorld() {
         super(256, 196);
 
-        Camera.resetTo(0, 0, 0, 3);
+        Camera.resetTo(0, 0, 0, 0, 3);
         Camera.setCloseness(0.3);
         worldData = new WorldData();
 
         worldData.generateWorld();
         for(Vector2 coord : worldData.getSurroundings().keySet()) {
             if(worldData.getSurroundings().get(coord)!=null) {
-                final int x = (int) coord.x * 20, y = (int) coord.y * 20;
-                addSprack(worldData.getSurroundings().get(coord), x, y);
+                final int x = (int) coord.x * 20, z = (int) coord.y * 20;
+                addSprack(worldData.getSurroundings().get(coord), x, 0, z);
             }
         }
-        addSprack(new Player(), 0, 0);
+        addSprack(new Player(), 0, 0, 0);
 
         render();
     }
@@ -39,8 +39,8 @@ public class SpriteStackingWorld extends PixelWorld {
         Timer.incrementAct();
 
         int cameraGridX = (int) (Camera.getX() / 20);
-        int cameraGridY = (int) (Camera.getY() / 20);
-        if(worldData.updatePlayerLocation(cameraGridX, cameraGridY)) {
+        int cameraGridZ = (int) (Camera.getZ() / 20);
+        if(worldData.updatePlayerLocation(cameraGridX, cameraGridZ)) {
             List<? extends Sprite> features = getSprites(Feature.class);
             // remove objects not present in world data
             for(Sprite sprite : features) {
@@ -53,8 +53,8 @@ public class SpriteStackingWorld extends PixelWorld {
             for(Vector2 coord : worldData.getSurroundings().keySet()) {
                 if(worldData.getSurroundings().get(coord) != null
                 && !features.contains(worldData.getSurroundings().get(coord))) {
-                    final int x = (int) coord.x * 20, y = (int) coord.y * 20;
-                    addSprack(worldData.getSurroundings().get(coord), x, y);
+                    final int x = (int) coord.x * 20, z = (int) coord.y * 20;
+                    addSprack(worldData.getSurroundings().get(coord), x, 0, z);
                 }
             }
         }
@@ -77,9 +77,10 @@ public class SpriteStackingWorld extends PixelWorld {
      * @param sprack the Sprack to add
      * @param x the x position
      * @param y the y position
+     * @param z the z position
      */
-    public void addSprack(Sprack sprack, int x, int y) {
-        addSprite(sprack, x, y);
-        sprack.setWorldPos(x, y);
+    public void addSprack(Sprack sprack, double x, double y, double z) {
+        addSprite(sprack, 0, 0);
+        sprack.setWorldPos(x, y, z);
     }
 }

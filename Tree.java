@@ -10,7 +10,15 @@ public class Tree extends Feature {
      * Create a new Tree.
      */
     public Tree() {
-        super("tree");
+        super("tree_trunk");
         setWorldRotation(Greenfoot.getRandomNumber(360));
+    }
+
+    @Override
+    public void addedToWorld(PixelWorld world) {
+        SpriteStackingWorld spriteStackingWorld = (SpriteStackingWorld) world;
+        Sprack canopy = new TreeCanopy("tree_canopy");
+        spriteStackingWorld.addSprack(canopy, getWorldX(), getWorldY() + 29, getWorldZ());
+        canopy.setWorldRotation(Greenfoot.getRandomNumber(360));
     }
 }

@@ -32,9 +32,13 @@ public class SprackView {
             sheetInfo.put("car", 9);
             sheetInfo.put("crate", 16);
             sheetInfo.put("tree", 40);
+            sheetInfo.put("tree_trunk", 29);
+            sheetInfo.put("tree_canopy", 21);
             sheetInfo.put("tower", 200);
             sheetInfo.put("knight", 21);
             sheetInfo.put("tombstone", 14);
+            sheetInfo.put("statue_dormant", 27);
+            sheetInfo.put("statue_active", 29);
 
             ExecutorService service = Executors.newFixedThreadPool(sheetInfo.size());
             for (Map.Entry<String, Integer> entry : sheetInfo.entrySet()) {

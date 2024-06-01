@@ -10,5 +10,6 @@
  */
 public enum Layer {
     SPRACK_DEFAULT,
+    SPRACK_CANOPY,
     UI;
 }

@@ -19,8 +19,8 @@ public abstract class Weapon extends WorldSprite {
      * Lock the weapon to the player's position and rotation.
      */
     public void lockToPlayer() {
-        Vector2 playerPos = player.getWorldPos();
-        setWorldPos(new Vector3(playerPos.x, 6, playerPos.y));
+        Vector3 playerPos = player.getWorldPos();
+        setWorldPos(new Vector3(playerPos.x, playerPos.y + 6, playerPos.z));
         final double rotation = player.getVisualRotation();
         if (rotation > 90 && rotation < 270) {
             setMirrorX(true);

@@ -74,7 +74,7 @@ public class Player extends Sprack {
             setWorldRotation(facing);
         }
 
-        setWorldPos(getWorldPos().add(velocity));
+        setWorldPos(getWorldPos().add(new Vector3(velocity.x, 0, velocity.y)));
         Camera.targetPosition(getWorldPos());
 
         weapon.update();
@@ -83,7 +83,7 @@ public class Player extends Sprack {
     @Override
     public void render(GreenfootImage canvas) {
         super.render(canvas);
-        weapon.render(canvas);
+        // weapon.render(canvas);
     }
 
     private void updateCameraRotation() {

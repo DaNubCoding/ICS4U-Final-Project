@@ -10,7 +10,7 @@ public class Camera {
     // Don't let anyone instantiate this class
     private Camera() {}
 
-    private static Vector2 position;
+    private static Vector3 position;
     private static double rotation;
     private static double zoom;
     private static double closeness;
@@ -38,9 +38,10 @@ public class Camera {
      *
      * @param x the x position to interpolate towards
      * @param y the y position to interpolate towards
+     * @param z the z position to interpolate towards
      */
-    public static void targetPosition(double x, double y) {
-        targetPosition(new Vector2(x, y));
+    public static void targetPosition(double x, double y, double z) {
+        targetPosition(new Vector3(x, y, z));
     }
 
     /**
@@ -49,8 +50,8 @@ public class Camera {
      *
      * @param position the position to interpolate towards
      */
-    public static void targetPosition(Vector2 position) {
-        Vector2 delta = position.subtract(Camera.position);
+    public static void targetPosition(Vector3 position) {
+        Vector3 delta = position.subtract(Camera.position);
         Camera.position = Camera.position.add(delta.multiply(closeness));
     }
 
@@ -92,11 +93,12 @@ public class Camera {
      *
      * @param x the x position to set the camera to
      * @param x the y position to set the camera to
+     * @param z the z position to set the camera to
      * @param rotation the rotation angle to set the camera to
      * @param zoom the zoom factor to set the camera to
      */
-    public static void resetTo(double x, double y, double rotation, double zoom) {
-        Camera.position = new Vector2(x, y);
+    public static void resetTo(double x, double y, double z, double rotation, double zoom) {
+        Camera.position = new Vector3(x, y, z);
         Camera.rotation = Vector2.normalizeAngle(rotation);
         setZoom(zoom);
     }
@@ -120,11 +122,20 @@ public class Camera {
     }
 
     /**
+     * Return the z position of the camera.
+     *
+     * @return the z position of the camera, in world coordinates
+     */
+    public static double getZ() {
+        return position.z;
+    }
+
+    /**
      * Return the position of the camera as a {@link Vector2}.
      *
      * @return the position of the camera, in world coordinates
      */
-    public static Vector2 getPosition() {
+    public static Vector3 getPosition() {
         return position;
     }
 
