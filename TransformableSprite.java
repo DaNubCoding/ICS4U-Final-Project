@@ -1,6 +1,14 @@
 import greenfoot.Color;
 import greenfoot.GreenfootImage;
 
+/**
+ * A sprite that can be transformed, including rotation, mirroring, and scaling.
+ * <p>
+ * Supports center of rotation.
+ *
+ * @author Andrew Wang
+ * @version May 2024
+ */
 public abstract class TransformableSprite extends Sprite {
     private static final boolean DEBUG_SHOW_IMAGE_BOUNDS = false;
 

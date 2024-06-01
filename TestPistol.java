@@ -1,3 +1,9 @@
+/**
+ * A pistol weapon for testing purposes.
+ *
+ * @author Andrew Wang
+ * @version May 2024
+ */
 public class TestPistol extends RangedWeapon {
     public TestPistol(Player player) {
         super(player, "test_pistol.png");

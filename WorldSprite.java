@@ -1,5 +1,11 @@
 import greenfoot.*;
 
+/**
+ * A 2D sprite that exists in world space.
+ *
+ * @author Andrew Wang
+ * @version May 2024
+ */
 public class WorldSprite extends TransformableSprite {
     private Vector3 worldPos;
 

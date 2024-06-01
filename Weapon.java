@@ -2,6 +2,9 @@ import greenfoot.*;
 
 /**
  * A weapon that does something and follows the player rotation.
+ *
+ * @author Andrew Wang
+ * @version May 2024
  */
 public abstract class Weapon extends WorldSprite {
     private Player player;
@@ -12,6 +15,9 @@ public abstract class Weapon extends WorldSprite {
         setOriginalImage(new GreenfootImage(image));
     }
 
+    /**
+     * Lock the weapon to the player's position and rotation.
+     */
     public void lockToPlayer() {
         Vector2 playerPos = player.getWorldPos();
         setWorldPos(new Vector3(playerPos.x, 6, playerPos.y));
@@ -31,5 +37,8 @@ public abstract class Weapon extends WorldSprite {
         updateImage();
     }
 
+    /**
+     * Perform the weapon's attack.
+     */
     public abstract void attack();
 }
