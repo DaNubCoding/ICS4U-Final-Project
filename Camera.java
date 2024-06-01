@@ -74,9 +74,6 @@ public class Camera {
 
     /**
      * Set the zoom factor of the camera.
-     * <p>
-     * If the given zoom factor is greater than {@link SprackView#IMAGE_CACHE_SCALE},
-     * the camera's zoom factor will be clamped to that value.
      *
      * @return the zoom factor of the camera
      * @throws IllegalArgumentException if the given zoom factor is negative
