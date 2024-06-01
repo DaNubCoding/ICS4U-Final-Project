@@ -64,16 +64,6 @@ public class Feature extends Sprack {
         }
 
         /**
-         * Get the spawn rate of the given Feature type.
-         *
-         * @param i the index of the type
-         * @return the spawn rate of the given type
-         */
-        public static int getSpawnRate(int i) {
-            return spawnRates[i];
-        }
-
-        /**
          * The class of this type of Feature.
          */
         public final Class<? extends Feature> cls;

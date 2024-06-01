@@ -20,7 +20,10 @@ public class SprackView {
     /** All existing SprackView objects for use in the game, mapped by name. */
     private static final ConcurrentMap<String, SprackView> viewMap = new ConcurrentHashMap<>();
 
-    /** The number of different rotation angles, evenly spaced, to make available in the cache. */
+    /**
+     * The number of different rotation angles, evenly spaced, to make available
+     * in the cache.
+     */
     private static final int IMAGE_CACHE_ANGLE_COUNT = 180;
 
     /**
@@ -30,6 +33,14 @@ public class SprackView {
      * SprackView object's cache.
      */
     public static final double IMAGE_CACHE_SCALE = 6;
+
+    /**
+     * The number of layers per vertical voxel in a sprite stack. The higher
+     * this value is, the less noticeable the separation between layers will be.
+     * This will only make a difference when it is less than or equal to
+     * {@link #IMAGE_CACHE_SCALE}.
+     */
+    public static final int LAYERS_PER_PIXEL = 6;
 
     /**
      * Load and cache all SprackView objects to be used in the game.
@@ -160,7 +171,10 @@ public class SprackView {
             GreenfootImage rotLayer = new GreenfootImage(rotWidth, rotHeight);
             rotLayer.drawImage(layer, (rotWidth - width) / 2, (rotHeight - height) / 2);
             rotLayer.rotate((int) imageDegrees);
-            image.drawImage(rotLayer, 0, (int) (IMAGE_CACHE_SCALE * (layers.length - 1 - i)));
+            for (int j = 0; j < LAYERS_PER_PIXEL; j++) {
+                image.drawImage(rotLayer, 0, (int) (IMAGE_CACHE_SCALE * (layers.length - 1 - i) - j * IMAGE_CACHE_SCALE / LAYERS_PER_PIXEL));
+            }
+            // image.drawImage(rotLayer, 0, (int) (IMAGE_CACHE_SCALE * (layers.length - 1 - i)));
         }
         return new CacheEntry(image, rotWidth / 2, image.getHeight() - rotHeight / 2);
     }
