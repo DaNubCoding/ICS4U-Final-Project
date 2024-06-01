@@ -9,11 +9,11 @@ import java.util.Random;
 import java.util.Scanner;
 import java.util.StringTokenizer;
 import java.util.function.BiConsumer;
+import java.util.List;
 
 /**
  * A class that stores and handles all the data to be used inside the world.
  *
- * TODO: determine spawn chance, maybe group spawns together?
  * @author Lucas Fu
  * @version May 2024
  */
@@ -34,7 +34,6 @@ public class WorldData {
     private Vector2 playerLocation;
     private ArrayList<Long> modifiedElementIDs;
     private HashMap<Vector2, Feature> surroundings;
-    private HashMap<Vector2, Forest> forestCenters;
 
     /**
      * Create a new WorldData object with default settings.
@@ -44,7 +43,6 @@ public class WorldData {
         seed = worldRand.nextLong();
         playerLocation = new Vector2(0, 0);
         surroundings = new HashMap<Vector2, Feature>();
-        forestCenters = new HashMap<Vector2, Forest>();
         modifiedElementIDs = new ArrayList<Long>();
     }
 
@@ -90,7 +88,6 @@ public class WorldData {
                 long localID = seed + elementPos.getSzudzikValue();
                 surroundings.put(elementPos, generateFeature(this, localID, elementPos));
                 if(landmarks.containsKey(elementPos)) {
-                    surroundings.remove(elementPos);
                     surroundings.put(elementPos, landmarks.get(elementPos));
                 }
                 if(modifiedElementIDs.contains(localID)) {
@@ -106,40 +103,37 @@ public class WorldData {
         // init spawn rates
         int[] spawnRates = new int[Feature.Type.length()];
 
-        // spawn rate for the elements
-        for(int i = 0; i < Feature.Type.length(); i++) {
+        int i = 0;
+        // spawn rate for the features
+        for(Feature.Type type : Feature.Type.values()) {
 
             // init object's spawn rate
-            if(i == 0) spawnRates[0] = Feature.Type.getSpawnRate(0);
-            else spawnRates[i] = spawnRates[i-1] + Feature.Type.getSpawnRate(i);
+            if(i == 0) spawnRates[0] = type.spawnRate;
+            else spawnRates[i] = spawnRates[i - 1] + type.spawnRate;
 
-            // if element is a tree, apply forest rules
-            if(Feature.Type.createFeature(i) instanceof Tree) {
-
-                // init type of tree
-                String type = ((Tree) (Feature.Type.createFeature(0))).getTreeType();
-
-                // loop over all forests
-                for(Vector2 v : data.forestCenters.keySet()) {
-                    Forest f = data.forestCenters.get(v);
-
-                    // if type of tree does not match the kind of forest, skip this forest
-                    if(type != f.treeType) continue;
-
-                    // apply closeness and density
-                    int closenessMult = Math.max(f.maxRadius - (int)v.distanceTo(coord), 0);
-                    spawnRates[i] += closenessMult * f.density;
+            List<Vector2> centers = Cluster.getCenter(type.cls);
+            if (centers != null) {
+                Cluster clusterType = Cluster.getFromFeature(type);
+                for (Vector2 center : centers) {
+                    // A multiplier that decreases the spawn rate of the feature
+                    // based on the distance from the center
+                    int closenessMult = Math.max(clusterType.maxRadius - (int) center.distanceTo(coord), 0);
+                    // Apply this multiplier to the defined density of features in
+                    // the cluster
+                    spawnRates[i] += closenessMult * clusterType.density;
                 }
             }
+
+            i++;
         }
 
         // maximum roll value is increased by the fixed empty weight
         int roll = rand.nextInt(spawnRates[spawnRates.length-1]+emptyFeatureChance);
 
         // apply spawn rate
-        for (int i = 0; i < Feature.Type.length(); i++) {
-            if (roll < spawnRates[i]) {
-                return Feature.Type.createFeature(i);
+        for (int j = 0; j < Feature.Type.length(); j++) {
+            if (roll < spawnRates[j]) {
+                return Feature.Type.createFeature(j);
             }
         }
 
@@ -147,13 +141,13 @@ public class WorldData {
         return null;
     }
 
-    private static Forest generateForest(long id) {
+    private static Cluster generateCluster(long id) {
         rand = new Random(id);
-        // forests currently use a probability system
+        // clusters currently use a probability system
         int roll = rand.nextInt(500);
-        for(int i = 0; i < Forest.length(); i++) {
-            if(roll < Forest.getSpawnRate(i)) {
-                return Forest.values()[i];
+        for(Cluster cluster : Cluster.values()) {
+            if(roll < cluster.spawnRate) {
+                return cluster;
             }
         }
         return null;
@@ -242,7 +236,7 @@ public class WorldData {
     public boolean updatePlayerLocation(int x, int y) {
         if(x == playerLocation.x && y == playerLocation.y) return false;
         updateFeatures((int) (x - playerLocation.x), (int) (y - playerLocation.y), generationRadius, WorldData::addFeature, WorldData::removeFeature);
-        updateFeatures((int) (x - playerLocation.x), (int) (y - playerLocation.y), 3 * generationRadius, WorldData::addForest, WorldData::removeForest);
+        updateFeatures((int) (x - playerLocation.x), (int) (y - playerLocation.y), 3 * generationRadius, WorldData::addForest, WorldData::removeFeature);
         playerLocation = new Vector2(x, y);
         return true;
     }
@@ -280,9 +274,9 @@ public class WorldData {
      */
     private static void addForest(WorldData data, Vector2 coord) {
         long localID = data.getSeed() + coord.getSzudzikValue();
-        Forest toBeAdded = generateForest(localID);
+        Cluster toBeAdded = generateCluster(localID);
         if(toBeAdded != null) {
-            data.forestCenters.put(coord, generateForest(localID));
+            Cluster.addCenter(toBeAdded.cls, coord);
         }
     }
 
@@ -293,15 +287,6 @@ public class WorldData {
      */
     private void removeFeature(Vector2 coord) {
         surroundings.remove(coord);
-    }
-
-    /**
-     * Remove a forest marker at the specified coordinates.
-     *
-     * @param coord the coordinate of the {@link Forest} to remove
-     */
-    private void removeForest(Vector2 coord) {
-        forestCenters.remove(coord);
     }
 
     /**

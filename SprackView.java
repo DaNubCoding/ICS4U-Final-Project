@@ -34,6 +34,7 @@ public class SprackView {
             sheetInfo.put("tree", 40);
             sheetInfo.put("tower", 200);
             sheetInfo.put("knight", 21);
+            sheetInfo.put("tombstone", 14);
 
             ExecutorService service = Executors.newFixedThreadPool(sheetInfo.size());
             for (Map.Entry<String, Integer> entry : sheetInfo.entrySet()) {

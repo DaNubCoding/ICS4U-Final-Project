@@ -11,11 +11,12 @@ public class Feature extends Sprack {
      * @version May 2024
      */
     @FunctionalInterface
-    private static interface Factory {
+    public interface FeatureFactory {
         /**
          * Create a new Feature with the given id.
+         * <p>
+         * TODO: This will also take in the feature's data.
          *
-         * @param id the id of the new Feature
          * @return a new Feature with the given id
          */
         public Feature create();
@@ -24,13 +25,15 @@ public class Feature extends Sprack {
     /**
      * An enum that represents the different types of features that can be
      * spawned, along with their spawnrates.
-     * 
+     *
      * @author Andrew Wang
      * @version May 2024
      */
     public static enum Type {
-        TREE(Tree::new, 1),
-        CRATE(Crate::new, 4);
+        TREE(Tree.class, Tree::new, 1),
+        CRATE(Crate.class, Crate::new, 2),
+        TOMBSTONE(Tombstone.class, Tombstone::new, 1),
+        ;
 
         private static int[] spawnRates = new int[Type.length()];
 
@@ -71,25 +74,30 @@ public class Feature extends Sprack {
         }
 
         /**
+         * The class of this type of Feature.
+         */
+        public final Class<? extends Feature> cls;
+        /**
          * The factory used to create a new Feature of this type.
          */
-        public final Factory factory;
+        public final FeatureFactory factory;
         /**
          * The spawn rate of this type of Feature.
          */
         public final int spawnRate;
 
-        private Type(Factory factory, int spawnRate) {
+        private Type(Class<? extends Feature> cls, FeatureFactory factory, int spawnRate) {
+            this.cls = cls;
             this.factory = factory;
             this.spawnRate = spawnRate;
         }
     }
 
     /**
-     * Create a new WorldElement with the given id and the given sheet name.
+     * Create a new Feature with the given id and the given sheet name.
      * <p>
      * Refer to {@link Sprack#Sprack}
-     * @param id the unique id used to identify this element when regenerating the world
+     * @param id the unique id used to identify this feature when regenerating the world
      */
     public Feature(String sheetName) {
         super(sheetName);
@@ -99,7 +107,7 @@ public class Feature extends Sprack {
         /**
          * ideally this should be part of an interface, but I'm not well versed
          * enough in interfaces to deal with this. This should modify the world
-         * element (such as having it destroyed)
+         * feature (such as having it destroyed)
          */
 
          // currently empty, as you can see...
