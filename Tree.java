@@ -9,8 +9,8 @@ public class Tree extends Feature {
     /**
      * Create a new Tree.
      */
-    public Tree() {
-        super("tree_trunk");
+    public Tree(FeatureData data) {
+        super("tree_trunk", data);
         setWorldRotation(Greenfoot.getRandomNumber(360));
     }
 

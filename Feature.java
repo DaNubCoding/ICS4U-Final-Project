@@ -13,13 +13,11 @@ public class Feature extends Sprack {
     @FunctionalInterface
     public interface FeatureFactory {
         /**
-         * Create a new Feature with the given id.
-         * <p>
-         * TODO: This will also take in the feature's data.
+         * Create a new Feature with the given data.
          *
-         * @return a new Feature with the given id
+         * @return a new Feature with the given data
          */
-        public Feature create();
+        public Feature create(FeatureData data);
     }
 
     /**
@@ -57,10 +55,11 @@ public class Feature extends Sprack {
          * Create a new Feature of the given type.
          *
          * @param i the index of the type to create
+         * @param data the data to create the Feature with
          * @return a new Feature of the given type
          */
-        public static Feature createFeature(int i) {
-            return values()[i].factory.create();
+        public static Feature createFeature(int i, FeatureData data) {
+            return values()[i].factory.create(data);
         }
 
         /**
@@ -83,23 +82,18 @@ public class Feature extends Sprack {
         }
     }
 
+    private FeatureData data;
+
     /**
      * Create a new Feature with the given id and the given sheet name.
      * <p>
      * Refer to {@link Sprack#Sprack}
-     * @param id the unique id used to identify this feature when regenerating the world
+     *
+     * @param sheetName the name of the SprackView to use
+     * @param data the data to create the Feature with
      */
-    public Feature(String sheetName) {
+    public Feature(String sheetName, FeatureData data) {
         super(sheetName);
-    }
-
-    public void modify() {
-        /**
-         * ideally this should be part of an interface, but I'm not well versed
-         * enough in interfaces to deal with this. This should modify the world
-         * feature (such as having it destroyed)
-         */
-
-         // currently empty, as you can see...
+        this.data = data;
     }
 }

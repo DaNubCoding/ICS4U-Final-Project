@@ -16,7 +16,7 @@ public class SpriteStackingWorld extends PixelWorld {
 
         Camera.resetTo(0, 0, 0, 0, 3);
         Camera.setCloseness(0.3);
-        worldData = new WorldData();
+        worldData = new WorldData(1);
 
         worldData.generateWorld();
         for(Vector2 coord : worldData.getSurroundings().keySet()) {
@@ -25,7 +25,9 @@ public class SpriteStackingWorld extends PixelWorld {
                 addSprack(worldData.getSurroundings().get(coord), x, 0, z);
             }
         }
-        addSprack(new Player(), 0, 0, 0);
+
+        Vector2 playerPos = worldData.getPlayerLocation();
+        addSprack(new Player(), playerPos.x * 20, 0, playerPos.y * 20);
 
         render();
     }
@@ -57,6 +59,10 @@ public class SpriteStackingWorld extends PixelWorld {
                     addSprack(worldData.getSurroundings().get(coord), x, 0, z);
                 }
             }
+        }
+
+        if (Greenfoot.isKeyDown("space")) {
+            worldData.saveData();
         }
     }
 

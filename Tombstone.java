@@ -8,7 +8,7 @@ public class Tombstone extends Feature {
     /**
      * Create a new Tombstone.
      */
-    public Tombstone() {
-        super("tombstone");
+    public Tombstone(FeatureData data) {
+        super("tombstone", data);
     }
 }

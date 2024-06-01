@@ -9,10 +9,9 @@ import greenfoot.Greenfoot;
 public class Crate extends Feature {
     /**
      * Create a new Crate with specified id.
-     * @param id the unique id that is given to this crate
      */
-    public Crate() {
-        super("crate");
+    public Crate(FeatureData data) {
+        super("crate", data);
         setWorldRotation(Greenfoot.getRandomNumber(360));
     }
 }

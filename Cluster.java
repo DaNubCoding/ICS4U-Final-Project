@@ -58,4 +58,10 @@ public enum Cluster {
     public static void removeCenter(Class<? extends Feature> cls, Vector2 center) {
         clusterCenters.get(cls).remove(center);
     }
+
+    public static void removeCenter(Vector2 center) {
+        for (List<Vector2> centers : clusterCenters.values()) {
+            centers.remove(center);
+        }
+    }
 }

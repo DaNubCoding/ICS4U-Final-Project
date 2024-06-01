@@ -3,11 +3,11 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
 import java.util.Scanner;
 import java.util.StringTokenizer;
+import java.util.Map.Entry;
 import java.util.function.BiConsumer;
 import java.util.List;
 
@@ -32,7 +32,7 @@ public class WorldData {
     // storage variables
     private long seed;
     private Vector2 playerLocation;
-    private ArrayList<Long> modifiedElementIDs;
+    private HashMap<Long, FeatureData> modifiedFeatures;
     private HashMap<Vector2, Feature> surroundings;
 
     /**
@@ -43,7 +43,7 @@ public class WorldData {
         seed = worldRand.nextLong();
         playerLocation = new Vector2(0, 0);
         surroundings = new HashMap<Vector2, Feature>();
-        modifiedElementIDs = new ArrayList<Long>();
+        modifiedFeatures = new HashMap<Long, FeatureData>();
     }
 
     /**
@@ -51,22 +51,32 @@ public class WorldData {
      * <p>
      * This attempts to load a file using the seed number. If this fails to find
      * such a file, this creates a new WorldData with the specified seed.
+     *
      * @param seed the seed to be used when creating the WorldData
      */
     public WorldData(long seed) {
         this();
         Scanner scf;
         try{
-            scf = new Scanner(new File("saves/save_"+seed+".csv"));
+            scf = new Scanner(new File("saves/save_" + seed + ".csv"));
             // get the seed
             this.seed = Long.valueOf(scf.nextLine());
             // get the player coordinates
-            long x = scf.nextLong(), y = scf.nextLong(); scf.nextLine();
+            StringTokenizer st = new StringTokenizer(scf.nextLine(), ",");
+            long x = Integer.valueOf(st.nextToken());
+            long y = Integer.valueOf(st.nextToken());
             playerLocation = new Vector2(x, y);
             // get the list of modified elements
-            StringTokenizer st = new StringTokenizer(scf.nextLine(), ",");
-            while(st.hasMoreTokens()) {
-                modifiedElementIDs.add(Long.valueOf(st.nextToken()));
+            while (scf.hasNextLine()) {
+                st = new StringTokenizer(scf.nextLine(), ",");
+                long id = Long.valueOf(st.nextToken());
+                FeatureData featureData = new FeatureData();
+                while (st.hasMoreTokens()) {
+                    String key = st.nextToken();
+                    String value = st.nextToken();
+                    featureData.put(key, value);
+                }
+                modifiedFeatures.put(id, featureData);
             }
         } catch(FileNotFoundException e) {
             this.seed = seed;
@@ -77,7 +87,6 @@ public class WorldData {
      * Generate the world around the player in a fixed radius.
      * <p>
      * This should only be used when initially generating the world.
-     * TODO: generate forest centers in starting position?
      */
     public void generateWorld() {
         for(int i = 0; i < (2 * generationRadius + 1); i++) {
@@ -86,18 +95,20 @@ public class WorldData {
                 int dy = i - generationRadius;
                 Vector2 elementPos = playerLocation.add(new Vector2(dx, dy));
                 long localID = seed + elementPos.getSzudzikValue();
-                surroundings.put(elementPos, generateFeature(this, localID, elementPos));
                 if(landmarks.containsKey(elementPos)) {
                     surroundings.put(elementPos, landmarks.get(elementPos));
+                    continue;
                 }
-                if(modifiedElementIDs.contains(localID)) {
-                    surroundings.get(elementPos).modify();
+                FeatureData featureData = modifiedFeatures.get(localID);
+                Feature feature = generateFeature(this, localID, elementPos, featureData);
+                if (feature != null) {
+                    surroundings.put(elementPos, feature);
                 }
             }
         }
     }
 
-    private static Feature generateFeature(WorldData data, long id, Vector2 coord) {
+    private static Feature generateFeature(WorldData data, long id, Vector2 coord, FeatureData featureData) {
         rand = new Random(id);
 
         // init spawn rates
@@ -133,7 +144,7 @@ public class WorldData {
         // apply spawn rate
         for (int j = 0; j < Feature.Type.length(); j++) {
             if (roll < spawnRates[j]) {
-                return Feature.Type.createFeature(j);
+                return Feature.Type.createFeature(j, featureData);
             }
         }
 
@@ -236,7 +247,7 @@ public class WorldData {
     public boolean updatePlayerLocation(int x, int y) {
         if(x == playerLocation.x && y == playerLocation.y) return false;
         updateFeatures((int) (x - playerLocation.x), (int) (y - playerLocation.y), generationRadius, WorldData::addFeature, WorldData::removeFeature);
-        updateFeatures((int) (x - playerLocation.x), (int) (y - playerLocation.y), 3 * generationRadius, WorldData::addForest, WorldData::removeFeature);
+        updateFeatures((int) (x - playerLocation.x), (int) (y - playerLocation.y), 3 * generationRadius, WorldData::addCluster, WorldData::removeCluster);
         playerLocation = new Vector2(x, y);
         return true;
     }
@@ -260,19 +271,20 @@ public class WorldData {
         }
 
         // add element to the list
-        surroundings.put(coord, generateFeature(data, localID, coord));
-        if(data.getModifiedElementIDs().contains(localID)) {
-            surroundings.get(coord).modify();
+        FeatureData featureData = data.getModifiedFeatures().get(localID);
+        Feature feature = generateFeature(data, localID, coord, featureData);
+        if (feature != null) {
+            surroundings.put(coord, feature);
         }
     }
 
     /**
-     * Add an invisible forest marker at the specified coordinate.
+     * Add an invisible cluster marker at the specified coordinate.
      *
      * @param data the WorldData object on which to operate
      * @param coord the coordinate of the {@link Forest} to add
      */
-    private static void addForest(WorldData data, Vector2 coord) {
+    private static void addCluster(WorldData data, Vector2 coord) {
         long localID = data.getSeed() + coord.getSzudzikValue();
         Cluster toBeAdded = generateCluster(localID);
         if(toBeAdded != null) {
@@ -289,6 +301,10 @@ public class WorldData {
         surroundings.remove(coord);
     }
 
+    private void removeCluster(Vector2 coord) {
+        Cluster.removeCenter(coord);
+    }
+
     /**
      * Get the hashmap that represents elements surrounding the player.
      * @return the hashmap that represents elements surrounding the player
@@ -302,8 +318,8 @@ public class WorldData {
      *
      * @return the modified element IDs
      */
-    public ArrayList<Long> getModifiedElementIDs() {
-        return modifiedElementIDs;
+    public HashMap<Long, FeatureData> getModifiedFeatures() {
+        return modifiedFeatures;
     }
 
     /**
@@ -313,6 +329,10 @@ public class WorldData {
      */
     public long getSeed() {
         return seed;
+    }
+
+    public Vector2 getPlayerLocation() {
+        return playerLocation;
     }
 
     /**
@@ -329,9 +349,9 @@ public class WorldData {
             return;
         }
         fileOutput.println(seed);
-        fileOutput.printf("%d,%d\n", playerLocation.x, playerLocation.y);
-        for(long l : modifiedElementIDs) {
-            fileOutput.print(l+",");
+        fileOutput.println((int) (playerLocation.x) + "," + (int) playerLocation.y);
+        for (Entry<Long, FeatureData> entry : modifiedFeatures.entrySet()) {
+            fileOutput.println(entry.getKey() + "," + entry.getValue().toString());
         }
         fileOutput.close();
     }
