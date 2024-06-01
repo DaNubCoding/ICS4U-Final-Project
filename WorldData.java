@@ -25,7 +25,7 @@ public class WorldData {
     private static final int generationRadius = 13;
     private static final int emptyFeatureChance = 100;
     private static final HashMap<Vector2, Feature> landmarks = new HashMap<>() {{
-        put(new Vector2(0, 0), new Feature("tower"));
+        // put(new Vector2(0, 0), new Feature("tower"));
         // more landmarks can be placed here
     }};
 
