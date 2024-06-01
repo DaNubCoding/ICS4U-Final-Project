@@ -96,4 +96,47 @@ public class Feature extends Sprack {
         super(sheetName);
         this.data = data;
     }
+
+    @Override
+    public void addedToWorld(PixelWorld world) {
+        if (data.containsKey("removed")) {
+            getWorld().removeSprite(this);
+        }
+    }
+
+    /**
+     * Modify the data of this Feature.
+     * <p>
+     * For example
+     *
+     * @param key the key to modify
+     * @param value the value to set the key to
+     */
+    public void modify(String key, Object value) {
+        data.put(key, value);
+        ((SpriteStackingWorld) getWorld()).getWorldData().addModified(data);
+    }
+
+    /**
+     * Remove this Feature from the world.
+     *
+     * @author Andrew Wang
+     * @version May 2024
+     */
+    public void removeFromWorld() {
+        getWorld().removeSprite(this);
+        ((SpriteStackingWorld) getWorld())
+            .getWorldData()
+            .removeFeature(data.getPosition());
+        modify("removed", null);
+    }
+
+    /**
+     * Get the data of this Feature.
+     *
+     * @return the data of this Feature
+     */
+    public FeatureData getData() {
+        return data;
+    }
 }

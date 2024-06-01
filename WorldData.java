@@ -70,7 +70,7 @@ public class WorldData {
             while (scf.hasNextLine()) {
                 st = new StringTokenizer(scf.nextLine(), ",");
                 long id = Long.valueOf(st.nextToken());
-                FeatureData featureData = new FeatureData();
+                FeatureData featureData = new FeatureData(id);
                 while (st.hasMoreTokens()) {
                     String key = st.nextToken();
                     String value = st.nextToken();
@@ -100,6 +100,11 @@ public class WorldData {
                     continue;
                 }
                 FeatureData featureData = modifiedFeatures.get(localID);
+                // Empty feature data if has not been modified
+                if (featureData == null) {
+                    featureData = new FeatureData(localID, elementPos);
+                }
+                featureData.setPosition(elementPos);
                 Feature feature = generateFeature(this, localID, elementPos, featureData);
                 if (feature != null) {
                     surroundings.put(elementPos, feature);
@@ -246,8 +251,20 @@ public class WorldData {
      */
     public boolean updatePlayerLocation(int x, int y) {
         if(x == playerLocation.x && y == playerLocation.y) return false;
-        updateFeatures((int) (x - playerLocation.x), (int) (y - playerLocation.y), generationRadius, WorldData::addFeature, WorldData::removeFeature);
-        updateFeatures((int) (x - playerLocation.x), (int) (y - playerLocation.y), 3 * generationRadius, WorldData::addCluster, WorldData::removeCluster);
+        updateFeatures(
+            (int) (x - playerLocation.x),
+            (int) (y - playerLocation.y),
+            generationRadius,
+            WorldData::addFeature,
+            WorldData::removeFeature
+        );
+        updateFeatures(
+            (int) (x - playerLocation.x),
+            (int) (y - playerLocation.y),
+            3 * generationRadius,
+            WorldData::addCluster,
+            WorldData::removeCluster
+        );
         playerLocation = new Vector2(x, y);
         return true;
     }
@@ -272,6 +289,11 @@ public class WorldData {
 
         // add element to the list
         FeatureData featureData = data.getModifiedFeatures().get(localID);
+        // Empty feature data if has not been modified
+        if (featureData == null) {
+            featureData = new FeatureData(localID, coord);
+        }
+        featureData.setPosition(coord);
         Feature feature = generateFeature(data, localID, coord, featureData);
         if (feature != null) {
             surroundings.put(coord, feature);
@@ -293,16 +315,28 @@ public class WorldData {
     }
 
     /**
-     * Remove a feature at the specified coordinates.
+     * Remove a feature at the specified coordinate.
+     * <p>
+     * This is used to manually remove features, like when the player destroys
+     * a crate.
      *
      * @param coord the coordinate of the {@link Feature} to remove
      */
-    private void removeFeature(Vector2 coord) {
+    public void removeFeature(Vector2 coord) {
         surroundings.remove(coord);
     }
 
     private void removeCluster(Vector2 coord) {
         Cluster.removeCenter(coord);
+    }
+
+    /**
+     * Add a feature to the modified features list.
+     *
+     * @param featureData the data of the feature to add
+     */
+    public void addModified(FeatureData featureData) {
+        modifiedFeatures.put(featureData.id, featureData);
     }
 
     /**
@@ -350,8 +384,8 @@ public class WorldData {
         }
         fileOutput.println(seed);
         fileOutput.println((int) (playerLocation.x) + "," + (int) playerLocation.y);
-        for (Entry<Long, FeatureData> entry : modifiedFeatures.entrySet()) {
-            fileOutput.println(entry.getKey() + "," + entry.getValue().toString());
+        for (FeatureData featureData : modifiedFeatures.values()) {
+            fileOutput.println(featureData.toString());
         }
         fileOutput.close();
     }

@@ -14,4 +14,14 @@ public class Crate extends Feature {
         super("crate", data);
         setWorldRotation(Greenfoot.getRandomNumber(360));
     }
+
+    @Override
+    public void update() {
+        Player player = ((SpriteStackingWorld) getWorld()).getPlayer();
+
+        // Temporary behavior
+        if (new Vector2(player.getWorldX(), player.getWorldZ()).distanceTo(getWorldX(), getWorldZ()) < 15) {
+            removeFromWorld();
+        }
+    }
 }

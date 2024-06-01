@@ -6,6 +6,7 @@ import java.util.Comparator;
 public class SpriteStackingWorld extends PixelWorld {
     // private static final int OBJECT_SPAWN_RANGE = 2000;
     private WorldData worldData;
+    private Player player;
 
     static {
         SprackView.loadAll();
@@ -14,9 +15,14 @@ public class SpriteStackingWorld extends PixelWorld {
     public SpriteStackingWorld() {
         super(256, 196);
 
-        Camera.resetTo(0, 0, 0, 0, 3);
-        Camera.setCloseness(0.3);
         worldData = new WorldData(1);
+
+        Vector2 playerPos = worldData.getPlayerLocation();
+        player = new Player();
+        addSprack(player, playerPos.x * 20, 0, playerPos.y * 20);
+
+        Camera.resetTo(playerPos.x, 0, playerPos.y, 0, 1.5);
+        Camera.setCloseness(0.3);
 
         worldData.generateWorld();
         for(Vector2 coord : worldData.getSurroundings().keySet()) {
@@ -25,9 +31,6 @@ public class SpriteStackingWorld extends PixelWorld {
                 addSprack(worldData.getSurroundings().get(coord), x, 0, z);
             }
         }
-
-        Vector2 playerPos = worldData.getPlayerLocation();
-        addSprack(new Player(), playerPos.x * 20, 0, playerPos.y * 20);
 
         render();
     }
@@ -63,7 +66,7 @@ public class SpriteStackingWorld extends PixelWorld {
             }
         }
 
-        if (Greenfoot.isKeyDown("space")) {
+        if (Greenfoot.isKeyDown("enter")) {
             worldData.saveData();
         }
     }
@@ -90,5 +93,23 @@ public class SpriteStackingWorld extends PixelWorld {
     public void addSprack(Sprack sprack, double x, double y, double z) {
         addSprite(sprack, 0, 0);
         sprack.setWorldPos(x, y, z);
+    }
+
+    /**
+     * Get the player object.
+     *
+     * @return the player
+     */
+    public Player getPlayer() {
+        return player;
+    }
+
+    /**
+     * Get the world data object.
+     *
+     * @return the world data
+     */
+    public WorldData getWorldData() {
+        return worldData;
     }
 }
