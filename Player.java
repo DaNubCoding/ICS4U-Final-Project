@@ -23,7 +23,7 @@ public class Player extends Sprack {
     private Weapon weapon;
 
     public Player() {
-        super("car");
+        super("knight");
         velocity = new Vector2(0, 0);
         facing = 0;
 

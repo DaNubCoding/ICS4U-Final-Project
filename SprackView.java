@@ -31,10 +31,9 @@ public class SprackView {
             Map<String, Integer> sheetInfo = new HashMap<>();
             sheetInfo.put("car", 9);
             sheetInfo.put("crate", 16);
-            sheetInfo.put("monu3", 79);
-            sheetInfo.put("log", 16);
             sheetInfo.put("tree", 40);
             sheetInfo.put("tower", 200);
+            sheetInfo.put("knight", 21);
 
             ExecutorService service = Executors.newFixedThreadPool(sheetInfo.size());
             for (Map.Entry<String, Integer> entry : sheetInfo.entrySet()) {
