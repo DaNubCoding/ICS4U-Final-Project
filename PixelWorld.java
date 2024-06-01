@@ -34,6 +34,8 @@ public abstract class PixelWorld extends World {
     private Map<Class<? extends Sprite>, List<Sprite>> spritesByClass;
     // Sprite objects mapped by their assigned layer, for rendering order
     private Map<Layer, List<Sprite>> spritesByLayer;
+    private List<Sprite> queuedRemovals;
+    private List<Sprite> queuedAdditions;
 
     /**
      * Creates a new PixelWorld with the specified dimensions.
@@ -54,6 +56,9 @@ public abstract class PixelWorld extends World {
         for (Layer layer : Layer.values()) {
             spritesByLayer.put(layer, new ArrayList<Sprite>());
         }
+
+        queuedRemovals = new ArrayList<Sprite>();
+        queuedAdditions = new ArrayList<Sprite>();
     }
 
     /**
@@ -111,6 +116,37 @@ public abstract class PixelWorld extends World {
                 sprite.update();
             }
         }
+
+        // Add all queued sprites to the world
+        while (!queuedAdditions.isEmpty()) {
+            Sprite sprite = queuedAdditions.remove(queuedAdditions.size() - 1);
+            // Add this sprite to the list for its class
+            List<Sprite> list = spritesByClass.get(sprite.getClass());
+            if (list == null) {
+                list = new ArrayList<Sprite>();
+                spritesByClass.put(sprite.getClass(), list);
+            }
+            list.add(sprite);
+
+            // Add sprites to the list for their layers
+            spritesByLayer.get(sprite.getLayer()).add(sprite);
+
+            sprite.setWorld(this);
+            sprite.addedToWorld(this);
+        }
+
+        // Remove all queued sprites from the world
+        while (!queuedRemovals.isEmpty()) {
+            Sprite sprite = queuedRemovals.remove(queuedRemovals.size() - 1);
+            // Remove this sprite from the list for its class
+            spritesByClass.get(sprite.getClass()).remove(sprite);
+
+            // Remove sprite from the list for their layers
+            spritesByLayer.get(sprite.getLayer()).remove(sprite);
+
+            sprite.setWorld(null);
+            sprite.removedFromWorld(this);
+        }
     }
 
     /**
@@ -131,43 +167,24 @@ public abstract class PixelWorld extends World {
     }
 
     /**
-     * Add a Sprite to this world, storing it for efficient access.
+     * Queue a Sprite to be added to this world.
      *
      * @param sprite the sprite to add
      * @param x the x coordinate of the position where the sprite is added
      * @param y the y coordinate of the position where the sprite is added
      */
     public void addSprite(Sprite sprite, int x, int y) {
-        // Add this sprite to the list for its class
-        List<Sprite> list = spritesByClass.get(sprite.getClass());
-        if (list == null) {
-            list = new ArrayList<Sprite>();
-            spritesByClass.put(sprite.getClass(), list);
-        }
-        list.add(sprite);
-
-        // Add sprites to the list for their layers
-        spritesByLayer.get(sprite.getLayer()).add(sprite);
-
-        sprite.addedToWorld(this);
-        sprite.setWorld(this);
         sprite.setScreenPos(x, y);
+        queuedAdditions.add(sprite);
     }
 
     /**
-     * Removes a Sprite from this world.
+     * Queue a Sprite to be removed from this world.
      *
      * @param sprite the sprite to remove
      */
     public void removeSprite(Sprite sprite) {
-        // Remove this sprite from the list for its class
-        spritesByClass.get(sprite.getClass()).remove(sprite);
-
-        // Remove sprite from the list for their layers
-        spritesByLayer.get(sprite.getLayer()).remove(sprite);
-
-        sprite.setWorld(null);
-        sprite.removedFromWorld(this);
+        queuedRemovals.add(sprite);
     }
 
     /**
