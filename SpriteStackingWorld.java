@@ -36,6 +36,8 @@ public class SpriteStackingWorld extends PixelWorld {
     public void update() {
         List<? extends Sprite> spracks = getSpritesByLayer(Layer.SPRACK_DEFAULT);
         spracks.sort(Comparator.comparing(Sprite::getScreenY));
+        spracks = getSpritesByLayer(Layer.SPRACK_CANOPY);
+        spracks.sort(Comparator.comparing(Sprite::getScreenY));
 
         updateSprites();
         Timer.incrementAct();
