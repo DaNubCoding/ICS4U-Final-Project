@@ -13,7 +13,7 @@ import java.util.function.BiConsumer;
 /**
  * A class that stores and handles all the data to be used inside the world.
  *
- *\ODO: determine spawn chance, maybe group spawns together?
+ * TODO: determine spawn chance, maybe group spawns together?
  * @author Lucas Fu
  * @version May 2024
  */
@@ -129,7 +129,7 @@ public class WorldData {
                     // apply closeness and density
                     int closenessMult = Math.max(f.maxRadius - (int)v.distanceTo(coord), 0);
                     spawnRates[i] += closenessMult * f.density;
-                }            
+                }
             }
         }
 
