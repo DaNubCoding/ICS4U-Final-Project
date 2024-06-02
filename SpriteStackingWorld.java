@@ -8,12 +8,16 @@ public class SpriteStackingWorld extends PixelWorld {
     private WorldData worldData;
     private Player player;
 
+    // world information
+    public static final int WORLD_WIDTH = 256;
+    public static final int WORLD_HEIGHT = 196;
+
     static {
         SprackView.loadAll();
     }
 
     public SpriteStackingWorld() {
-        super(256, 196);
+        super(WORLD_WIDTH, WORLD_HEIGHT);
 
         worldData = new WorldData(1);
 

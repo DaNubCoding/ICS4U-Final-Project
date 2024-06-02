@@ -4,6 +4,9 @@ import java.awt.GraphicsDevice;
 import java.awt.GraphicsConfiguration;
 import java.awt.Rectangle;
 import java.awt.Robot;
+
+import greenfoot.Greenfoot;
+
 import java.awt.AWTException;
 import java.awt.MouseInfo;
 import java.awt.PointerInfo;
@@ -33,6 +36,24 @@ public class MouseManager {
         PointerInfo pointerInfo = MouseInfo.getPointerInfo();
         Point mousePos = pointerInfo.getLocation();
         return new Vector2(mousePos.getX(), mousePos.getY());
+    }
+
+    /**
+     * Get the position of the cursor relative to the world.
+     * @return the world position of the cursor
+     */
+    public static Vector2 getMouseWorldPos() {
+            Vector2 screenCenter = 
+                new Vector2(SpriteStackingWorld.WORLD_WIDTH * PixelWorld.PIXEL_SCALE / 2, 
+                            SpriteStackingWorld.WORLD_HEIGHT * PixelWorld.PIXEL_SCALE / 2);
+            int x = Greenfoot.getMouseInfo().getX();
+            int y = Greenfoot.getMouseInfo().getY();
+            Vector2 mousePos = new Vector2(x, y).subtract(screenCenter);           
+            double screenRot = Camera.getRotation();
+            double scale = Camera.getZoom() * PixelWorld.PIXEL_SCALE;
+            mousePos = mousePos.divide(scale);
+            mousePos = mousePos.rotate(screenRot);
+            return new Vector2(Camera.getX(), Camera.getZ()).add(mousePos);
     }
 
     /**
