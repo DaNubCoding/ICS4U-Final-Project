@@ -8,7 +8,6 @@ import java.util.Random;
  */
 public abstract class Projectile extends WorldSprite {
     private Vector3 moveDirection;
-    private int inaccuracy;
     private Random rand = new Random();
 
     /**
@@ -20,7 +19,6 @@ public abstract class Projectile extends WorldSprite {
      */
     public Projectile(Vector3 direction, Vector3 startPos, int inaccuracy) {
         super();
-        this.inaccuracy = inaccuracy;
         double horizAngle = new Vector2(direction.x, direction.z).angle();
         double adjustedAngle = horizAngle + rand.nextDouble(-inaccuracy/2.0, (inaccuracy+0.01)/2.0);
         Vector2 adjVector = new Vector2(adjustedAngle);
