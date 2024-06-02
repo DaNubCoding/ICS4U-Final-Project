@@ -17,7 +17,7 @@ public class Crate extends Feature {
 
     @Override
     public void update() {
-        Player player = ((SpriteStackingWorld) getWorld()).getPlayer();
+        Player player = getWorld().getPlayer();
 
         // Temporary behavior
         if (new Vector2(player.getWorldX(), player.getWorldZ()).distanceTo(getWorldX(), getWorldZ()) < 15) {

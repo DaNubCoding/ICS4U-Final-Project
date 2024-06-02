@@ -114,7 +114,7 @@ public class Feature extends Sprack {
      */
     public void modify(String key, Object value) {
         data.put(key, value);
-        ((SpriteStackingWorld) getWorld()).getWorldData().addModified(data);
+        getWorld().getWorldData().addModified(data);
     }
 
     /**
@@ -125,9 +125,7 @@ public class Feature extends Sprack {
      */
     public void removeFromWorld() {
         getWorld().removeSprite(this);
-        ((SpriteStackingWorld) getWorld())
-            .getWorldData()
-            .removeFeature(data.getPosition());
+        getWorld().getWorldData().removeFeature(data.getPosition());
         modify("removed", null);
     }
 

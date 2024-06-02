@@ -28,9 +28,7 @@ public class Sprack extends Sprite {
      * @param sheetName the name of the Sprack sheet
      */
     public Sprack(String sheetName) {
-        super(Layer.SPRACK_DEFAULT);
-        this.sheetName = sheetName;
-        worldPos = new Vector3();
+        this(sheetName, Layer.SPRACK_DEFAULT);
     }
 
     /**
@@ -175,5 +173,16 @@ public class Sprack extends Sprite {
      */
     public double getVisualRotation() {
         return Vector2.normalizeAngle(rotation - Camera.getRotation());
+    }
+
+    /**
+     * Get the world the Sprack is in, this is always an instance of a
+     * {@link SpriteStackingWorld} for Spracks.
+     *
+     * @return the world the Sprack is in
+     */
+    @Override
+    public SpriteStackingWorld getWorld() {
+        return (SpriteStackingWorld) super.getWorld();
     }
 }
