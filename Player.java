@@ -82,7 +82,7 @@ public class Player extends Sprack {
     public void render(GreenfootImage canvas) {
         double rot = getVisualRotation();
         // Render the weapon behind the player if the player is facing away
-        if (rot > 0 && rot < 180) {
+        if ((rot >= 0 && rot < 180) || rot > 330) {
             super.render(canvas);
             weapon.render(canvas);
         } else {
