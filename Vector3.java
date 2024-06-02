@@ -194,7 +194,7 @@ public class Vector3 {
         double rad = Math.toRadians(angle);
         double cos = Math.cos(rad);
         double sin = Math.sin(rad);
-        return new Vector3(z * sin + x * cos, y, z * cos - x * sin);
+        return new Vector3(x * cos + z * sin, y, x * sin - z * cos);
     }
 
     /**
