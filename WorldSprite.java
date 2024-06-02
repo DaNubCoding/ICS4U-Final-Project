@@ -44,11 +44,13 @@ public class WorldSprite extends TransformableSprite {
         double scale = Camera.getZoom();
         setScale(scale);
         double offsetX = (worldPos.x - Camera.getX()) * scale;
-        double offsetZ = (worldPos.z - Camera.getY()) * scale;
+        double offsetY = (worldPos.y - Camera.getY()) * scale;
+        double offsetZ = (worldPos.z - Camera.getZ()) * scale;
         double screenRad = Math.toRadians(-Camera.getRotation());
         double screenX = canvas.getWidth() / 2 + offsetX * Math.cos(screenRad) - offsetZ * Math.sin(screenRad);
         double screenY = canvas.getHeight() / 2 + offsetX * Math.sin(screenRad) + offsetZ * Math.cos(screenRad);
-        setScreenPos(screenX, screenY - worldPos.y * scale);
+        screenY -= offsetY;
+        setScreenPos(screenX, screenY);
         super.render(canvas);
     }
 }

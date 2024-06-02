@@ -16,11 +16,14 @@ public abstract class Weapon extends WorldSprite {
     }
 
     /**
-     * Lock the weapon to the player's position and rotation.
+     * Lock the weapon to the player's hand position and rotation.
      */
     public void lockToPlayer() {
         Vector3 playerPos = player.getWorldPos();
-        setWorldPos(new Vector3(playerPos.x, playerPos.y + 6, playerPos.z));
+        // transform player's bottom-center location to hand location
+        Vector3 handOffset = new Vector3(4, 11, 8).rotateY(player.getWorldRotation());
+        setWorldPos(playerPos.add(handOffset));
+
         final double rotation = player.getVisualRotation();
         if (rotation > 90 && rotation < 270) {
             setMirrorX(true);

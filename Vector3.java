@@ -172,6 +172,45 @@ public class Vector3 {
     }
 
     /**
+     * Rotate this vector around the x-axis by the given angle.
+     *
+     * @param angle the angle to rotate by
+     * @return the rotated vector
+     */
+    public Vector3 rotateX(double angle) {
+        double rad = Math.toRadians(angle);
+        double cos = Math.cos(rad);
+        double sin = Math.sin(rad);
+        return new Vector3(x, y * cos - z * sin, y * sin + z * cos);
+    }
+
+    /**
+     * Rotate this vector around the y-axis by the given angle.
+     *
+     * @param angle the angle to rotate by
+     * @return the rotated vector
+     */
+    public Vector3 rotateY(double angle) {
+        double rad = Math.toRadians(angle);
+        double cos = Math.cos(rad);
+        double sin = Math.sin(rad);
+        return new Vector3(z * sin + x * cos, y, z * cos - x * sin);
+    }
+
+    /**
+     * Rotate this vector around the z-axis by the given angle.
+     *
+     * @param angle the angle to rotate by
+     * @return the rotated vector
+     */
+    public Vector3 rotateZ(double angle) {
+        double rad = Math.toRadians(angle);
+        double cos = Math.cos(rad);
+        double sin = Math.sin(rad);
+        return new Vector3(x * cos - y * sin, x * sin + y * cos, z);
+    }
+
+    /**
      * Check if this vector is equal to the given object.
      * <p>
      * This will return true if the object is a Vector2 and has the same x and y
