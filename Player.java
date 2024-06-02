@@ -13,8 +13,6 @@ public class Player extends Sprack {
     private static final double MAX_SPEED = 3.0;
 
     private static final double ROT_ACCEL = 0.2;
-    private static final double ROT_FRIC_ACCEL = 0.1;
-    private static final double MAX_ROT_SPEED = 3.0;
 
     private Vector2 velocity;
     private double facing;
