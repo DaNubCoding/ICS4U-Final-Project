@@ -40,6 +40,18 @@ public class WorldSprite extends TransformableSprite {
         worldPos = position;
     }
 
+    /**
+     * Get the current world position of the sprite.
+     * <p>
+     * The world position is the position of the sprite in the game world, not
+     * the screen position.
+     * 
+     * @return the current world position of the sprite.
+     */
+    public Vector3 getWorldPos() {
+        return worldPos;
+    }
+
     public void render(GreenfootImage canvas) {
         double scale = Camera.getZoom();
         setScale(scale);

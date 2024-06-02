@@ -26,7 +26,7 @@ public class SpriteStackingWorld extends PixelWorld {
 
         worldData.generateWorld();
         for(Vector2 coord : worldData.getSurroundings().keySet()) {
-            if(worldData.getSurroundings().get(coord)!=null) {
+            if(worldData.getSurroundings().get(coord) != null) {
                 final int x = (int) coord.x * 20, z = (int) coord.y * 20;
                 addSprack(worldData.getSurroundings().get(coord), x, 0, z);
             }

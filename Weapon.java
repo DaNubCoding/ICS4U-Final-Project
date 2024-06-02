@@ -41,6 +41,14 @@ public abstract class Weapon extends WorldSprite {
     }
 
     /**
+     * Get the player to which this weapon is attached to.
+     * @return
+     */
+    public Player getPlayer() {
+        return player;
+    }
+
+    /**
      * Perform the weapon's attack.
      */
     public abstract void attack();
