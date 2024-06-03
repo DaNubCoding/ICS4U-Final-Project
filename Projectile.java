@@ -2,7 +2,7 @@ import java.util.Random;
 
 /**
  * A projectile, shot by a ranged weapon.
- * 
+ *
  * @author Lucas Fu
  * @version June 2024
  */
@@ -14,19 +14,19 @@ public abstract class Projectile extends WorldSprite {
 
     /**
      * Create a new projectile using direction, starting position, and inaccuracy
-     * 
+     *
      * @param owner the sprack that created this projectile
      * @param direction the movement direction of the projectile, speed included
      * @param startPos the initial position of the projectile
      * @param inaccuracy the inaccuracy of the projectile, measured in degrees
      * @param lifespan the number of frames this projectile can last
      */
-    public Projectile(Sprack owner, Vector3 direction, Vector3 startPos, 
+    public Projectile(Sprack owner, Vector3 direction, Vector3 startPos,
                       int inaccuracy, int lifespan) {
         super();
         this.owner = owner;
         double horizAngle = new Vector2(direction.x, direction.z).angle();
-        double dAngle = inaccuracy == 0 ? 0 : rand.nextDouble(-inaccuracy/2.0, (inaccuracy)/2.0);
+        double dAngle = inaccuracy == 0 ? 0 : (rand.nextDouble() * inaccuracy - inaccuracy/2.0);
         double adjustedAngle = horizAngle + dAngle;
         Vector2 adjVector = new Vector2(adjustedAngle);
         moveDirection = direction.add(new Vector3(adjVector.x, 0, adjVector.y));
