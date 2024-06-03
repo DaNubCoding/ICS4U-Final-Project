@@ -7,6 +7,7 @@
  *     // Do things
  *     timer.restart();
  * }
+ * </pre>
  *
  * @author Andrew Wang
  * @version April 2024
