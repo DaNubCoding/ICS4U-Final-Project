@@ -7,20 +7,30 @@ import greenfoot.*;
  * <p>
  * Note that the Spracks are not actually dynamically rendered layer by layer,
  * but are instead pre-rendered and stored in a {@link SprackView} object.
+ * <p>
+ * Every Sprack has a looping animation. This animation plays and loops
+ * continuously but may be overridden by a one-time animation. A one-time
+ * animation plays until completion once and then returns to the looping
+ * animation. A looping animation or one-time animation may be replaced
+ * immediately at any time by using the {@link #setLoopingAnimation()} and
+ * {@link #playOneTimeAnimation()} methods.
  *
  * @author Martin Baldwin
- * @version May 2024
+ * @version June 2024
  *
  * @see SprackView
  */
 public class Sprack extends Sprite {
-    private final String sheetName;
+    // The current looping animation of this Sprack
+    private Animation loopingAnimation;
+    // The current one-time animation of this Sprack, or null if none
+    private Animation oneTimeAnimation;
 
     private Vector3 worldPos;
     private double rotation;
 
     /**
-     * Create a new Sprack with the given sheet name.
+     * Create a new Sprack with the given fixed sheet name.
      * <p>
      * The sheet name is used to look up the {@link SprackView} object that
      * contains the pre-rendered images for this Sprack.
@@ -32,7 +42,7 @@ public class Sprack extends Sprite {
     }
 
     /**
-     * Create a new Sprack with the given sheet name and layer.
+     * Create a new Sprack with the given fixed sheet name and layer.
      * <p>
      * The sheet name is used to look up the {@link SprackView} object that
      * contains the pre-rendered images for this Sprack.
@@ -41,8 +51,35 @@ public class Sprack extends Sprite {
      * @param layer the layer to render the Sprack on
      */
     public Sprack(String sheetName, Layer layer) {
+        this(new Animation(-1, sheetName), layer);
+    }
+
+    /**
+     * Create a new Sprack with the given looping animation of sheet names.
+     * <p>
+     * The sheet names are used to look up the {@link SprackView} objects that
+     * contain the pre-rendered images for the animation.
+     *
+     * @param sheetAnimation an {@link Animation} object describing the looping animation of SprackView names to assign to this Sprack
+     */
+    public Sprack(Animation sheetAnimation) {
+        this(sheetAnimation, Layer.SPRACK_DEFAULT);
+    }
+
+    /**
+     * Create a new Sprack with the given looping animation of sheet names and
+     * layer.
+     * <p>
+     * The sheet names are used to look up the {@link SprackView} objects that
+     * contain the pre-rendered images for the animation.
+     *
+     * @param sheetAnimation an {@link Animation} object describing the looping animation of SprackView names to assign to this Sprack
+     * @param layer the layer to render the Sprack on
+     */
+    public Sprack(Animation sheetAnimation, Layer layer) {
         super(layer);
-        this.sheetName = sheetName;
+        loopingAnimation = sheetAnimation;
+        oneTimeAnimation = null;
         worldPos = new Vector3();
     }
 
@@ -92,9 +129,68 @@ public class Sprack extends Sprite {
         worldPos = position;
     }
 
+    /**
+     * Set the current looping animation of this Sprack.
+     * <p>
+     * If the given animation is not the current looping animation, it will be
+     * reset to its beginning (via {@link Animation#reset()}).
+     *
+     * @param animation the looping animation to replace this Sprack's current looping animation
+     */
+    public void setLoopingAnimation(Animation animation) {
+        if (animation != loopingAnimation) {
+            animation.reset();
+        }
+        loopingAnimation = animation;
+    }
+
+    /**
+     * Play an animation one time on this Sprack, overriding its looping
+     * animation and previous one-time animation, if any. The given animation
+     * will be reset to its beginning (via {@link Animation#reset()}) and it
+     * will continue to be displayed until it reaches its end, at which point
+     * this Sprack will return to its current looping animation.
+     *
+     * @param animation an animation to play to completion once on this Sprack
+     */
+    public void playOneTimeAnimation(Animation animation) {
+        animation.reset();
+        oneTimeAnimation = animation;
+    }
+
+    /**
+     * Return the current looping animation of this Sprack.
+     *
+     * @return the current looping animation
+     */
+    public Animation getCurrentLoopingAnimation() {
+        return loopingAnimation;
+    }
+
+    /**
+     * Return the current one-time animation of this Sprack, if any.
+     *
+     * @return the current one-time animation, or null if none
+     */
+    public Animation getCurrentOneTimeAnimation() {
+        return oneTimeAnimation;
+    }
+
     @Override
     public void render(GreenfootImage canvas) {
-        SprackView view = SprackView.getView(sheetName);
+        loopingAnimation.update();
+        Animation currentAnimation = loopingAnimation;
+        if (oneTimeAnimation != null) {
+            oneTimeAnimation.update();
+            // Return to the looping animation once the one-time animation is over
+            if (oneTimeAnimation.hasLooped()) {
+                oneTimeAnimation = null;
+            } else {
+                currentAnimation = oneTimeAnimation;
+            }
+        }
+
+        SprackView view = SprackView.getView(currentAnimation.getCurrentName());
         if (view == null) {
             return;
         }
