@@ -73,6 +73,10 @@ public class SpriteStackingWorld extends PixelWorld {
         if (Greenfoot.isKeyDown("enter")) {
             worldData.saveData();
         }
+
+        if (Greenfoot.isKeyDown("m")) {
+            Greenfoot.setWorld(new WorldMap(this, worldData));
+        }
     }
 
     @Override

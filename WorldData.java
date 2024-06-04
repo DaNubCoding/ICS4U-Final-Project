@@ -88,26 +88,23 @@ public class WorldData {
      * This should only be used when initially generating the world.
      */
     public void generateWorld() {
+        // clusters
+        for(int i = 0; i < (4 * generationRadius + 1); i++) {
+            for(int j = 0; j < (4 * generationRadius + 1); j++) {
+                int dx = j - 2 * generationRadius;
+                int dy = i - 2 * generationRadius;
+                Vector2 elementPos = playerLocation.add(new Vector2(dx, dy));
+                addCluster(this, elementPos);
+            }
+        }
+
+        // features
         for(int i = 0; i < (2 * generationRadius + 1); i++) {
             for(int j = 0; j < (2 * generationRadius + 1); j++) {
                 int dx = j - generationRadius;
                 int dy = i - generationRadius;
                 Vector2 elementPos = playerLocation.add(new Vector2(dx, dy));
-                long localID = seed + elementPos.getSzudzikValue();
-                if(landmarks.containsKey(elementPos)) {
-                    surroundings.put(elementPos, landmarks.get(elementPos));
-                    continue;
-                }
-                FeatureData featureData = modifiedFeatures.get(localID);
-                // Empty feature data if has not been modified
-                if (featureData == null) {
-                    featureData = new FeatureData(localID, elementPos);
-                }
-                featureData.setPosition(elementPos);
-                Feature feature = generateFeature(this, localID, elementPos, featureData);
-                if (feature != null) {
-                    surroundings.put(elementPos, feature);
-                }
+                addFeature(this, elementPos);
             }
         }
     }
@@ -143,7 +140,7 @@ public class WorldData {
         }
 
         // maximum roll value is increased by the fixed empty weight
-        int roll = rand.nextInt(spawnRates[spawnRates.length-1]+emptyFeatureChance);
+        int roll = rand.nextInt(spawnRates[spawnRates.length-1] + emptyFeatureChance);
 
         // apply spawn rate
         for (int j = 0; j < Feature.Type.length(); j++) {
@@ -253,16 +250,16 @@ public class WorldData {
         updateFeatures(
             (int) (x - playerLocation.x),
             (int) (y - playerLocation.y),
-            generationRadius,
-            WorldData::addFeature,
-            WorldData::removeFeature
+            2 * generationRadius,
+            WorldData::addCluster,
+            WorldData::removeCluster
         );
         updateFeatures(
             (int) (x - playerLocation.x),
             (int) (y - playerLocation.y),
-            2 * generationRadius,
-            WorldData::addCluster,
-            WorldData::removeCluster
+            generationRadius,
+            WorldData::addFeature,
+            WorldData::removeFeature
         );
         playerLocation = new Vector2(x, y);
         return true;
@@ -286,13 +283,15 @@ public class WorldData {
             return;
         }
 
-        // add element to the list
+        // check if feature has modified data
         FeatureData featureData = data.getModifiedFeatures().get(localID);
         // Empty feature data if has not been modified
         if (featureData == null) {
             featureData = new FeatureData(localID, coord);
         }
         featureData.setPosition(coord);
+
+        // generate feature and add it to the list
         Feature feature = generateFeature(data, localID, coord, featureData);
         if (feature != null) {
             surroundings.put(coord, feature);
@@ -303,7 +302,7 @@ public class WorldData {
      * Add an invisible cluster marker at the specified coordinate.
      *
      * @param data the WorldData object on which to operate
-     * @param coord the coordinate of the {@link Forest} to add
+     * @param coord the coordinate of the {@link Cluster} to add
      */
     private static void addCluster(WorldData data, Vector2 coord) {
         long localID = data.getSeed() + coord.getSzudzikValue();
@@ -366,6 +365,10 @@ public class WorldData {
 
     public Vector2 getPlayerLocation() {
         return playerLocation;
+    }
+
+    public int getGenerationRadius() {
+        return generationRadius;
     }
 
     /**
