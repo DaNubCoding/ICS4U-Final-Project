@@ -56,7 +56,7 @@ public abstract class Weapon extends WorldSprite {
     public void update() {
         lockToPlayer();
         updateImage();
-        if (Greenfoot.mouseClicked(null) 
+        if (Greenfoot.mouseClicked(null)
          && Greenfoot.getMouseInfo().getButton() == 3
          && !casting && recastTimer.ended()) {
             casting = true;
