@@ -4,14 +4,32 @@ import greenfoot.*;
  * A weapon that does something and follows the player rotation.
  *
  * @author Andrew Wang
+ * @author Lucas Fu
  * @version May 2024
  */
 public abstract class Weapon extends WorldSprite {
     private Player player;
+    private int castTime;
+    private int recastTime;
+    private boolean casting;
+    private Timer castTimer;
+    private Timer recastTimer;
 
-    public Weapon(Player player, String image) {
+    /**
+     * TODO: add documentation here when weapons are finalized
+     * @param player
+     * @param image
+     * @param windup
+     * @param cooldown
+     */
+    public Weapon(Player player, String image, int windup, int cooldown) {
         super();
         this.player = player;
+        casting = false;
+        castTime = windup;
+        recastTime = cooldown;
+        castTimer = new Timer(0);
+        recastTimer = new Timer(0);
         setOriginalImage(new GreenfootImage(image));
     }
 
@@ -38,6 +56,17 @@ public abstract class Weapon extends WorldSprite {
     public void update() {
         lockToPlayer();
         updateImage();
+        if (Greenfoot.mouseClicked(null) 
+         && Greenfoot.getMouseInfo().getButton() == 3
+         && !casting && recastTimer.ended()) {
+            casting = true;
+            castTimer.restart(castTime);
+        }
+        if (casting && castTimer.ended()) {
+            attack();
+            casting = false;
+            recastTimer.restart(recastTime);
+        }
     }
 
     /**

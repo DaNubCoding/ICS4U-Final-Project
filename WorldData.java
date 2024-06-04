@@ -21,7 +21,7 @@ public class WorldData {
     private static Random rand;
 
     // settings
-    private static final int generationRadius = 13;
+    private static final int generationRadius = 15;
     private static final int emptyFeatureChance = 100;
     private static final HashMap<Vector2, Feature> landmarks = new HashMap<>() {{
         // put(new Vector2(0, 0), new Feature("tower"));
@@ -260,7 +260,7 @@ public class WorldData {
         updateFeatures(
             (int) (x - playerLocation.x),
             (int) (y - playerLocation.y),
-            3 * generationRadius,
+            2 * generationRadius,
             WorldData::addCluster,
             WorldData::removeCluster
         );

@@ -7,7 +7,7 @@
  */
 public class TestPistol extends RangedWeapon {
     public TestPistol(Player player) {
-        super(player, "test_pistol.png", 90, 1, 5, TestProjectile::new);
+        super(player, "test_pistol.png", 90, 1, 5, 0, 20, TestProjectile::new);
         setCenterOfRotation(new Vector2(0, 5));
     }
 }

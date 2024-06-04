@@ -1,5 +1,3 @@
-import greenfoot.Greenfoot;
-
 /**
  * Weapon that fires projectiles.
  *
@@ -20,9 +18,9 @@ public abstract class RangedWeapon extends Weapon {
     private int shotCount;
 
     public RangedWeapon(Player player, String image, int inaccuracy,
-                        double speed, int shotCount, 
+                        double speed, int shotCount, int windup, int cooldown, 
                         ProjectileFactory projectileFactory) {
-        super(player, image);
+        super(player, image, windup, cooldown);
         projFactory = projectileFactory;
         this.inaccuracy = inaccuracy;
         this.speed = speed;
@@ -32,9 +30,6 @@ public abstract class RangedWeapon extends Weapon {
     @Override
     public void update() {
         super.update();
-        if(Greenfoot.mouseClicked(null)) {
-            attack();
-        }
     }
 
     /**
@@ -42,7 +37,7 @@ public abstract class RangedWeapon extends Weapon {
      * 
      * @return the direction of the mouse as a 3d vector with no vertical component
      */
-    public Vector3 getProjectileDirection() {
+    private Vector3 getProjectileDirection() {
         Vector2 targetPos = MouseManager.getMouseWorldPos();
         Vector3 gunPos = getWorldPos();
         Vector3 targetPos3 = new Vector3(targetPos.x, 0, targetPos.y);

@@ -8,8 +8,8 @@ import greenfoot.*;
  * @version May 2024
  */
 public class Player extends Sprack {
-    private static final double ACCEL = 0.2;
-    private static final double FRIC_ACCEL = 0.08;
+    private static final double ACCEL = 0.5;
+    private static final double FRIC_ACCEL = 0.2;
     private static final double MAX_SPEED = 3.0;
 
     private static final double ROT_ACCEL = 0.2;
@@ -25,7 +25,7 @@ public class Player extends Sprack {
         velocity = new Vector2(0, 0);
         facing = 0;
 
-        weapon = new TestPistol(this);
+        weapon = new WandOfManyCrates(this);
     }
 
     @Override

@@ -5,8 +5,8 @@
  * @version May 2024
  */
 public abstract class MeleeWeapon extends Weapon {
-    public MeleeWeapon(Player player, String image) {
-        super(player, image);
+    public MeleeWeapon(Player player, String image, int windup, int cooldown) {
+        super(player, image, windup, cooldown);
     }
 
     @Override
