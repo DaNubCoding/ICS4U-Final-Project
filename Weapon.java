@@ -39,7 +39,7 @@ public abstract class Weapon extends WorldSprite {
     public void lockToPlayer() {
         Vector3 playerPos = player.getWorldPos();
         // transform player's bottom-center location to hand location
-        Vector3 handOffset = new Vector3(5, 11, -8).rotateY(player.getWorldRotation());
+        Vector3 handOffset = new Vector3(5, 8, -5).rotateY(player.getWorldRotation());
         setWorldPos(playerPos.add(handOffset));
 
         final double rotation = player.getVisualRotation();
@@ -56,7 +56,7 @@ public abstract class Weapon extends WorldSprite {
     public void update() {
         lockToPlayer();
         updateImage();
-        if (Greenfoot.mouseClicked(null) 
+        if (Greenfoot.mouseClicked(null)
          && Greenfoot.getMouseInfo().getButton() == 3
          && !casting && recastTimer.ended()) {
             casting = true;

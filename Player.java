@@ -33,7 +33,7 @@ public class Player extends Sprack {
         velocity = new Vector2(0, 0);
         facing = 0;
 
-        weapon = new WandOfManyCrates(this);
+        weapon = new WandOfManyCanopies(this);
     }
 
     @Override
@@ -84,7 +84,7 @@ public class Player extends Sprack {
         }
 
         setWorldPos(getWorldPos().add(new Vector3(velocity.x, 0, velocity.y)));
-        Camera.targetPosition(getWorldPos());
+        Camera.targetPosition(getWorldPos().add(new Vector3(0, 10, 0)));
 
         weapon.update();
     }
