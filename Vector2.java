@@ -315,11 +315,11 @@ public class Vector2 {
      * @throws UnsupportedOperationException if the values of this vector2 contain decimals
      */
     public long getSzudzikValue() {
-        if(x!=(long)x||y!=(long)y)
+        if (x != (long) x || y != (long) y)
             throw new UnsupportedOperationException("This method does not support decimals.");
 
-        long X = (long)(x >= 0 ? 2 * (long)x : -2 * (long)x - 1);
-        long Y = (long)(y >= 0 ? 2 * (long)y : -2 * (long)y - 1);
+        long X = (long)(x >= 0 ? 2 * (long) x : -2 * (long) x - 1);
+        long Y = (long)(y >= 0 ? 2 * (long) y : -2 * (long) y - 1);
         long C = (long)((X >= Y ? X * X + X + Y : X + Y * Y) / 2);
         return x < 0 && y < 0 || x >= 0 && y >= 0 ? C : -C - 1;
     }

@@ -40,7 +40,7 @@ public abstract class Projectile extends WorldSprite {
         lifespan--;
         movingUpdate();
         // TODO: collision logic here
-        if(lifespan<=0) disappear();
+        if (lifespan<=0) disappear();
     }
 
     /**

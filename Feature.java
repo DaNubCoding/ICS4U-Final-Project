@@ -1,5 +1,6 @@
 /**
- * TODO: a description for this class
+ * Features are permanent spracks of the world, generated using {@link WorldData}.
+ * 
  * @author Lucas Fu
  * @version May 2024
  */

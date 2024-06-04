@@ -29,8 +29,8 @@ public class SpriteStackingWorld extends PixelWorld {
         Camera.setCloseness(0.3);
 
         worldData.generateWorld();
-        for(Vector2 coord : worldData.getSurroundings().keySet()) {
-            if(worldData.getSurroundings().get(coord) != null) {
+        for (Vector2 coord : worldData.getSurroundings().keySet()) {
+            if (worldData.getSurroundings().get(coord) != null) {
                 final int x = (int) coord.x * 20, z = (int) coord.y * 20;
                 addSprack(worldData.getSurroundings().get(coord), x, 0, z);
             }
@@ -51,18 +51,18 @@ public class SpriteStackingWorld extends PixelWorld {
 
         int cameraGridX = (int) (Camera.getX() / 20);
         int cameraGridZ = (int) (Camera.getZ() / 20);
-        if(worldData.updatePlayerLocation(cameraGridX, cameraGridZ)) {
+        if (worldData.updatePlayerLocation(cameraGridX, cameraGridZ)) {
             List<? extends Sprite> features = getSprites(Feature.class);
             // remove objects not present in world data
-            for(Sprite sprite : features) {
+            for (Sprite sprite : features) {
                 Feature feature = (Feature) sprite;
-                if(!worldData.getSurroundings().containsValue(feature)) {
+                if (!worldData.getSurroundings().containsValue(feature)) {
                     removeSprite(feature);
                 }
             }
             // add objects not already in world
-            for(Vector2 coord : worldData.getSurroundings().keySet()) {
-                if(worldData.getSurroundings().get(coord) != null
+            for (Vector2 coord : worldData.getSurroundings().keySet()) {
+                if (worldData.getSurroundings().get(coord) != null
                 && !features.contains(worldData.getSurroundings().get(coord))) {
                     final int x = (int) coord.x * 20, z = (int) coord.y * 20;
                     addSprack(worldData.getSurroundings().get(coord), x, 0, z);
