@@ -51,7 +51,11 @@ public class SprackView {
             sheetInfo.put("crate", 16);
             sheetInfo.put("tree_trunk", 29);
             sheetInfo.put("tree_canopy", 21);
-            sheetInfo.put("knight", 21);
+            sheetInfo.put("knight_standing", 24);
+            sheetInfo.put("knight_walk1", 24);
+            sheetInfo.put("knight_walk2", 24);
+            sheetInfo.put("knight_walk3", 24);
+            sheetInfo.put("knight_walk4", 24);
             sheetInfo.put("tombstone", 14);
             sheetInfo.put("statue_dormant", 27);
             sheetInfo.put("statue_active", 29);

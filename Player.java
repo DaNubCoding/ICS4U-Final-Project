@@ -14,6 +14,14 @@ public class Player extends Sprack {
 
     private static final double ROT_ACCEL = 0.2;
 
+    private static final Animation walkingAnimation = new Animation(6,
+        "knight_walk1",
+        "knight_walk2",
+        "knight_walk3",
+        "knight_walk4"
+    );
+    private static final Animation standingAnimation = new Animation(-1, "knight_standing");
+
     private Vector2 velocity;
     private double facing;
     private double cameraTargetRotation;
@@ -21,7 +29,7 @@ public class Player extends Sprack {
     private Weapon weapon;
 
     public Player() {
-        super("knight");
+        super(standingAnimation);
         velocity = new Vector2(0, 0);
         facing = 0;
 
@@ -70,6 +78,9 @@ public class Player extends Sprack {
         if (velocity.magnitude() != 0) {
             facing = Vector2.lerpAngle(facing, velocity.angle(), ROT_ACCEL);
             setWorldRotation(facing);
+            setLoopingAnimation(walkingAnimation);
+        } else {
+            setLoopingAnimation(standingAnimation);
         }
 
         setWorldPos(getWorldPos().add(new Vector3(velocity.x, 0, velocity.y)));
