@@ -1,7 +1,7 @@
 import greenfoot.*;
 
 /**
- * TODO: add documentation for this and do some implementation
+ * TODO: add documentation for this
  * @author Lucas Fu
  * @version May 2024
  */
