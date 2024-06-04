@@ -33,7 +33,7 @@ public class Player extends Sprack {
         velocity = new Vector2(0, 0);
         facing = 0;
 
-        weapon = new WandOfManyCrates(this);
+        weapon = new WandOfManyCanopies(this);
     }
 
     @Override

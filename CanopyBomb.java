@@ -2,12 +2,12 @@ import greenfoot.GreenfootImage;
 
 /**
  * Test class for magics
- * 
+ *
  * @author Lucas Fu
  * @version June 2024
  */
-public class CrateBomb extends Magic {
-    public CrateBomb(Vector3 startpos, int inaccuracy) {
+public class CanopyBomb extends Magic {
+    public CanopyBomb(Vector3 startpos, int inaccuracy) {
         super(startpos.add(new Vector3(0, 300, 0)), inaccuracy, 0, 10000, 10, 100);
         setOriginalImage(new GreenfootImage("test_pistol.png"));
     }
