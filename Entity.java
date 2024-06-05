@@ -212,7 +212,8 @@ public class Entity extends Sprack {
     /**
      * Reduce the entity's horizontal momentum by the given factor.
      * <p>
-     * A factor of
+     * A factor of 1 will completely remove the entity's momentum, while a
+     * factor of 0 will leave the entity's momentum unchanged.
      *
      * @param factor the factor by which to reduce the entity's momentum
      */
