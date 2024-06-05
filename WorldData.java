@@ -22,7 +22,7 @@ public class WorldData {
 
     // settings
     private static final int generationRadius = 15;
-    private static final int emptyFeatureChance = 100;
+    private static final int emptyFeatureChance = 200;
     private static final HashMap<Vector2, Feature> landmarks = new HashMap<>() {{
         // put(new Vector2(0, 0), new Feature("tower"));
         // more landmarks can be placed here
@@ -241,8 +241,8 @@ public class WorldData {
 
     /**
      * Update the player location and the surrounding features.
-     * @param x the new player x-location
-     * @param y the new player y-location
+     * @param x the new player x-location, in grid coordinate
+     * @param y the new player y-location, in grid coordinate
      * @return whether the update affected anything
      */
     public boolean updatePlayerLocation(int x, int y) {

@@ -7,11 +7,13 @@ public class WorldMap extends PixelWorld {
     private SpriteStackingWorld initialWorld;
     private Color[][] map;
 
-    private static final HashMap<Class<? extends Feature>, Color> colors = new HashMap<>() {{
-        put(Crate.class, new Color(90, 90, 30));
-        put(Tree.class, new Color(10, 255, 10));
-        put(Tombstone.class, new Color(99, 99, 99));
-    }};
+    private static final HashMap<Class<? extends Feature>, Color> colors = new HashMap<>();
+
+    static {
+        colors.put(Crate.class, new Color(230, 190, 70));
+        colors.put(Tree.class, new Color(20, 255, 20));
+        colors.put(Tombstone.class, new Color(99, 99, 99));
+    }
 
     public WorldMap(SpriteStackingWorld oldWorld, WorldData worldData) {
         super(oldWorld.getWidth(), oldWorld.getHeight());
@@ -57,7 +59,7 @@ public class WorldMap extends PixelWorld {
             for (int j = 0; j < map[i].length; j++) {
                 if (map[i][j] != null) {
                     background.setColor(map[i][j]);
-                    background.drawRect(5 * j + 45, 5 * i + 10, 3, 3);
+                    background.drawRect(5 * j + 50, 5 * i + 12, 3, 3);
                 }
             }
         }
