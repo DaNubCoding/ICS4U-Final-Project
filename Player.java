@@ -7,13 +7,7 @@ import greenfoot.*;
  * @author Andrew Wang
  * @version May 2024
  */
-public class Player extends Sprack {
-    private static final double ACCEL = 0.5;
-    private static final double FRIC_ACCEL = 0.2;
-    private static final double MAX_SPEED = 3.0;
-
-    private static final double ROT_ACCEL = 0.2;
-
+public class Player extends Entity {
     private static final Animation walkingAnimation = new Animation(6,
         "knight_walk1",
         "knight_walk2",
@@ -22,70 +16,72 @@ public class Player extends Sprack {
     );
     private static final Animation standingAnimation = new Animation(-1, "knight_standing");
 
-    private Vector2 velocity;
-    private double facing;
     private double cameraTargetRotation;
+    private Timer dashTimer;
 
     private Weapon weapon;
 
     public Player() {
         super(standingAnimation);
-        velocity = new Vector2(0, 0);
-        facing = 0;
-
+        dashTimer = new Timer(90);
         weapon = new WandOfManyCanopies(this);
     }
 
     @Override
     public void update() {
-        updateCameraRotation();
-
-        // Get input acceleration
-        Vector2 accel = new Vector2(0, 0);
-        if (Greenfoot.isKeyDown("w")) {
-            accel = accel.add(new Vector2(0, -1));
+        // Apply input acceleration
+        if (Greenfoot.isKeyDown("d")) {
+            accelerate(new Vector2(Camera.getRotation()));
         }
         if (Greenfoot.isKeyDown("s")) {
-            accel = accel.add(new Vector2(0, 1));
+            accelerate(new Vector2(Camera.getRotation() + 90));
         }
         if (Greenfoot.isKeyDown("a")) {
-            accel = accel.add(new Vector2(-1, 0));
+            accelerate(new Vector2(Camera.getRotation() + 180));
         }
-        if (Greenfoot.isKeyDown("d")) {
-            accel = accel.add(new Vector2(1, 0));
+        if (Greenfoot.isKeyDown("w")) {
+            accelerate(new Vector2(Camera.getRotation() + 270));
         }
-        try {
-            // Normalize diagonal movement
-            accel = accel.normalize().multiply(ACCEL);
-        } catch (ArithmeticException e) {
-            accel = new Vector2(0, 0);
+
+        // Dashing
+        if (Greenfoot.isKeyDown("space") && dashTimer.ended()) {
+            applyImpulse(new Vector2(getWorldRotation()).multiply(6));
+            dashTimer.restart();
         }
-        accel = accel.rotate(Camera.getRotation());
 
-        velocity = velocity.add(accel);
+        // TODO: TEMPORARY for demo purposes
+        if (Greenfoot.isKeyDown("q") && getWorldY() == 0) {
+            applyImpulse(new Vector3(0, 4, 0));
+        }
 
-        // Apply friction
-        try {
-            double fricMag = Math.min(velocity.magnitude(), FRIC_ACCEL);
-            Vector2 fric = velocity.scaleToMagnitude(fricMag);
-            velocity = velocity.subtract(fric);
-        } catch (ArithmeticException e) {} // Do nothing if velocity is zero
+        // TODO: TEMPORARY for demo purposes
+        if (Greenfoot.isKeyDown("e") && getWorldY() == 0) {
+            Vector2 horImpulse = new Vector2(getWorldRotation()).multiply(5);
+            applyImpulse(Vector3.fromXZ(horImpulse).add(new Vector3(0, 6, 0)));
+        }
 
-        // Clamp velocity to max speed
-        velocity = velocity.clampMagnitude(MAX_SPEED);
+        // TODO: move to Entity after demo
+        // Apply gravitational force
+        applyForce(new Vector3(0, -0.2, 0));
 
-        // Face the direction of movement
-        if (velocity.magnitude() != 0) {
-            facing = Vector2.lerpAngle(facing, velocity.angle(), ROT_ACCEL);
-            setWorldRotation(facing);
+        // Update position with velocity and friction, and update position
+        updateMovement();
+
+        // Turn towards where the player is moving
+        turnTowardsMovement();
+
+        // Set the animation based on whether the player is moving
+        if (isMoving()) {
             setLoopingAnimation(walkingAnimation);
         } else {
             setLoopingAnimation(standingAnimation);
         }
 
-        setWorldPos(getWorldPos().add(new Vector3(velocity.x, 0, velocity.y)));
+        // Update camera stuff
         Camera.targetPosition(getWorldPos().add(new Vector3(0, 10, 0)));
+        updateCameraRotation();
 
+        // Update player's weapon
         weapon.update();
     }
 

@@ -129,6 +129,36 @@ public class Vector3 {
     }
 
     /**
+     * Set the x and y values of this vector and return the resulting vector.
+     *
+     * @param xy the new x and y values as a Vector2
+     * @return the new vector with the x and y values set
+     */
+    public Vector3 setXY(Vector2 xy) {
+        return new Vector3(xy.x, xy.y, z);
+    }
+
+    /**
+     * Set the y and z values of this vector and return the resulting vector.
+     *
+     * @param yz the new y and z values as a Vector2
+     * @return the new vector with the y and z values set
+     */
+    public Vector3 setYZ(Vector2 yz) {
+        return new Vector3(x, yz.x, yz.y);
+    }
+
+    /**
+     * Set the x and z values of this vector and return the resulting vector.
+     *
+     * @param xz the new x and z values as a Vector2
+     * @return the new vector with the x and z values set
+     */
+    public Vector3 setXZ(Vector2 xz) {
+        return new Vector3(xz.x, y, xz.y);
+    }
+
+    /**
      * Add the given vector to this vector.
      *
      * @param other the vector to add
