@@ -210,6 +210,18 @@ public class Entity extends Sprack {
     }
 
     /**
+     * Reduce the entity's horizontal momentum by the given factor.
+     * <p>
+     * A factor of
+     *
+     * @param factor the factor by which to reduce the entity's momentum
+     */
+    public void reduceMomentum(double factor) {
+        internalVel = internalVel.multiply(1 - factor);
+        externalVel = externalVel.multiply(1 - factor);
+    }
+
+    /**
      * Update the entity's position based on its acceleration and velocity.
      */
     public void updateMovement() {

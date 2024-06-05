@@ -51,11 +51,13 @@ public class Player extends Entity {
 
         // TODO: TEMPORARY for demo purposes
         if (Greenfoot.isKeyDown("q") && getWorldY() == 0) {
+            reduceMomentum(0.33);
             applyImpulse(new Vector3(0, 4, 0));
         }
 
         // TODO: TEMPORARY for demo purposes
         if (Greenfoot.isKeyDown("e") && getWorldY() == 0) {
+            reduceMomentum(0.9);
             Vector2 horImpulse = new Vector2(getWorldRotation()).multiply(5);
             applyImpulse(Vector3.fromXZ(horImpulse).add(new Vector3(0, 6, 0)));
         }
