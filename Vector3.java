@@ -14,6 +14,39 @@
  */
 public class Vector3 {
     /**
+     * Create a new Vector3 with the given x and y components as a
+     * {@link Vector2}.
+     *
+     * @param xy the x and y components as a Vector2
+     * @return the new Vector3
+     */
+    public static Vector3 fromXY(Vector2 xy) {
+        return new Vector3(xy.x, xy.y, 0);
+    }
+
+    /**
+     * Create a new Vector3 with the given y and z components as a
+     * {@link Vector2}.
+     *
+     * @param yz the y and z components as a Vector2
+     * @return the new Vector3 `
+     */
+    public static Vector3 fromYZ(Vector2 yz) {
+        return new Vector3(0, yz.x, yz.y);
+    }
+
+    /**
+     * Create a new Vector3 with the given x and z components as a
+     * {@link Vector2}.
+     *
+     * @param xz the x and z components as a Vector2
+     * @return the new Vector3
+     */
+    public static Vector3 fromXZ(Vector2 xz) {
+        return new Vector3(xz.x, 0, xz.y);
+    }
+
+    /**
      * The x component of the vector.
      */
     public final double x;
@@ -27,6 +60,19 @@ public class Vector3 {
     public final double z;
 
     /**
+     * A 2D vector representing the x and y components of this vector.
+     */
+    public final Vector2 xy;
+    /**
+     * A 2D vector representing the y and z components of this vector.
+     */
+    public final Vector2 yz;
+    /**
+     * A 2D vector representing the x and z components of this vector.
+     */
+    public final Vector2 xz;
+
+    /**
      * Create a new Vector3 with the given components.
      *
      * @param x the x component
@@ -37,6 +83,10 @@ public class Vector3 {
         this.x = x;
         this.y = y;
         this.z = z;
+
+        xy = new Vector2(x, y);
+        yz = new Vector2(y, z);
+        xz = new Vector2(x, z);
     }
 
     /**
@@ -79,13 +129,43 @@ public class Vector3 {
     }
 
     /**
-     * Add the givern vector to this vector.
+     * Add the given vector to this vector.
      *
      * @param other the vector to add
      * @return the sum of the two vectors
      */
     public Vector3 add(Vector3 other) {
         return new Vector3(x + other.x, y + other.y, z + other.z);
+    }
+
+    /**
+     * Add the given {@link Vector2} to this vector in the x and y components.
+     *
+     * @param other the vector to add
+     * @return the resulting Vector3 after adding the Vector2
+     */
+    public Vector3 addXY(Vector2 other) {
+        return new Vector3(x + other.x, y + other.y, z);
+    }
+
+    /**
+     * Add the given {@link Vector2} to this vector in the y and z components.
+     *
+     * @param other the vector to add
+     * @return the resulting Vector3 after adding the Vector2
+     */
+    public Vector3 addYZ(Vector2 other) {
+        return new Vector3(x, y + other.x, z + other.y);
+    }
+
+    /**
+     * Add the given {@link Vector2} to this vector in the x and z components.
+     *
+     * @param other the vector to add
+     * @return the resulting Vector3 after adding the Vector2
+     */
+    public Vector3 addXZ(Vector2 other) {
+        return new Vector3(x + other.x, y, z + other.y);
     }
 
     /**
@@ -96,6 +176,39 @@ public class Vector3 {
      */
     public Vector3 subtract(Vector3 other) {
         return new Vector3(x - other.x, y - other.y, z - other.z);
+    }
+
+    /**
+     * Subtract the given {@link Vector2} from this vector in the x and y
+     * components.
+     *
+     * @param other the vector to subtract
+     * @return the resulting Vector3 after subtracting the Vector2
+     */
+    public Vector3 subtractXY(Vector2 other) {
+        return new Vector3(x - other.x, y - other.y, z);
+    }
+
+    /**
+     * Subtract the given {@link Vector2} from this vector in the y and z
+     * components.
+     *
+     * @param other the vector to subtract
+     * @return the resulting Vector3 after subtracting the Vector2
+     */
+    public Vector3 subtractYZ(Vector2 other) {
+        return new Vector3(x, y - other.x, z - other.y);
+    }
+
+    /**
+     * Subtract the given {@link Vector2} from this vector in the x and z
+     * components.
+     *
+     * @param other the vector to subtract
+     * @return the resulting Vector3 after subtracting the Vector2
+     */
+    public Vector3 subtractXZ(Vector2 other) {
+        return new Vector3(x - other.x, y, z - other.y);
     }
 
     /**
@@ -158,6 +271,102 @@ public class Vector3 {
      */
     public Vector3 scaleToMagnitude(double magnitude) {
         return normalize().multiply(magnitude);
+    }
+
+    /**
+     * Clamp the magnitude of this vector to the given value.
+     *
+     * @param maxMagnitude the maximum magnitude
+     * @return the clamped vector
+     */
+    public Vector3 clampMagnitude(double maxMagnitude) {
+        return clampMagnitude(0, maxMagnitude);
+    }
+
+    /**
+     * Clamp the magnitude of this vector to the given range.
+     *
+     * @param minMagnitude the minimum magnitude
+     * @param maxMagnitude the maximum magnitude
+     * @return the clamped vector
+     */
+    public Vector3 clampMagnitude(double minMagnitude, double maxMagnitude) {
+        double magnitude = magnitude();
+        if (magnitude < minMagnitude) return scaleToMagnitude(minMagnitude);
+        if (magnitude > maxMagnitude) return scaleToMagnitude(maxMagnitude);
+        return this;
+    }
+
+    /**
+     * Clamp the {@link Vector2} representing the x and y components of this
+     * vector to the given magnitude and return the resulting Vector3.
+     *
+     * @param maxMagnitude the maximum magnitude
+     * @return the clamped vector
+     */
+    public Vector3 clampXYMagnitude(double maxMagnitude) {
+        return clampXYMagnitude(0, maxMagnitude);
+    }
+
+    /**
+     * Clamp the {@link Vector2} representing the x and y components of this
+     * vector to the given range and return the resulting Vector3.
+     *
+     * @param minMagnitude the minimum magnitude
+     * @param maxMagnitude the maximum magnitude
+     * @return the clamped vector
+     */
+    public Vector3 clampXYMagnitude(double minMagnitude, double maxMagnitude) {
+        Vector2 clamped = xy.clampMagnitude(minMagnitude, maxMagnitude);
+        return new Vector3(clamped.x, clamped.y, z);
+    }
+
+    /**
+     * Clamp the {@link Vector2} representing the y and z components of this
+     * vector to the given magnitude and return the resulting Vector3.
+     *
+     * @param maxMagnitude the maximum magnitude
+     * @return the clamped vector
+     */
+    public Vector3 clampYZMagnitude(double maxMagnitude) {
+        return clampYZMagnitude(0, maxMagnitude);
+    }
+
+    /**
+     * Clamp the {@link Vector2} representing the y and z components of this
+     * vector to the given range and return the resulting Vector3.
+     *
+     * @param minMagnitude the minimum magnitude
+     * @param maxMagnitude the maximum magnitude
+     * @return the clamped vector
+     */
+    public Vector3 clampYZMagnitude(double minMagnitude, double maxMagnitude) {
+        Vector2 clamped = yz.clampMagnitude(minMagnitude, maxMagnitude);
+        return new Vector3(x, clamped.x, clamped.y);
+    }
+
+    /**
+     * Clamp the {@link Vector2} representing the x and z components of this
+     * vector to the given magnitude and return the resulting Vector3.
+     *
+     * @param maxMagnitude the maximum magnitude
+     * @return the clamped vector
+     */
+    public Vector3 clampXZMagnitude(double maxMagnitude) {
+        return clampXZMagnitude(0, maxMagnitude);
+    }
+
+    /**
+     * Clamp the {@link Vector2} representing the x and z components of this
+     * vector to the given range and return the resulting Vector3.
+     *
+     * @param minMagnitude the minimum magnitude
+     * @param maxMagnitude the maximum magnitude
+     * @return the clamped vector
+     */
+    public Vector3 clampXZMagnitude(double minMagnitude, double maxMagnitude) {
+        Vector2 clamped = xz.clampMagnitude(minMagnitude, maxMagnitude);
+        return new Vector3(clamped.x, y, clamped.y);
     }
 
     /**
