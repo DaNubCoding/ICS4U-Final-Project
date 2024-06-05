@@ -1,3 +1,11 @@
+/**
+ * An entity is a {@link Sprack} that can move and interact with the world. It
+ * has certain levels of physics baked in, and a plethora of methods to help
+ * with different movement patterns.
+ *
+ * @author Andrew Wang
+ * @version June 2024
+ */
 public class Entity extends Sprack {
     /**
      * The acceleration due to the entity's internal forces.
@@ -26,21 +34,60 @@ public class Entity extends Sprack {
     private Vector3 externalVel;
     private double maxSpeed;
 
+    /**
+     * Create a new entity with the given sheet name and layer.
+     * <p>
+     * The sheet name is used to look up the {@link SprackView} object that
+     * contains the pre-rendered images for this Entity.
+     *
+     * @param sheetName the name of the Sprack sheet
+     * @param layer the layer to render the Entity on
+     */
     public Entity(String sheetName, Layer layer) {
         super(sheetName, layer);
         init();
     }
 
+    /**
+     * Create a new Entity with the given looping animation of sheet names and
+     * layer.
+     * <p>
+     * The sheet names are used to look up the {@link SprackView} objects that
+     * contain the pre-rendered images for the animation.
+     *
+     * @param sheetAnimation an {@link Animation} object describing the looping
+     *                       animation of SprackView names to assign to this
+     *                       Entity
+     * @param layer the layer to render the Entity on
+     */
     public Entity(Animation sheetAnimation, Layer layer) {
         super(sheetAnimation, layer);
         init();
     }
 
+    /**
+     * Create a new Entity with the given fixed sheet name.
+     * <p>
+     * The sheet name is used to look up the {@link SprackView} object that
+     * contains the pre-rendered images for this Entity.
+     *
+     * @param sheetName the name of the Sprack sheet
+     */
     public Entity(String sheetName) {
         super(sheetName);
         init();
     }
 
+    /**
+     * Create a new Entity with the given looping animation of sheet names.
+     * <p>
+     * The sheet names are used to look up the {@link SprackView} objects that
+     * contain the pre-rendered images for the animation.
+     *
+     * @param sheetAnimation an {@link Animation} object describing the looping
+     *                       animation of SprackView names to assign to this
+     *                       Entity
+     */
     public Entity(Animation sheetAnimation) {
         super(sheetAnimation);
         init();
