@@ -9,7 +9,7 @@ public abstract class RangedWeapon extends Weapon {
 
     @FunctionalInterface
     public static interface ProjectileFactory {
-        public Projectile create(Sprack owner, Vector3 direction, Vector3 pos, int inaccuracy);
+        public Projectile create(Entity owner, Vector3 direction, Vector3 pos, int inaccuracy);
     }
 
     private ProjectileFactory projFactory;

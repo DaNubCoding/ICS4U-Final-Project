@@ -1,3 +1,4 @@
+import java.util.List;
 import java.util.Random;
 
 /**
@@ -8,20 +9,20 @@ import java.util.Random;
  */
 public abstract class Projectile extends WorldSprite {
     private Vector3 moveDirection;
-    private Sprack owner;
+    private Entity owner;
     private int lifespan;
     private Random rand = new Random();
 
     /**
      * Create a new projectile using direction, starting position, and inaccuracy
      *
-     * @param owner the sprack that created this projectile
+     * @param owner the entity that created this projectile
      * @param direction the movement direction of the projectile, speed included
      * @param startPos the initial position of the projectile
      * @param inaccuracy the inaccuracy of the projectile, measured in degrees
      * @param lifespan the number of frames this projectile can last
      */
-    public Projectile(Sprack owner, Vector3 direction, Vector3 startPos,
+    public Projectile(Entity owner, Vector3 direction, Vector3 startPos,
                       int inaccuracy, int lifespan) {
         super();
         this.owner = owner;
@@ -39,7 +40,7 @@ public abstract class Projectile extends WorldSprite {
         setWorldPos(getWorldPos().add(moveDirection));
         lifespan--;
         movingUpdate();
-        // TODO: collision logic here
+        if(hitCondition()) hit();
         if (lifespan<=0) disappear();
     }
 
@@ -50,6 +51,20 @@ public abstract class Projectile extends WorldSprite {
      */
     public void movingUpdate() {
         setScreenRotation(getScreenRotation()+5);
+    }
+
+    /**
+     * The condition to check if a hit happened.
+     * <p> 
+     * Currently checks whether a direct hit occured (enemy less than range of 10), 
+     * but don't forget that you can override this!
+     * 
+     * @return whether the condition has been met
+     */
+    public boolean hitCondition() {
+        List<Entity> l = getWorld().getEntitiesInRange(getWorldPos(), 10);
+        if(l.size() > 0 && l.contains(owner)) return false;
+        return l.size() > 0;
     }
 
     /**
@@ -70,5 +85,32 @@ public abstract class Projectile extends WorldSprite {
      */
     public void disappear() {
         getWorld().removeSprite(this);
+    }
+
+    /**
+     * Get the owner of this projectile.
+     * 
+     * @return the owner of this projectile
+     */
+    public Entity getOwner() {
+        return owner;
+    }
+
+    /**
+     * Set the move direction to a new 3d vector.
+     * 
+     * @param newDirection the new move direction
+     */
+    public void setMoveDirection(Vector3 newDirection) {
+        moveDirection = newDirection;
+    }
+
+    /**
+     * Get the move direction of this projectile.
+     * 
+     * @return the current move direction
+     */
+    public Vector3 getMoveDirection() {
+        return moveDirection;
     }
 }
