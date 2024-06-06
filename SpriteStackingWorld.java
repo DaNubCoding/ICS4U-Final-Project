@@ -3,6 +3,7 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.stream.Stream;
+import java.util.stream.Collectors;
 
 public class SpriteStackingWorld extends PixelWorld {
     // private static final int OBJECT_SPAWN_RANGE = 2000;
@@ -152,7 +153,7 @@ public class SpriteStackingWorld extends PixelWorld {
      * @return a list of Spracks within the range
      */
     public List<Sprack> getSpracksInRange(Vector3 center, double range) {
-        return getSpracksInRangeAsStream(center, range).toList();
+        return getSpracksInRangeAsStream(center, range).collect(Collectors.toList());
     }
 
     /**
@@ -180,7 +181,7 @@ public class SpriteStackingWorld extends PixelWorld {
      * @return a list of Entities within the range
      */
     public List<Entity> getEntitiesInRange(Vector3 center, double range) {
-        return getEntitiesInRangeAsStream(center, range).toList();
+        return getEntitiesInRangeAsStream(center, range).collect(Collectors.toList());
     }
 
     /**
