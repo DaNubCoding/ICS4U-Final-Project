@@ -237,6 +237,12 @@ public abstract class PixelWorld extends World {
             .flatMap(keyCls -> spritesByClass.get(keyCls).stream());
     }
 
+    /**
+     * Get all Sprites on a given render {@link Layer}.
+     *
+     * @param layer the Layer to get sprites from
+     * @return a list of Sprites in this world on the given layer
+     */
     public List<? extends Sprite> getSpritesByLayer(Layer layer) {
         return spritesByLayer.get(layer);
     }
