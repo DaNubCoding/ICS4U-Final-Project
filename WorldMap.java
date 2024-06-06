@@ -7,6 +7,7 @@ public class WorldMap extends PixelWorld {
     private SpriteStackingWorld initialWorld;
     private Color[][] map;
 
+    private static final int CELL_SIZE = 5;
     private static final HashMap<Class<? extends Feature>, Color> colors = new HashMap<>();
 
     static {
@@ -42,6 +43,13 @@ public class WorldMap extends PixelWorld {
         // put player
         map[genRad][genRad] = new Color(255, 10, 10);
 
+        // show coordinates
+        String coords = "Coordinates:\n(" + (int) playerPos.x + ", " + (int) playerPos.y + ")";
+        addSprite(new Text(coords, 
+                            Text.AnchorX.CENTER, 
+                            Text.AnchorY.CENTER, 
+                            new Color(180, 180, 180)),
+                    50, 50);
     }
 
     @Override
@@ -49,20 +57,32 @@ public class WorldMap extends PixelWorld {
         if(Greenfoot.isKeyDown("escape")) {
             Greenfoot.setWorld(initialWorld);
         }
+        updateSprites();
     }
 
     @Override
     public void render() {
+        // the map
         GreenfootImage background = getCanvas();
+        int widAdj = (initialWorld.getWidth() - CELL_SIZE * map.length) - 10;
+        int heiAdj = (initialWorld.getHeight() - CELL_SIZE * map.length) / 2;
         background.setColor(new Color(56, 56, 56));
         background.fill();
         for (int i = 0; i < map.length; i++) {
             for (int j = 0; j < map[i].length; j++) {
                 if (map[i][j] != null) {
                     background.setColor(map[i][j]);
-                    background.drawRect(5 * j + 50, 5 * i + 12, 3, 3);
+                    background.drawRect(CELL_SIZE * j + widAdj, 
+                                        CELL_SIZE * i + heiAdj,
+                                        CELL_SIZE - 2,
+                                        CELL_SIZE - 2);
                 }
             }
         }
+        background.setColor(new Color(180, 180, 180));
+        background.drawRect(widAdj - 1, heiAdj - 1, 
+                            CELL_SIZE * map.length, CELL_SIZE * map.length);
+
+        renderSprites();
     }
 }
