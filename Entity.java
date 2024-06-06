@@ -1,3 +1,6 @@
+import java.util.stream.Stream;
+import java.util.List;
+
 /**
  * An entity is a {@link Sprack} that can move and interact with the world. It
  * has certain levels of physics baked in, and a plethora of methods to help
@@ -33,6 +36,8 @@ public class Entity extends Sprack {
     private Vector3 internalVel;
     private Vector3 externalVel;
     private double maxSpeed;
+
+    private double health;
 
     /**
      * Create a new entity with the given sheet name and layer.
@@ -356,5 +361,35 @@ public class Entity extends Sprack {
      */
     public double getMaxSpeed() {
         return maxSpeed;
+    }
+
+    /**
+     * Set the entity's health.
+     *
+     * @param health the health
+     */
+    public void setHealth(double health) {
+        this.health = health;
+    }
+
+    /**
+     * Get the entity's health.
+     *
+     * @return the health
+     */
+    public double getHealth() {
+        return health;
+    }
+
+    /**
+     * Damage the entity by the given amount of health.
+     *
+     * @param damage the amount of damage
+     */
+    public void damage(Damage damage) {
+        health -= damage.getDamage();
+        if (health <= 0) {
+            getWorld().removeSprite(this);
+        }
     }
 }

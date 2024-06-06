@@ -78,6 +78,15 @@ public abstract class Weapon extends WorldSprite {
     }
 
     /**
+     * Get the SpriteStackingWorld the weapon is in.
+     *
+     * @return the SpriteStackingWorld the weapon is in
+     */
+    public SpriteStackingWorld getWorld() {
+        return player.getWorld();
+    }
+
+    /**
      * Perform the weapon's attack.
      */
     public abstract void attack();

@@ -45,7 +45,7 @@ public class WorldSprite extends TransformableSprite {
      * <p>
      * The world position is the position of the sprite in the game world, not
      * the screen position.
-     * 
+     *
      * @return the current world position of the sprite.
      */
     public Vector3 getWorldPos() {
@@ -64,5 +64,10 @@ public class WorldSprite extends TransformableSprite {
         screenY -= offsetY;
         setScreenPos(screenX, screenY);
         super.render(canvas);
+    }
+
+    @Override
+    public SpriteStackingWorld getWorld() {
+        return (SpriteStackingWorld) super.getWorld();
     }
 }

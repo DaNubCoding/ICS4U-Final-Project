@@ -1,12 +1,14 @@
 import greenfoot.*;
-
 import java.util.List;
+import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.stream.Stream;
 
 public class SpriteStackingWorld extends PixelWorld {
     // private static final int OBJECT_SPAWN_RANGE = 2000;
     private WorldData worldData;
     private Player player;
+    private List<Damage> damages;
 
     // world information
     public static final int WORLD_WIDTH = 256;
@@ -18,6 +20,8 @@ public class SpriteStackingWorld extends PixelWorld {
 
     public SpriteStackingWorld() {
         super(WORLD_WIDTH, WORLD_HEIGHT);
+
+        damages = new ArrayList<>();
 
         worldData = new WorldData(1);
 
@@ -36,6 +40,8 @@ public class SpriteStackingWorld extends PixelWorld {
             }
         }
 
+        addSprack(new Golem(), 20, 0, 20);
+
         render();
     }
 
@@ -46,9 +52,24 @@ public class SpriteStackingWorld extends PixelWorld {
         spracks = getSpritesByLayer(Layer.SPRACK_CANOPY);
         spracks.sort(Comparator.comparing(Sprite::getScreenY));
 
-        updateSprites();
-        Timer.incrementAct();
+        updateDamages();
 
+        updateSprites();
+
+        updateSurroundings();
+
+        if (Greenfoot.isKeyDown("enter")) {
+            worldData.saveData();
+        }
+
+        if (Greenfoot.isKeyDown("m")) {
+            Greenfoot.setWorld(new WorldMap(this, worldData));
+        }
+
+        Timer.incrementAct();
+    }
+
+    private void updateSurroundings() {
         int cameraGridX = (int) (Camera.getX() / 20);
         int cameraGridZ = (int) (Camera.getZ() / 20);
         if (worldData.updatePlayerLocation(cameraGridX, cameraGridZ)) {
@@ -69,14 +90,17 @@ public class SpriteStackingWorld extends PixelWorld {
                 }
             }
         }
+    }
 
-        if (Greenfoot.isKeyDown("enter")) {
-            worldData.saveData();
+    private void updateDamages() {
+        List<Damage> removals = new ArrayList<>();
+        for (Damage damage : damages) {
+            damage.update();
+            if (damage.isRemoved()) {
+                removals.add(damage);
+            }
         }
-
-        if (Greenfoot.isKeyDown("m")) {
-            Greenfoot.setWorld(new WorldMap(this, worldData));
-        }
+        damages.removeAll(removals);
     }
 
     @Override
@@ -104,6 +128,62 @@ public class SpriteStackingWorld extends PixelWorld {
     }
 
     /**
+     * Get all Spracks within a certain range of a center point as a stream.
+     * <p>
+     * You generally do not need to call this method. Instead, use the
+     * {@link #getSpracksInRange(Vector3, double)} method to get a list of
+     * Spracks within a range.
+     *
+     * @param center the center point
+     * @param range the range
+     * @return a stream of Spracks within the range
+     */
+    public Stream<Sprack> getSpracksInRangeAsStream(Vector3 center, double range) {
+        return getSpritesAsStream(Sprack.class)
+            .map(sprack -> (Sprack) sprack)
+            .filter(sprack -> sprack.getWorldPos().distanceTo(center) < range);
+    }
+
+    /**
+     * Get all Spracks within a certain range of a center point.
+     *
+     * @param center the center point
+     * @param range the range
+     * @return a list of Spracks within the range
+     */
+    public List<Sprack> getSpracksInRange(Vector3 center, double range) {
+        return getSpracksInRangeAsStream(center, range).toList();
+    }
+
+    /**
+     * Get all Entities within a certain range of a center point as a stream.
+     * <p>
+     * You generally do not need to call this method. Instead, use the
+     * {@link #getEntitiesInRange(Vector3, double)} method to get a list of
+     * Entities within a range.
+     *
+     * @param center the center point
+     * @param range the range
+     * @return a stream of Entities within the range
+     */
+    public Stream<Entity> getEntitiesInRangeAsStream(Vector3 center, double range) {
+        return getSpritesAsStream(Entity.class)
+            .map(entity -> (Entity) entity)
+            .filter(entity -> entity.getWorldPos().distanceTo(center) < range);
+    }
+
+    /**
+     * Get all Entities within a certain range of a center point.
+     *
+     * @param center the center point
+     * @param range the range
+     * @return a list of Entities within the range
+     */
+    public List<Entity> getEntitiesInRange(Vector3 center, double range) {
+        return getEntitiesInRangeAsStream(center, range).toList();
+    }
+
+    /**
      * Get the player object.
      *
      * @return the player
@@ -119,5 +199,14 @@ public class SpriteStackingWorld extends PixelWorld {
      */
     public WorldData getWorldData() {
         return worldData;
+    }
+
+    /**
+     * Get the list of {@link Damage} objects in the world.
+     *
+     * @return the list of damages
+     */
+    public List<Damage> getDamages() {
+        return damages;
     }
 }
