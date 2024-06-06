@@ -37,6 +37,9 @@ public class Damage {
         this.damage = damage;
         this.center = center;
         this.radius = radius;
+
+        lifeTimer = new Timer(0);
+        damageTimer = new Timer(0);
     }
 
     /**
@@ -146,7 +149,7 @@ public class Damage {
             damageTimer.restart();
         }
 
-        if (lifeTimer == null || lifeTimer.ended()) {
+        if (lifeTimer.ended()) {
             removed = true;
         }
     }

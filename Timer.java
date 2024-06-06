@@ -56,7 +56,7 @@ public class Timer {
      * @return true if ended, false otherwise
      */
     public boolean ended() {
-        return currentAct - startFrame > totalFrames;
+        return currentAct - startFrame >= totalFrames;
     }
 
     /**

@@ -44,7 +44,6 @@ public abstract class MeleeWeapon extends Weapon {
         double targetAngle = mousePos.subtract(playerPos).angle();
         damage.setAngularRange(targetAngle, sweepAngle);
 
-        damage.setInterval(0);
         getWorld().getDamages().add(damage);
     }
 }
