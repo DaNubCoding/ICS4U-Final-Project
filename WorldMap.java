@@ -41,6 +41,10 @@ public class WorldMap extends PixelWorld {
 
         // put player
         map[genRad][genRad] = new Color(255, 10, 10);
+
+        // test
+        System.out.println(initialWorld.getSprites(TreeCanopy.class).size());
+        System.out.println(initialWorld.getSpritesByLayer(Layer.SPRACK_CANOPY).size());
     }
 
     @Override
