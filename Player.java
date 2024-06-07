@@ -24,7 +24,7 @@ public class Player extends Entity {
     public Player() {
         super(standingAnimation);
         dashTimer = new Timer(90);
-        weapon = new TestPistol(this);
+        weapon = new EnderPearlGun(this);
     }
 
     @Override
