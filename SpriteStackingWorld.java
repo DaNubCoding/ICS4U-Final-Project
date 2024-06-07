@@ -41,7 +41,7 @@ public class SpriteStackingWorld extends PixelWorld {
             }
         }
 
-        addSprack(new Golem(), 20, 0, 20);
+        addSprack(new Statue(), 20, 0, 20);
 
         render();
     }

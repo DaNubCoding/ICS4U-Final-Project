@@ -113,7 +113,7 @@ public class Damage {
      * Set the interval between each time the damage source deals damage. This
      * is the number of frames between each time the damage source deals damage.
      * <p>
-     * By default, the damage source will not deal damage.
+     * By default, the damage source will deal damage every frame.
      *
      * @param interval the interval between each time the damage source deals
      *                 damage
@@ -128,7 +128,7 @@ public class Damage {
      * area of effect.
      */
     public void update() {
-        if (damageTimer != null && damageTimer.ended()) {
+        if (damageTimer.ended()) {
             SpriteStackingWorld world = owner.getWorld();
             for (Entity entity : world.getEntitiesInRange(center, radius)) {
                 if (entity == owner) continue;

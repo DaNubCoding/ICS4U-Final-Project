@@ -41,6 +41,8 @@ public abstract class Enemy extends Entity {
         } else {
             idle(player);
         }
+
+        updateMovement();
     }
 
     /**

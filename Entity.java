@@ -1,6 +1,3 @@
-import java.util.stream.Stream;
-import java.util.List;
-
 /**
  * An entity is a {@link Sprack} that can move and interact with the world. It
  * has certain levels of physics baked in, and a plethora of methods to help
@@ -11,9 +8,9 @@ import java.util.List;
  */
 public class Entity extends Sprack {
     /**
-     * The acceleration due to the entity's internal forces.
+     * The default acceleration due to the entity's internal forces.
      */
-    public static final double ACCEL = 0.5;
+    public static final double MAX_ACCEL = 0.5;
     /**
      * The acceleration due to friction when the entity is on the ground.
      */
@@ -36,6 +33,10 @@ public class Entity extends Sprack {
     private Vector3 internalVel;
     private Vector3 externalVel;
     private double maxSpeed;
+    private double maxAccel;
+    private Vector3 target;
+    private boolean targeting;
+    private boolean alwaysTurnTowardsMovement;
 
     private double health;
 
@@ -104,6 +105,7 @@ public class Entity extends Sprack {
         internalVel = new Vector3();
         externalVel = new Vector3();
         maxSpeed = MAX_SPEED;
+        maxAccel = MAX_ACCEL;
     }
 
     /**
@@ -156,14 +158,50 @@ public class Entity extends Sprack {
     }
 
     /**
-     * Accelerate the entity towards the player.
+     * Schedule the entity to move to the given {@link Vector3}.
      * <p>
-     * This is an internally generated acceleration that respects the entity's
-     * defined maximum speed.
+     * This method does not need to be called repeatedly, calling it once will
+     * cause the entity to move until it reaches the target.
+     *
+     * @param target the target position
      */
-    public void accelTowardsPlayer() {
-        Player player = getWorld().getPlayer();
-        accelTowards(player.getWorldPos());
+    public void moveToTarget(Vector3 target) {
+        this.target = target;
+        targeting = true;
+    }
+
+    /**
+     * Schedule the entity to move to the given {@link Vector2} on the XZ plane.
+     * <p>
+     * This method does not need to be called repeatedly, calling it once will
+     * cause the entity to move until it reaches the target.
+     *
+     * @param target the target position
+     */
+    public void moveToTarget(Vector2 target) {
+        moveToTarget(Vector3.fromXZ(target));
+    }
+
+    /**
+     * Schedule the entity to move to the closest point around the player within
+     * the given range.
+     * <p>
+     * This method does not need to be called repeatedly, calling it once will
+     * cause the entity to move until it reaches the player.
+     *
+     * @param range the range around the player to move to
+     */
+    public void moveToNearPlayer(double range) {
+        Vector3 playerPos = getWorld().getPlayer().getWorldPos();
+        Vector3 delta = getWorldPos().subtract(playerPos);
+        moveToTarget(playerPos.add(delta.scaleToMagnitude(range)));
+    }
+
+    /**
+     * Forget the target position and stop moving towards it.
+     */
+    public void forgetTarget() {
+        targeting = false;
     }
 
     /**
@@ -228,12 +266,28 @@ public class Entity extends Sprack {
     }
 
     /**
-     * Update the entity's position based on its acceleration and velocity.
+     * Update the rest of the entity's movement, applying forces previously
+     * applied.
      */
     public void updateMovement() {
+        if (targeting) {
+            accelTowards(target);
+            // Vf^2 = Vi^2 + 2ad
+            // d = (Vf^2 - Vi^2) / 2a
+            // Vf = 0
+            // d = -Vi^2 / 2a
+            final double vi = internalVel.xz.magnitude();
+            final double d = vi * vi / (2 * FRIC_ACCEL);
+            // stop accelerating if the entity is close enough to the target
+            // that friction will stop it just in time to reach the target
+            if (getWorldPos().distanceTo(target) < d) {
+                targeting = false;
+            }
+        }
+
         // Clamp internal acceleration
         try {
-            internalAccel = internalAccel.scaleToMagnitude(ACCEL);
+            internalAccel = internalAccel.clampMagnitude(maxAccel);
         } catch (ArithmeticException e) {} // Do nothing if acceleration is zero
 
         // Determine whether to use friction or air resistance
@@ -275,6 +329,11 @@ public class Entity extends Sprack {
         // Reset acceleration
         internalAccel = new Vector3();
         externalAccel = new Vector3();
+
+        // Turn towards movement
+        if (alwaysTurnTowardsMovement) {
+            turnTowardsMovement();
+        }
     }
 
     /**
@@ -288,6 +347,13 @@ public class Entity extends Sprack {
             ROT_ACCEL
         );
         setWorldRotation(facing);
+    }
+
+    /**
+     * Always turn the entity towards the direction it is moving.
+     */
+    public void setAlwaysTurnTowardsMovement() {
+        alwaysTurnTowardsMovement = true;
     }
 
     /**
@@ -348,6 +414,18 @@ public class Entity extends Sprack {
      */
     public void setMaxSpeed(double maxSpeed) {
         this.maxSpeed = maxSpeed;
+    }
+
+    /**
+     * Set the entity's maximum acceleration.
+     * <p>
+     * This value must be greater than the frictional acceleration to have any
+     * effect when the entity is on the ground.
+     *
+     * @param maxAccel the maximum acceleration
+     */
+    public void setMaxAccel(double maxAccel) {
+        this.maxAccel = maxAccel;
     }
 
     /**

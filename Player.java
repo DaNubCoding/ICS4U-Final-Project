@@ -25,6 +25,7 @@ public class Player extends Entity {
         super(standingAnimation);
         dashTimer = new Timer(90);
         weapon = new EnderPearlGun(this);
+        setHealth(200);
     }
 
     @Override
@@ -117,5 +118,11 @@ public class Player extends Entity {
         double zoom = Camera.getZoom() * (1 + mouseRel.y * 0.002);
         Camera.setZoom(Math.max(0.8, Math.min(6, zoom)));
         Camera.targetRotation(cameraTargetRotation);
+    }
+
+    @Override
+    public void damage(Damage damage) {
+        super.damage(damage);
+        System.out.println("Player took " + damage.getDamage() + " points of damage" + " and has " + getHealth() + " health left");
     }
 }
