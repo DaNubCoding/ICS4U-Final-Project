@@ -110,10 +110,11 @@ public class WorldData {
     }
 
     /**
-     * Clear the surroundings around the player.
+     * Clear the surroundings and cluster around the player.
      */
-    public void clearSurroundings() {
+    private void clearSurroundings() {
         surroundings.clear();
+        Cluster.clearClusters();
     }
 
     private static Feature generateFeature(WorldData data, long id, Vector2 coord, FeatureData featureData) {
@@ -270,6 +271,29 @@ public class WorldData {
         );
         playerLocation = new Vector2(x, y);
         return true;
+    }
+
+    /**
+     * Set the player location without updating surrounding features.
+     * 
+     * @param x the new player x-location, in grid coordinate
+     * @param y the new player y-location, in grid coordinate
+     */
+    private void setPlayerLocation(int x, int y) {
+        playerLocation = new Vector2(x, y);
+    }
+
+    /**
+     * Teleport the player.
+     * 
+     * @param x the new player x-location, in grid coordinate
+     * @param y the new player y-location, in grid coordinate
+     */
+    public void teleportPlayer(int x, int y) {
+        clearSurroundings();
+        setPlayerLocation(x, y);
+        clearSurroundings();
+        generateWorld();
     }
 
     /**

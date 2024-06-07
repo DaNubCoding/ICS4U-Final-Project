@@ -50,6 +50,9 @@ public class Player extends Entity {
             dashTimer.restart();
         }
 
+        // Update player's weapon
+        weapon.update();
+
         // TODO: TEMPORARY for demo purposes
         if (Greenfoot.isKeyDown("q") && getWorldY() == 0) {
             reduceMomentum(0.33);
@@ -83,9 +86,6 @@ public class Player extends Entity {
         // Update camera stuff
         Camera.targetPosition(getWorldPos().add(new Vector3(0, 10, 0)));
         updateCameraRotation();
-
-        // Update player's weapon
-        weapon.update();
     }
 
     @Override

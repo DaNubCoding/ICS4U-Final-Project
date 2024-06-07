@@ -50,6 +50,9 @@ public class WorldMap extends PixelWorld {
                             Text.AnchorY.CENTER, 
                             new Color(180, 180, 180)),
                     50, 50);
+
+        // PRINT DEBUG TODO: remove this
+        System.out.println(initialWorld.getSprites(TreeCanopy.class).size());
     }
 
     @Override

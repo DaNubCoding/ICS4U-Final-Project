@@ -64,4 +64,10 @@ public enum Cluster {
             centers.remove(center);
         }
     }
+
+    public static void clearClusters() {
+        for(List<Vector2> l : clusterCenters.values()) {
+            l.clear();
+        }
+    }
 }
