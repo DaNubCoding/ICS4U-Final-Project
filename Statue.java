@@ -11,13 +11,13 @@ public class Statue extends Enemy {
         "statue_activating1",
         "statue_activating2"
     );
-    private static final Animation attackAnimation = new Animation(6,
-        "statue_attack1",
-        "statue_attack2",
-        "statue_attack3",
-        "statue_attack4",
-        "statue_attack5"
-    );
+    private static final Animation[] attackAnimations = new Animation[] {
+        new Animation(12, "statue_attack1"),
+        new Animation(12, "statue_attack2"),
+        new Animation(12, "statue_attack3"),
+        new Animation(12, "statue_attack4"),
+        new Animation(12, "statue_attack5"),
+    };
 
     private Timer moveTimer = new Timer(300);
     private Timer attackTimer = new Timer(60);
@@ -65,10 +65,9 @@ public class Statue extends Enemy {
 
         if (playerPos.distanceTo(enemyPos) < 20 && attackTimer.ended()) {
             System.out.println("Golem attacking player");
-            Damage damage = new Damage(this, this, 10, getWorldPos(), 20);
-            damage.setTarget(player);
-            player.damage(damage);
-            playOneTimeAnimation(attackAnimation);
+            meleePlayer(10, 20);
+            Animation attackAnim = attackAnimations[(int) (Math.random() * attackAnimations.length)];
+            playOneTimeAnimation(attackAnim);
             attackTimer.restart();
         }
     }

@@ -210,4 +210,13 @@ public class SpriteStackingWorld extends PixelWorld {
     public List<Damage> getDamages() {
         return damages;
     }
+
+    /**
+     * Add a {@link Damage} object to the world.
+     *
+     * @param damage the Damage object
+     */
+    public void addDamage(Damage damage) {
+        damages.add(damage);
+    }
 }
