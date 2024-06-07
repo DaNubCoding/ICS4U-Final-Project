@@ -67,10 +67,6 @@ public class Player extends Entity {
             physics.applyImpulse(Vector3.fromXZ(horImpulse).add(new Vector3(0, 6, 0)));
         }
 
-        // TODO: move to Entity after demo
-        // Apply gravitational force
-        physics.applyForce(new Vector3(0, -0.2, 0));
-
         // Update physics
         physics.update();
 

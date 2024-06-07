@@ -30,6 +30,10 @@ public class PhysicsController {
      * The default maximum speed at which the client can move.
      */
     public static final double MAX_SPEED = 2.0;
+    /**
+     * The acceleration due to gravity.
+     */
+    public static final double GRAVITY = -0.2;
 
     private WorldObject client;
 
@@ -294,6 +298,9 @@ public class PhysicsController {
                 targeting = false;
             }
         }
+
+        // Apply gravity
+        applyForce(new Vector3(0, GRAVITY, 0));
 
         // Clamp internal acceleration
         try {
