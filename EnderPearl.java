@@ -8,7 +8,7 @@ import greenfoot.GreenfootImage;
  */
 public class EnderPearl extends Projectile {
     public EnderPearl(Entity owner, Vector3 direction, Vector3 startpos, int inaccuracy) {
-        super(owner, direction.setY(10), startpos, inaccuracy, 2000);
+        super(owner, direction.setY(8), startpos, inaccuracy, 2000);
         setOriginalImage(new GreenfootImage("test_pistol.png"));
     }
 

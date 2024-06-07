@@ -218,6 +218,7 @@ public class Text extends Sprite {
         case CENTER:
             x -= width / 2.0;
             break;
+        default:
         }
         switch (anchorY) {
         case BOTTOM:
@@ -226,6 +227,7 @@ public class Text extends Sprite {
         case CENTER:
             y -= height / 2.0;
             break;
+        default:
         }
         canvas.drawImage(image, (int) x, (int) y);
     }

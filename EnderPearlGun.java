@@ -6,6 +6,6 @@
  */
 public class EnderPearlGun extends RangedWeapon {
     public EnderPearlGun(Player player) {
-        super(player, "test_pistol.png", 0, 3, 1, 0, 100, EnderPearl::new);
+        super(player, "test_pistol.png", 0, 1, 1, 0, 100, EnderPearl::new);
     }
 }
