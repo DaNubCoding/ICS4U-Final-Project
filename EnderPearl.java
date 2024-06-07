@@ -29,7 +29,8 @@ public class EnderPearl extends Projectile {
         double y = Math.max(pos.y, 0);
         getOwner().setWorldPos(pos.setY(y));
         if(getOwner() instanceof Player) {
-            getWorld().getWorldData().updatePlayerLocation((int)pos.x, (int)pos.z);
+            getWorld().getWorldData().clearSurroundings();
+            getWorld().getWorldData().updatePlayerLocation((int)pos.x / 20, (int)pos.z / 20);
             getWorld().getWorldData().generateWorld();
         }
         disappear();

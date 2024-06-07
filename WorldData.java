@@ -56,7 +56,7 @@ public class WorldData {
     public WorldData(long seed) {
         this();
         Scanner scf;
-        try{
+        try {
             scf = new Scanner(new File("saves/save_" + seed + ".csv"));
             // get the seed
             this.seed = Long.valueOf(scf.nextLine());
@@ -89,8 +89,8 @@ public class WorldData {
      */
     public void generateWorld() {
         // clusters
-        for(int i = 0; i < (4 * generationRadius + 1); i++) {
-            for(int j = 0; j < (4 * generationRadius + 1); j++) {
+        for (int i = 0; i < (4 * generationRadius + 1); i++) {
+            for (int j = 0; j < (4 * generationRadius + 1); j++) {
                 int dx = j - 2 * generationRadius;
                 int dy = i - 2 * generationRadius;
                 Vector2 elementPos = playerLocation.add(new Vector2(dx, dy));
@@ -99,14 +99,21 @@ public class WorldData {
         }
 
         // features
-        for(int i = 0; i < (2 * generationRadius + 1); i++) {
-            for(int j = 0; j < (2 * generationRadius + 1); j++) {
+        for (int i = 0; i < (2 * generationRadius + 1); i++) {
+            for (int j = 0; j < (2 * generationRadius + 1); j++) {
                 int dx = j - generationRadius;
                 int dy = i - generationRadius;
                 Vector2 elementPos = playerLocation.add(new Vector2(dx, dy));
                 addFeature(this, elementPos);
             }
         }
+    }
+
+    /**
+     * Clear the surroundings around the player.
+     */
+    public void clearSurroundings() {
+        surroundings.clear();
     }
 
     private static Feature generateFeature(WorldData data, long id, Vector2 coord, FeatureData featureData) {
@@ -117,7 +124,7 @@ public class WorldData {
 
         int i = 0;
         // spawn rate for the features
-        for(Feature.Type type : Feature.Type.values()) {
+        for (Feature.Type type : Feature.Type.values()) {
 
             // init object's spawn rate
             if(i == 0) spawnRates[0] = type.spawnRate;
@@ -157,7 +164,7 @@ public class WorldData {
         rand = new Random(id);
         // clusters currently use a probability system
         int roll = rand.nextInt(500);
-        for(Cluster cluster : Cluster.values()) {
+        for (Cluster cluster : Cluster.values()) {
             if(roll < cluster.spawnRate) {
                 return cluster;
             }
@@ -205,7 +212,7 @@ public class WorldData {
             double newBorder = y + radius * (bigger ? 1 : -1);
 
             // add all elements on new border
-            for(int i = rightBorder; i >= leftBorder; i--) {
+            for (int i = rightBorder; i >= leftBorder; i--) {
 
                 // initlize element information
                 Vector2 elementPos = new Vector2(i, newBorder);
@@ -213,7 +220,7 @@ public class WorldData {
             }
 
             // remove all elements on old border
-            for(int i = rightBorder; i >= leftBorder; i--) {
+            for (int i = rightBorder; i >= leftBorder; i--) {
                 remover.accept(this, new Vector2(i, oldBorder));
             }
         }
@@ -226,13 +233,13 @@ public class WorldData {
             btmBorder = (int) y - radius - 1;
 
             // remove the top and bottom borders
-            for(int i = leftBorder; i <= rightBorder; i++) {
+            for (int i = leftBorder; i <= rightBorder; i++) {
                 remover.accept(this, new Vector2(i, topBorder));
                 remover.accept(this, new Vector2(i, btmBorder));
             }
 
             // remove the left and right borders
-            for(int i = btmBorder; i <= topBorder; i++) {
+            for (int i = btmBorder; i <= topBorder; i++) {
                 remover.accept(this, new Vector2(leftBorder, i));
                 remover.accept(this, new Vector2(rightBorder, i));
             }
