@@ -63,11 +63,21 @@ public class Statue extends Enemy {
         Vector3 playerPos = player.getWorldPos();
         Vector3 enemyPos = getWorldPos();
 
-        if (playerPos.distanceTo(enemyPos) < 20 && attackTimer.ended()) {
-            System.out.println("Golem attacking player");
-            meleePlayer(10, 20);
-            Animation attackAnim = attackAnimations[(int) (Math.random() * attackAnimations.length)];
-            playOneTimeAnimation(attackAnim);
+        if (attackTimer.ended()) {
+            final double dist = playerPos.distanceTo(enemyPos);
+            if (dist < 20) {
+                meleePlayer(10, 20);
+                Animation attackAnim = attackAnimations[(int) (Math.random() * attackAnimations.length)];
+                playOneTimeAnimation(attackAnim);
+            } else if (dist > 100) {
+                EnderPearl pearl = new EnderPearl(
+                    this,
+                    playerPos.subtract(enemyPos).scaleToMagnitude(3),
+                    enemyPos,
+                    10
+                );
+                getWorld().addSprite(pearl, 0, 0);
+            }
             attackTimer.restart();
         }
     }
