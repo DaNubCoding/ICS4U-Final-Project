@@ -46,6 +46,8 @@ public class PhysicsController {
     private Vector3 target;
     private boolean targeting;
     private boolean alwaysTurnTowardsMovement;
+    private boolean affectedByGravity;
+    private boolean affectedByFrictionalForces;
 
     public PhysicsController(WorldObject client) {
         this.client = client;
@@ -55,6 +57,8 @@ public class PhysicsController {
         externalVel = new Vector3();
         maxSpeed = MAX_SPEED;
         maxAccel = MAX_ACCEL;
+        affectedByGravity = true;
+        affectedByFrictionalForces = true;
     }
 
     /**
@@ -300,29 +304,31 @@ public class PhysicsController {
         }
 
         // Apply gravity
-        applyForce(new Vector3(0, GRAVITY, 0));
+        if (affectedByGravity) applyForce(new Vector3(0, GRAVITY, 0));
 
         // Clamp internal acceleration
         try {
             internalAccel = internalAccel.clampMagnitude(maxAccel);
         } catch (ArithmeticException e) {} // Do nothing if acceleration is zero
 
-        // Determine whether to use friction or air resistance
-        final double fricAccel = getWorldY() == 0 ? FRIC_ACCEL : AIR_RES_ACCEL;
+        if (affectedByFrictionalForces) {
+            // Determine whether to use friction or air resistance
+            final double fricAccel = getWorldY() == 0 ? FRIC_ACCEL : AIR_RES_ACCEL;
 
-        // Apply acceleration due to friction to internal velocity
-        try {
-            double horFricMag = Math.min(internalVel.xz.magnitude(), fricAccel);
-            Vector2 fric = internalVel.xz.scaleToMagnitude(horFricMag);
-            internalAccel = internalAccel.subtractXZ(fric);
-        } catch (ArithmeticException e) {} // Do nothing if velocity is zero
+            // Apply acceleration due to friction to internal velocity
+            try {
+                double horFricMag = Math.min(internalVel.xz.magnitude(), fricAccel);
+                Vector2 fric = internalVel.xz.scaleToMagnitude(horFricMag);
+                internalAccel = internalAccel.subtractXZ(fric);
+            } catch (ArithmeticException e) {} // Do nothing if velocity is zero
 
-        // Apply acceleration due to friction to external velocity
-        try {
-            double horFricMag = Math.min(externalVel.xz.magnitude(), fricAccel);
-            Vector2 fric = externalVel.xz.scaleToMagnitude(horFricMag);
-            externalAccel = externalAccel.subtractXZ(fric);
-        } catch (ArithmeticException e) {} // Do nothing if velocity is zero
+            // Apply acceleration due to friction to external velocity
+            try {
+                double horFricMag = Math.min(externalVel.xz.magnitude(), fricAccel);
+                Vector2 fric = externalVel.xz.scaleToMagnitude(horFricMag);
+                externalAccel = externalAccel.subtractXZ(fric);
+            } catch (ArithmeticException e) {} // Do nothing if velocity is zero
+        }
 
         // Update internal velocity
         internalVel = internalVel.add(internalAccel);
@@ -367,10 +373,27 @@ public class PhysicsController {
     }
 
     /**
-     * Always turn the client towards the direction it is moving.
+     * Set whether the client should always turn towards the direction it is
+     * moving.
+     *
+     * @param alwaysTurnTowardsMovement whether the client should always turn
+     *                                  towards movement
      */
-    public void setAlwaysTurnTowardsMovement() {
-        alwaysTurnTowardsMovement = true;
+    public void setAlwaysTurnTowardsMovement(boolean alwaysTurnTowardsMovement) {
+        this.alwaysTurnTowardsMovement = alwaysTurnTowardsMovement;
+    }
+
+    /**
+     * Set whether the client is affected by gravity.
+     *
+     * @param affectedByGravity whether the client is affected by gravity
+     */
+    public void setAffectedByGravity(boolean affectedByGravity) {
+        this.affectedByGravity = affectedByGravity;
+    }
+
+    public void setAffectedByFrictionalForces(boolean affectedByFrictionalForces) {
+        this.affectedByFrictionalForces = affectedByFrictionalForces;
     }
 
     /**

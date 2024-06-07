@@ -25,7 +25,7 @@ public class Player extends Entity {
         super(standingAnimation);
         dashTimer = new Timer(90);
         weapon = new EnderPearlGun(this);
-        physics.setAlwaysTurnTowardsMovement();
+        physics.setAlwaysTurnTowardsMovement(true);
         setHealth(200);
     }
 

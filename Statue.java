@@ -29,7 +29,7 @@ public class Statue extends Enemy {
         setHealth(100);
         physics.setMaxSpeed(1.0);
         physics.setMaxAccel(0.25);
-        physics.setAlwaysTurnTowardsMovement();
+        physics.setAlwaysTurnTowardsMovement(true);
     }
 
     @Override
