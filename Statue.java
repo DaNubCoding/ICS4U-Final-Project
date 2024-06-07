@@ -1,14 +1,10 @@
-import greenfoot.GreenfootImage;
-
 /**
- * The golem enemy.
- * <p>
- * It has no behavior at the moment.
+ * The statue enemy.
  *
  * @author
  * @version June 2024
  */
-public class Golem extends Enemy {
+public class Statue extends Enemy {
     private static final Animation activeAnimation = new Animation(-1, "statue_active");
     private static final Animation dormantAnimation = new Animation(-1, "statue_dormant");
     private static final Animation activatingAnimation = new Animation(12,
@@ -26,7 +22,7 @@ public class Golem extends Enemy {
     private Timer moveTimer = new Timer(300);
     private Timer attackTimer = new Timer(60);
 
-    public Golem() {
+    public Statue() {
         super("statue_active");
         setNoticeRange(100);
         setForgetRange(150);
