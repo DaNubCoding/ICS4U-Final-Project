@@ -1,4 +1,5 @@
 import greenfoot.Greenfoot;
+import java.util.Random;
 
 /**
  * ?????
@@ -7,6 +8,12 @@ import greenfoot.Greenfoot;
  * @version May 2024
  */
 public class Crate extends Feature {
+    private Weapon[] contents = new Weapon[] {
+        new TestPistol(null),
+        new TestSword(null)
+    };
+    Random rand = new Random();
+
     /**
      * Create a new Crate with specified id.
      */
@@ -21,6 +28,7 @@ public class Crate extends Feature {
 
         // Temporary behavior
         if (new Vector2(player.getWorldX(), player.getWorldZ()).distanceTo(getWorldX(), getWorldZ()) < 15) {
+            getWorld().addWorldObject(contents[rand.nextInt(2)], getWorldPos());
             removeFromWorld();
         }
     }

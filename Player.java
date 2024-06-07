@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+
 import greenfoot.*;
 
 /**
@@ -15,18 +17,28 @@ public class Player extends Entity {
         "knight_walk4"
     );
     private static final Animation standingAnimation = new Animation(-1, "knight_standing");
+    public static final int MAX_ITEM_NUM = 2;
 
     private double cameraTargetRotation;
     private Timer dashTimer;
 
-    private Weapon weapon;
+    private ArrayList<Item> hotbar;
+    private int heldIndex;
+
+    private boolean tabFlag = false;
 
     public Player() {
         super(standingAnimation);
+        hotbar = new ArrayList<Item>();
         dashTimer = new Timer(90);
-        weapon = new EnderPearlGun(this);
         physics.setAlwaysTurnTowardsMovement();
         setHealth(200);
+        heldIndex = 0;
+    }
+
+    @Override
+    public void addedToWorld(PixelWorld world) {
+        getWorld().addWorldObject(new EnderPearlGun(this), getWorldPos());
     }
 
     @Override
@@ -51,8 +63,20 @@ public class Player extends Entity {
             dashTimer.restart();
         }
 
-        // Update player's weapon
-        weapon.update();
+        // Update player's held item
+        if (hotbar.size() > 0) hotbar.get(heldIndex).update();
+
+        // Apply weapon changing
+        if (Greenfoot.isKeyDown("tab") && !tabFlag) {
+            if (hotbar.size() > 0) {
+                getWorld().removeSprite(hotbar.get(heldIndex));
+                heldIndex = (heldIndex + 1) % hotbar.size();
+                getWorld().addSprite(hotbar.get(heldIndex), 0, 0);
+            }
+            tabFlag = true;
+        } else if (tabFlag && !Greenfoot.isKeyDown("tab")) {
+            tabFlag = false;
+        }
 
         // TODO: TEMPORARY for demo purposes
         if (Greenfoot.isKeyDown("q") && getWorldY() == 0) {
@@ -88,9 +112,9 @@ public class Player extends Entity {
         // Render the weapon behind the player if the player is facing away
         if ((rot >= 0 && rot < 180) || rot > 330) {
             super.render(canvas);
-            weapon.render(canvas);
+            if (hotbar.size() > 0) hotbar.get(heldIndex).render(canvas);
         } else {
-            weapon.render(canvas);
+            if (hotbar.size() > 0) hotbar.get(heldIndex).render(canvas);
             super.render(canvas);
         }
     }
@@ -112,6 +136,32 @@ public class Player extends Entity {
         double zoom = Camera.getZoom() * (1 + mouseRel.y * 0.002);
         Camera.setZoom(Math.max(0.8, Math.min(6, zoom)));
         Camera.targetRotation(cameraTargetRotation);
+    }
+
+    /**
+     * Get the number of items currently held.
+     * 
+     * @return the size of the hotbar
+     */
+    public int getHotbarSize() {
+        return hotbar.size();
+    }
+
+    public void pickupItem(Item i) {
+        hotbar.add(i);
+        if(hotbar.size() > 1)
+            getWorld().removeSprite(i);
+    }
+
+    public void throwItem() {
+        if(hotbar.size() == 0) return;
+        System.out.println(hotbar.remove(heldIndex));
+        System.out.println(hotbar.size());
+        if(heldIndex < 0 || heldIndex >= hotbar.size()) {
+            heldIndex = 0;
+            if(hotbar.size() != 0)
+                getWorld().addSprite(hotbar.get(heldIndex), 0, 0);
+        }
     }
 
     @Override

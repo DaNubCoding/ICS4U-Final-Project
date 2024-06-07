@@ -28,7 +28,7 @@ public class SpriteStackingWorld extends PixelWorld {
 
         Vector2 playerPos = worldData.getPlayerLocation();
         player = new Player();
-        addSprack(player, playerPos.x * 20, 0, playerPos.y * 20);
+        addWorldObject(player, playerPos.x * 20, 0, playerPos.y * 20);
 
         Camera.resetTo(playerPos.x * 20, 0, playerPos.y * 20, 0, 1.5);
         Camera.setCloseness(0.3);
@@ -37,11 +37,11 @@ public class SpriteStackingWorld extends PixelWorld {
         for (Vector2 coord : worldData.getSurroundings().keySet()) {
             if (worldData.getSurroundings().get(coord) != null) {
                 final int x = (int) coord.x * 20, z = (int) coord.y * 20;
-                addSprack(worldData.getSurroundings().get(coord), x, 0, z);
+                addWorldObject(worldData.getSurroundings().get(coord), x, 0, z);
             }
         }
 
-        addSprack(new Statue(), 20, 0, 20);
+        addWorldObject(new Statue(), 20, 0, 20);
 
         render();
     }
@@ -87,7 +87,7 @@ public class SpriteStackingWorld extends PixelWorld {
                 if (worldData.getSurroundings().get(coord) != null
                 && !features.contains(worldData.getSurroundings().get(coord))) {
                     final int x = (int) coord.x * 20, z = (int) coord.y * 20;
-                    addSprack(worldData.getSurroundings().get(coord), x, 0, z);
+                    addWorldObject(worldData.getSurroundings().get(coord), x, 0, z);
                 }
             }
         }
@@ -113,20 +113,34 @@ public class SpriteStackingWorld extends PixelWorld {
     }
 
     /**
-     * Add a Sprack to the world at the given world position.
+     * Add a WorldObject to the world at the given world position.
      * <p>
      * This is equivalent to calling {@link #addSprite(Sprite, int, int)}
-     * followed by {@link Sprack#setWorldPos(double, double)}.
+     * followed by {@link WorldObject#setWorldPos(double, double, double)}.
      *
-     * @param sprack the Sprack to add
+     * @param worldObject the WorldObject to add
      * @param x the x position
      * @param y the y position
      * @param z the z position
      */
-    public void addSprack(Sprack sprack, double x, double y, double z) {
-        addSprite(sprack, 0, 0);
-        sprack.setWorldPos(x, y, z);
+    public void addWorldObject(WorldObject worldObject, double x, double y, double z) {
+        addSprite((Sprite) worldObject, 0, 0);
+        worldObject.setWorldPos(x, y, z);
     }
+
+    /**
+     * Add a WorldObject to the world at the given world position.
+     * <p>
+     * This is equivalent to calling {@link #addSprite(Sprite, int, int)}
+     * followed by {@link WorldObject#setWorldPos(double, double, double)}.
+     *
+     * @param worldObject the WorldObject to add
+     * @param pos the 3D vector representing the world position
+     */
+    public void addWorldObject(WorldObject worldObject, Vector3 pos) {
+        addSprite((Sprite) worldObject, 0, 0);
+        worldObject.setWorldPos(pos.x, pos.y, pos.z);
+    }    
 
     /**
      * Get all Spracks within a certain range of a center point as a stream.

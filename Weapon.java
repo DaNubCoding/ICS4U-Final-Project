@@ -7,8 +7,7 @@ import greenfoot.*;
  * @author Lucas Fu
  * @version May 2024
  */
-public abstract class Weapon extends WorldSprite {
-    private Player player;
+public abstract class Weapon extends Item {
     private int castTime;
     private int recastTime;
     private boolean casting;
@@ -23,8 +22,7 @@ public abstract class Weapon extends WorldSprite {
      * @param cooldown
      */
     public Weapon(Player player, String image, int windup, int cooldown) {
-        super();
-        this.player = player;
+        super(player, true);
         casting = false;
         castTime = windup;
         recastTime = cooldown;
@@ -37,6 +35,7 @@ public abstract class Weapon extends WorldSprite {
      * Lock the weapon to the player's hand position and rotation.
      */
     public void lockToPlayer() {
+        Player player = getPlayer();
         Vector3 playerPos = player.getWorldPos();
         // transform player's bottom-center location to hand location
         Vector3 handOffset = new Vector3(5, 8, -5).rotateY(player.getWorldRotation());
@@ -54,6 +53,11 @@ public abstract class Weapon extends WorldSprite {
 
     @Override
     public void update() {
+        super.update();
+        if(isOnGround()) {
+            return;
+        }
+
         lockToPlayer();
         updateImage();
         if (Greenfoot.mouseClicked(null)
@@ -67,23 +71,6 @@ public abstract class Weapon extends WorldSprite {
             casting = false;
             recastTimer.restart(recastTime);
         }
-    }
-
-    /**
-     * Get the player to which this weapon is attached to.
-     * @return
-     */
-    public Player getPlayer() {
-        return player;
-    }
-
-    /**
-     * Get the SpriteStackingWorld the weapon is in.
-     *
-     * @return the SpriteStackingWorld the weapon is in
-     */
-    public SpriteStackingWorld getWorld() {
-        return player.getWorld();
     }
 
     /**
