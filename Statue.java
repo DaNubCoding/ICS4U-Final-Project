@@ -27,9 +27,9 @@ public class Statue extends Enemy {
         setNoticeRange(100);
         setForgetRange(150);
         setHealth(100);
-        setMaxSpeed(1.0);
-        setMaxAccel(0.25);
-        setAlwaysTurnTowardsMovement();
+        physics.setMaxSpeed(1.0);
+        physics.setMaxAccel(0.25);
+        physics.setAlwaysTurnTowardsMovement();
     }
 
     @Override
@@ -37,7 +37,7 @@ public class Statue extends Enemy {
         if (moveTimer.ended()) {
             final double distance = Math.random() * 40 + 30;
             final Vector2 offset = new Vector2(Math.random() * 360).multiply(distance);
-            moveToTarget(getWorldPos().xz.add(offset));
+            physics.moveToTarget(getWorldPos().xz.add(offset));
             moveTimer.restart((int) (Math.random() * 300 + 150));
         }
     }
@@ -52,13 +52,13 @@ public class Statue extends Enemy {
     @Override
     public void forget(Player player) {
         System.out.println("Golem forgot player");
-        forgetTarget();
+        physics.forgetTarget();
         setLoopingAnimation(dormantAnimation);
     }
 
     @Override
     public void engage(Player player) {
-        moveToNearPlayer(15);
+        physics.moveToNearPlayer(15);
 
         Vector3 playerPos = player.getWorldPos();
         Vector3 enemyPos = getWorldPos();
