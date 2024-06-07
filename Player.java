@@ -31,7 +31,7 @@ public class Player extends Entity {
         super(standingAnimation);
         hotbar = new ArrayList<Item>();
         dashTimer = new Timer(90);
-        physics.setAlwaysTurnTowardsMovement();
+        physics.setAlwaysTurnTowardsMovement(true);
         setHealth(200);
         heldIndex = 0;
     }

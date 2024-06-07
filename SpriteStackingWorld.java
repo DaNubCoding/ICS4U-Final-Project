@@ -123,24 +123,23 @@ public class SpriteStackingWorld extends PixelWorld {
      * @param y the y position
      * @param z the z position
      */
-    public void addWorldObject(WorldObject worldObject, double x, double y, double z) {
-        addSprite((Sprite) worldObject, 0, 0);
-        worldObject.setWorldPos(x, y, z);
+    public void addWorldObject(WorldObject object, double x, double y, double z) {
+        addSprite((Sprite) object, 0, 0);
+        object.setWorldPos(x, y, z);
     }
 
     /**
      * Add a WorldObject to the world at the given world position.
      * <p>
      * This is equivalent to calling {@link #addSprite(Sprite, int, int)}
-     * followed by {@link WorldObject#setWorldPos(double, double, double)}.
+     * followed by {@link WorldObject#setWorldPos(Vector3)}.
      *
-     * @param worldObject the WorldObject to add
-     * @param pos the 3D vector representing the world position
+     * @param object the WorldObject to add
+     * @param pos the position
      */
-    public void addWorldObject(WorldObject worldObject, Vector3 pos) {
-        addSprite((Sprite) worldObject, 0, 0);
-        worldObject.setWorldPos(pos.x, pos.y, pos.z);
-    }    
+    public void addWorldObject(WorldObject object, Vector3 pos) {
+        addWorldObject(object, pos.x, pos.y, pos.z);
+    }
 
     /**
      * Get all Spracks within a certain range of a center point as a stream.

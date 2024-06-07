@@ -9,7 +9,7 @@ public abstract class RangedWeapon extends Weapon {
 
     @FunctionalInterface
     public static interface ProjectileFactory {
-        public Projectile create(Entity owner, Vector3 direction, Vector3 pos, int inaccuracy);
+        public Projectile create(Entity owner, Vector3 initialVel, Vector3 pos, int inaccuracy);
     }
 
     private ProjectileFactory projFactory;
@@ -18,7 +18,7 @@ public abstract class RangedWeapon extends Weapon {
     private int shotCount;
 
     public RangedWeapon(Player player, String image, int inaccuracy,
-                        double speed, int shotCount, int windup, int cooldown, 
+                        double speed, int shotCount, int windup, int cooldown,
                         ProjectileFactory projectileFactory) {
         super(player, image, windup, cooldown);
         projFactory = projectileFactory;
@@ -34,7 +34,7 @@ public abstract class RangedWeapon extends Weapon {
 
     /**
      * Get the player's shooting direction from the mouse
-     * 
+     *
      * @return the direction of the mouse as a 3d vector with no vertical component
      */
     private Vector3 getProjectileDirection() {

@@ -8,40 +8,45 @@ import java.util.Random;
  * @version June 2024
  */
 public abstract class Projectile extends WorldSprite {
-    private Vector3 moveDirection;
     private Entity owner;
-    private int lifespan;
+    private Timer lifeTimer;
     private Random rand = new Random();
+    public final PhysicsController physics = new PhysicsController(this);
 
     /**
      * Create a new projectile using direction, starting position, and inaccuracy
      *
      * @param owner the entity that created this projectile
-     * @param direction the movement direction of the projectile, speed included
+     * @param initialVel the initial velocity of the projectile
      * @param startPos the initial position of the projectile
      * @param inaccuracy the inaccuracy of the projectile, measured in degrees
      * @param lifespan the number of frames this projectile can last
      */
-    public Projectile(Entity owner, Vector3 direction, Vector3 startPos,
+    public Projectile(Entity owner, Vector3 initialVel, Vector3 startPos,
                       int inaccuracy, int lifespan) {
-        super();
         this.owner = owner;
-        double horizAngle = new Vector2(direction.x, direction.z).angle();
-        double dAngle = inaccuracy == 0 ? 0 : (rand.nextDouble() * inaccuracy - inaccuracy/2.0);
-        double adjustedAngle = horizAngle + dAngle;
-        Vector2 adjVector = new Vector2(adjustedAngle);
-        moveDirection = direction.add(new Vector3(adjVector.x, 0, adjVector.y));
+
+        physics.applyImpulse(adjustForInaccuracy(initialVel, inaccuracy));
+        physics.setAffectedByFrictionalForces(false);
+        physics.setAffectedByGravity(false);
         setWorldPos(startPos);
-        this.lifespan = lifespan;
+
+        lifeTimer = new Timer(lifespan);
+    }
+
+    private Vector3 adjustForInaccuracy(Vector3 initialVel, int inaccuracy) {
+        double dAngle = rand.nextDouble() * inaccuracy - inaccuracy / 2.0;
+        double adjustedAngle = initialVel.xz.angle() + dAngle;
+        Vector2 adjVector = new Vector2(adjustedAngle);
+        return initialVel.add(Vector3.fromXZ(adjVector));
     }
 
     @Override
     public void update() {
-        setWorldPos(getWorldPos().add(moveDirection));
-        lifespan--;
         movingUpdate();
-        if(hitCondition()) hit();
-        if (lifespan<=0) disappear();
+        physics.update();
+        if (hitCondition()) hit();
+        if (lifeTimer.ended()) disappear();
     }
 
     /**
@@ -55,10 +60,10 @@ public abstract class Projectile extends WorldSprite {
 
     /**
      * The condition to check if a hit happened.
-     * <p> 
-     * Currently checks whether a direct hit occured (enemy less than range of 10), 
+     * <p>
+     * Currently checks whether a direct hit occured (enemy less than range of 10),
      * but don't forget that you can override this!
-     * 
+     *
      * @return whether the condition has been met
      */
     public boolean hitCondition() {
@@ -89,28 +94,10 @@ public abstract class Projectile extends WorldSprite {
 
     /**
      * Get the owner of this projectile.
-     * 
+     *
      * @return the owner of this projectile
      */
     public Entity getOwner() {
         return owner;
-    }
-
-    /**
-     * Set the move direction to a new 3d vector.
-     * 
-     * @param newDirection the new move direction
-     */
-    public void setMoveDirection(Vector3 newDirection) {
-        moveDirection = newDirection;
-    }
-
-    /**
-     * Get the move direction of this projectile.
-     * 
-     * @return the current move direction
-     */
-    public Vector3 getMoveDirection() {
-        return moveDirection;
     }
 }

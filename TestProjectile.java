@@ -4,7 +4,7 @@ import greenfoot.GreenfootImage;
 
 /**
  * A projectile shot by the testing pistol, also for testing pyrposes :)
- * 
+ *
  * @author Lucas Fu
  * @version June 2024
  */
@@ -27,12 +27,13 @@ public class TestProjectile extends Projectile {
     @Override
     public void hit() {
         // bounce
-        setMoveDirection(getMoveDirection().rotateY(rand.nextInt(360)));
-        setWorldPos(getWorldPos().add(getMoveDirection().multiply(2)));
-        
+        // get impulse before losing momentum
+        Vector3 impulse = physics.getVelocity().rotateY(rand.nextInt(360));
+        physics.reduceMomentum(1.0); // lose all momentum
+        physics.applyImpulse(impulse);
+
         // create damage
         Damage dmg = new Damage(getOwner(), this, 10, getWorldPos(), 10);
-        dmg.setInterval(0);
         getWorld().getDamages().add(dmg);
     }
 }
