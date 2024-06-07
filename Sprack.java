@@ -20,7 +20,7 @@ import greenfoot.*;
  *
  * @see SprackView
  */
-public class Sprack extends Sprite {
+public class Sprack extends Sprite implements WorldObject {
     // The current looping animation of this Sprack
     private Animation loopingAnimation;
     // The current one-time animation of this Sprack, or null if none
@@ -88,6 +88,7 @@ public class Sprack extends Sprite {
      *
      * @param rotation the rotation of the Sprack, in degrees
      */
+    @Override
     public void setWorldRotation(double rotation) {
         this.rotation = Vector2.normalizeAngle(rotation);
     }
@@ -99,6 +100,7 @@ public class Sprack extends Sprite {
      *
      * @return the rotation of the Sprack, in degrees
      */
+    @Override
     public double getWorldRotation() {
         return rotation;
     }
@@ -113,6 +115,7 @@ public class Sprack extends Sprite {
      * @param y the y position
      * @param z the z position
      */
+    @Override
     public void setWorldPos(double x, double y, double z) {
         worldPos = new Vector3(x, y, z);
     }
@@ -125,6 +128,7 @@ public class Sprack extends Sprite {
      *
      * @param position the position
      */
+    @Override
     public void setWorldPos(Vector3 position) {
         worldPos = position;
     }
@@ -230,6 +234,7 @@ public class Sprack extends Sprite {
      *
      * @return the x position of the Sprack
      */
+    @Override
     public double getWorldX() {
         return worldPos.x;
     }
@@ -239,6 +244,7 @@ public class Sprack extends Sprite {
      *
      * @return the y position of the Sprack
      */
+    @Override
     public double getWorldY() {
         return worldPos.y;
     }
@@ -248,6 +254,7 @@ public class Sprack extends Sprite {
      *
      * @return the z position of the Sprack
      */
+    @Override
     public double getWorldZ() {
         return worldPos.z;
     }
@@ -257,6 +264,7 @@ public class Sprack extends Sprite {
      *
      * @return the world position of the Sprack
      */
+    @Override
     public Vector3 getWorldPos() {
         return worldPos;
     }

@@ -6,7 +6,7 @@ import greenfoot.*;
  * @author Andrew Wang
  * @version May 2024
  */
-public class WorldSprite extends TransformableSprite {
+public class WorldSprite extends TransformableSprite implements WorldObject {
     private Vector3 worldPos;
 
     public WorldSprite() {
@@ -24,6 +24,7 @@ public class WorldSprite extends TransformableSprite {
      * @param y the y position
      * @param z the z position
      */
+    @Override
     public void setWorldPos(double x, double y, double z) {
         worldPos = new Vector3(x, y, z);
     }
@@ -36,6 +37,7 @@ public class WorldSprite extends TransformableSprite {
      *
      * @param position the position
      */
+    @Override
     public void setWorldPos(Vector3 position) {
         worldPos = position;
     }
@@ -48,8 +50,68 @@ public class WorldSprite extends TransformableSprite {
      *
      * @return the current world position of the sprite.
      */
+    @Override
     public Vector3 getWorldPos() {
         return worldPos;
+    }
+
+    /**
+     * Get the x position of the sprite in the world.
+     * <p>
+     * The world position is the position of the sprite in the game world, not
+     * the screen position.
+     *
+     * @return the x position of the sprite in the world
+     */
+    @Override
+    public double getWorldX() {
+        return worldPos.x;
+    }
+
+    /**
+     * Get the y position of the sprite in the world.
+     * <p>
+     * The world position is the position of the sprite in the game world, not
+     * the screen position.
+     *
+     * @return the y position of the sprite in the world
+     */
+    @Override
+    public double getWorldY() {
+        return worldPos.y;
+    }
+
+    /**
+     * Get the z position of the sprite in the world.
+     * <p>
+     * The world position is the position of the sprite in the game world, not
+     * the screen position.
+     *
+     * @return the z position of the sprite in the world
+     */
+    @Override
+    public double getWorldZ() {
+        return worldPos.z;
+    }
+
+    /**
+     * Get the world rotation of the sprite.
+     *
+     * @return the rotation of the sprite
+     */
+    @Override
+    public double getWorldRotation() {
+        return getScreenRotation();
+    }
+
+    /**
+     * Set the world rotation of the sprite.
+     *
+     * @param rotation the rotation of the sprite
+     */
+    @Override
+    public void setWorldRotation(double rotation) {
+        setScreenRotation(rotation);
     }
 
     public void render(GreenfootImage canvas) {

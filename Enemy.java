@@ -42,7 +42,7 @@ public abstract class Enemy extends Entity {
             idle(player);
         }
 
-        updateMovement();
+        physics.update();
     }
 
     /**

@@ -25,6 +25,7 @@ public class Player extends Entity {
         super(standingAnimation);
         dashTimer = new Timer(90);
         weapon = new EnderPearlGun(this);
+        physics.setAlwaysTurnTowardsMovement();
         setHealth(200);
     }
 
@@ -32,21 +33,21 @@ public class Player extends Entity {
     public void update() {
         // Apply input acceleration
         if (Greenfoot.isKeyDown("d")) {
-            accelerate(new Vector2(Camera.getRotation()));
+            physics.accelerate(new Vector2(Camera.getRotation()));
         }
         if (Greenfoot.isKeyDown("s")) {
-            accelerate(new Vector2(Camera.getRotation() + 90));
+            physics.accelerate(new Vector2(Camera.getRotation() + 90));
         }
         if (Greenfoot.isKeyDown("a")) {
-            accelerate(new Vector2(Camera.getRotation() + 180));
+            physics.accelerate(new Vector2(Camera.getRotation() + 180));
         }
         if (Greenfoot.isKeyDown("w")) {
-            accelerate(new Vector2(Camera.getRotation() + 270));
+            physics.accelerate(new Vector2(Camera.getRotation() + 270));
         }
 
         // Dashing
         if (Greenfoot.isKeyDown("space") && dashTimer.ended()) {
-            applyImpulse(new Vector2(getWorldRotation()).multiply(6));
+            physics.applyImpulse(new Vector2(getWorldRotation()).multiply(6));
             dashTimer.restart();
         }
 
@@ -55,29 +56,26 @@ public class Player extends Entity {
 
         // TODO: TEMPORARY for demo purposes
         if (Greenfoot.isKeyDown("q") && getWorldY() == 0) {
-            reduceMomentum(0.33);
-            applyImpulse(new Vector3(0, 4, 0));
+            physics.reduceMomentum(0.33);
+            physics.applyImpulse(new Vector3(0, 4, 0));
         }
 
         // TODO: TEMPORARY for demo purposes
         if (Greenfoot.isKeyDown("e") && getWorldY() == 0) {
-            reduceMomentum(0.9);
+            physics.reduceMomentum(0.9);
             Vector2 horImpulse = new Vector2(getWorldRotation()).multiply(5);
-            applyImpulse(Vector3.fromXZ(horImpulse).add(new Vector3(0, 6, 0)));
+            physics.applyImpulse(Vector3.fromXZ(horImpulse).add(new Vector3(0, 6, 0)));
         }
 
         // TODO: move to Entity after demo
         // Apply gravitational force
-        applyForce(new Vector3(0, -0.2, 0));
+        physics.applyForce(new Vector3(0, -0.2, 0));
 
-        // Update position with velocity and friction, and update position
-        updateMovement();
-
-        // Turn towards where the player is moving
-        turnTowardsMovement();
+        // Update physics
+        physics.update();
 
         // Set the animation based on whether the player is moving
-        if (isMoving()) {
+        if (physics.isMoving()) {
             setLoopingAnimation(walkingAnimation);
         } else {
             setLoopingAnimation(standingAnimation);
