@@ -193,6 +193,7 @@ public class Entity extends Sprack {
      */
     public void moveToNearPlayer(double range) {
         Vector3 playerPos = getWorld().getPlayer().getWorldPos();
+        if (playerPos.distanceTo(getWorldPos()) <= range) return;
         Vector3 delta = getWorldPos().subtract(playerPos);
         moveToTarget(playerPos.add(delta.scaleToMagnitude(range)));
     }

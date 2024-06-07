@@ -135,4 +135,16 @@ public abstract class Enemy extends Entity {
     public int getForgetRange() {
         return forgetRange;
     }
+
+    /**
+     * Melee specifically the player within a certain range.
+     *
+     * @param damage the damage
+     * @param range the range
+     */
+    public void meleePlayer(int damage, int range) {
+        Damage meleeDamage = new Damage(this, this, damage, getWorldPos(), range);
+        meleeDamage.setTarget(getWorld().getPlayer());
+        getWorld().addDamage(meleeDamage);
+    }
 }
