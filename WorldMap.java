@@ -40,6 +40,16 @@ public class WorldMap extends PixelWorld {
                 map[(int)v.y][(int)v.x] = colors.get(f.getClass());
         }
 
+        // put entities
+        for(Entity e : initialWorld.getEntitiesInRange(Vector3.fromXZ(playerPos), genRad * 20)) {
+            if(e instanceof Player) continue;
+            Vector3 v = e.getWorldPos().divide(20);
+            v = v.subtract(Vector3.fromXZ(playerPos));
+            v = v.add(new Vector3(genRad, 0, genRad));
+            if(v.z > -1 && v.z < map.length && v.z > -1 && v.z < map.length)
+                map[(int)v.z][(int)v.x] = new Color(180, 20, 20);
+        }
+
         // put player
         map[genRad][genRad] = new Color(255, 10, 10);
 
