@@ -19,7 +19,7 @@ public class Tree extends Feature {
 
     @Override
     public void addedToWorld(PixelWorld world) {
-        getWorld().addSprack(canopy, getWorldX(), getWorldY() + 29, getWorldZ());
+        getWorld().addWorldObject(canopy, getWorldX(), getWorldY() + 29, getWorldZ());
         canopy.setWorldRotation(Greenfoot.getRandomNumber(360));
     }
 
