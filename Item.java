@@ -1,4 +1,3 @@
-import greenfoot.Greenfoot;
 
 /**
  * Items are world sprites that can be held in the player inventory, used, and
@@ -11,7 +10,7 @@ public class Item extends WorldSprite {
     private Player player;
     private boolean isOnGround;
     private PhysicsController physics = new PhysicsController(this);
-    private boolean qFlag = false;
+    private Timer pickupTimer = new Timer(0);
 
     public Item(Player player, boolean isOnGround) {
         this.isOnGround = isOnGround;
@@ -21,7 +20,7 @@ public class Item extends WorldSprite {
     @Override
     public void update() {
         if(isOnGround) awaitPickup();
-        if(!isOnGround) awaitDrop();
+        physics.update();
     }
 
     public boolean isOnGround() {
@@ -29,14 +28,13 @@ public class Item extends WorldSprite {
     }
 
     private void awaitPickup() {
-        Vector3 playerPos = getWorld().getPlayer().getWorldPos();
-        if(getWorldPos().distanceTo(playerPos) < 50) {
-            physics.setMaxSpeed(3);
-            physics.setMaxAccel(3);
+        player = getWorld().getPlayer();
+        Vector3 playerPos = player.getWorldPos();
+        if(getWorldPos().distanceTo(playerPos) < 45 && pickupTimer.ended()
+        && player.getHotbarSize() < Player.MAX_ITEM_NUM) {
             physics.accelTowards(playerPos);
         }
-        if(getWorldPos().distanceTo(playerPos) < 10 && !qFlag) {
-            player = getWorld().getPlayer();
+        if(getWorldPos().distanceTo(playerPos) < 15 && pickupTimer.ended()) {
             if(player.getHotbarSize() < Player.MAX_ITEM_NUM) {
                 isOnGround = false;
                 player.pickupItem(this);
@@ -44,15 +42,10 @@ public class Item extends WorldSprite {
         }
     }
 
-    private void awaitDrop() {
-        if(Greenfoot.isKeyDown("q") && !qFlag) {
-            physics.applyImpulse(new Vector3(0, 0, 1).rotateY(getPlayer().getWorldRotation()));
-            getPlayer().throwItem();
-            isOnGround = true;
-            qFlag = true;
-        } else if (!Greenfoot.isKeyDown("q") && qFlag) {
-            qFlag = false;
-        }
+    public void drop() {
+        physics.applyImpulse(new Vector3(3, 3, 0).rotateY(getPlayer().getWorldRotation()));
+        isOnGround = true;
+        pickupTimer.restart(100);
     }
 
     public void setPlayer(Player player) {

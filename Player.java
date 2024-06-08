@@ -71,17 +71,18 @@ public class Player extends Entity {
             if (hotbar.size() > 0) {
                 getWorld().removeSprite(hotbar.get(heldIndex));
                 heldIndex = (heldIndex + 1) % hotbar.size();
-                getWorld().addSprite(hotbar.get(heldIndex), 0, 0);
+                getWorld().addWorldObject(hotbar.get(heldIndex), getWorldPos().setY(1000));
             }
             tabFlag = true;
         } else if (tabFlag && !Greenfoot.isKeyDown("tab")) {
             tabFlag = false;
         }
 
-        // TODO: TEMPORARY for demo purposes
+        // Throw item
         if (Greenfoot.isKeyDown("q") && getWorldY() == 0) {
             physics.reduceMomentum(0.33);
             physics.applyImpulse(new Vector3(0, 4, 0));
+            throwItem();
         }
 
         // TODO: TEMPORARY for demo purposes
@@ -155,8 +156,8 @@ public class Player extends Entity {
 
     public void throwItem() {
         if(hotbar.size() == 0) return;
-        System.out.println(hotbar.remove(heldIndex));
-        System.out.println(hotbar.size());
+        hotbar.get(heldIndex).drop();
+        hotbar.remove(heldIndex);
         if(heldIndex < 0 || heldIndex >= hotbar.size()) {
             heldIndex = 0;
             if(hotbar.size() != 0)
