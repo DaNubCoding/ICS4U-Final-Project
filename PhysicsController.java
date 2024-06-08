@@ -11,17 +11,19 @@
  */
 public class PhysicsController {
     /**
-     * The default acceleration due to the client's internal forces.
+     * The default magnitude of the acceleration due to the client's internal
+     * forces.
      */
-    public static final double MAX_ACCEL = 0.5;
+    public static final double MAX_ACCEL_MAG = 0.5;
     /**
-     * The acceleration due to friction when the client is on the ground.
+     * The magnitude of the acceleration due to friction when the client is on
+     * the ground.
      */
-    public static final double FRIC_ACCEL = 0.2;
+    public static final double FRIC_MAG = 0.2;
     /**
-     * The acceleration due to air resistance when the client is in the air.
+     * The default acceleration due to air resistance.
      */
-    public static final double AIR_RES_ACCEL = 0.03;
+    public static final double AIR_RES_MAG = 0.03;
     /**
      * The angular acceleration of the client when turning.
      */
@@ -31,7 +33,7 @@ public class PhysicsController {
      */
     public static final double MAX_SPEED = 2.0;
     /**
-     * The acceleration due to gravity.
+     * The magnitude of the acceleration due to gravity.
      */
     public static final double GRAVITY = -0.2;
 
@@ -43,6 +45,7 @@ public class PhysicsController {
     private Vector3 externalVel;
     private double maxSpeed;
     private double maxAccel;
+    private double airResMag;
     private Vector3 target;
     private boolean targeting;
     private boolean alwaysTurnTowardsMovement;
@@ -56,7 +59,8 @@ public class PhysicsController {
         internalVel = new Vector3();
         externalVel = new Vector3();
         maxSpeed = MAX_SPEED;
-        maxAccel = MAX_ACCEL;
+        maxAccel = MAX_ACCEL_MAG;
+        airResMag = AIR_RES_MAG;
         affectedByGravity = true;
         affectedByFrictionalForces = true;
     }
@@ -295,7 +299,7 @@ public class PhysicsController {
             // Vf = 0
             // d = -Vi^2 / 2a
             final double vi = internalVel.xz.magnitude();
-            final double d = vi * vi / (2 * FRIC_ACCEL);
+            final double d = vi * vi / (2 * FRIC_MAG);
             // stop accelerating if the client is close enough to the target
             // that friction will stop it just in time to reach the target
             if (getWorldPos().distanceTo(target) < d) {
@@ -303,31 +307,30 @@ public class PhysicsController {
             }
         }
 
-        // Apply gravity
-        if (affectedByGravity) applyForce(new Vector3(0, GRAVITY, 0));
-
         // Clamp internal acceleration
         try {
             internalAccel = internalAccel.clampMagnitude(maxAccel);
         } catch (ArithmeticException e) {} // Do nothing if acceleration is zero
 
+        // Apply gravity
+        if (affectedByGravity) applyForce(new Vector3(0, GRAVITY, 0));
+
         if (affectedByFrictionalForces) {
-            // Determine whether to use friction or air resistance
-            final double fricAccel = getWorldY() == 0 ? FRIC_ACCEL : AIR_RES_ACCEL;
-
-            // Apply acceleration due to friction to internal velocity
+            // Apply acceleration due to air resistance to internal velocity
             try {
-                double horFricMag = Math.min(internalVel.xz.magnitude(), fricAccel);
-                Vector2 fric = internalVel.xz.scaleToMagnitude(horFricMag);
-                internalAccel = internalAccel.subtractXZ(fric);
+                double mag = Math.min(internalVel.magnitude(), airResMag);
+                Vector3 airRes = internalVel.scaleToMagnitude(mag);
+                internalVel = internalVel.subtract(airRes);
             } catch (ArithmeticException e) {} // Do nothing if velocity is zero
 
-            // Apply acceleration due to friction to external velocity
-            try {
-                double horFricMag = Math.min(externalVel.xz.magnitude(), fricAccel);
-                Vector2 fric = externalVel.xz.scaleToMagnitude(horFricMag);
-                externalAccel = externalAccel.subtractXZ(fric);
-            } catch (ArithmeticException e) {} // Do nothing if velocity is zero
+            if (getWorldY() == 0) {
+                // Apply acceleration due to friction to internal velocity
+                try {
+                    double horFricMag = Math.min(internalVel.xz.magnitude(), FRIC_MAG);
+                    Vector2 fric = internalVel.xz.scaleToMagnitude(horFricMag);
+                    internalVel = internalVel.subtractXZ(fric);
+                } catch (ArithmeticException e) {} // Do nothing if velocity is zero
+            }
         }
 
         // Update internal velocity
@@ -335,6 +338,24 @@ public class PhysicsController {
 
         // Clamp internal velocity
         internalVel = internalVel.clampMagnitude(maxSpeed);
+
+        if (affectedByFrictionalForces) {
+            // Apply acceleration due to air resistance to external velocity
+            try {
+                double mag = Math.min(externalVel.magnitude(), airResMag);
+                Vector3 airRes = externalVel.scaleToMagnitude(mag);
+                externalVel = externalVel.subtract(airRes);
+            } catch (ArithmeticException e) {} // Do nothing if velocity is zero
+
+            if (getWorldY() == 0) {
+                // Apply acceleration due to friction to external velocity
+                try {
+                    double horFricMag = Math.min(externalVel.xz.magnitude(), FRIC_MAG);
+                    Vector2 fric = externalVel.xz.scaleToMagnitude(horFricMag);
+                    externalVel = externalVel.subtractXZ(fric);
+                } catch (ArithmeticException e) {} // Do nothing if velocity is zero
+            }
+        }
 
         // Update external velocity
         externalVel = externalVel.add(externalAccel);
@@ -392,6 +413,13 @@ public class PhysicsController {
         this.affectedByGravity = affectedByGravity;
     }
 
+    /**
+     * Set whether the client is affected by frictional forces. This includes
+     * ground friction and air resistance.
+     *
+     * @param affectedByFrictionalForces whether the client is affected by
+     *                                   frictional forces
+     */
     public void setAffectedByFrictionalForces(boolean affectedByFrictionalForces) {
         this.affectedByFrictionalForces = affectedByFrictionalForces;
     }
@@ -464,8 +492,17 @@ public class PhysicsController {
      *
      * @param maxAccel the maximum acceleration
      */
-    public void setMaxAccel(double maxAccel) {
+    public void setMaxAccelMag(double maxAccel) {
         this.maxAccel = maxAccel;
+    }
+
+    /**
+     * Set the magnitude of the acceleration due to air resistance.
+     *
+     * @param airResMag the magnitude of the acceleration due to air resistance
+     */
+    public void setAirResistanceMagnitude(double airResMag) {
+        this.airResMag = airResMag;
     }
 
     /**
