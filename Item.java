@@ -2,6 +2,7 @@
 /**
  * Items are world sprites that can be held in the player inventory, used, and
  * dropped into the world.
+ * TODO: map visibility, loading and unloading, figure out why dropping too fast ruins the whole thing
  * 
  * @author Lucas Fu
  * @version June 2024

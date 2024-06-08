@@ -158,7 +158,7 @@ public class Player extends Entity {
         if(hotbar.size() == 0) return;
         hotbar.get(heldIndex).drop();
         hotbar.remove(heldIndex);
-        if(heldIndex < 0 || heldIndex >= hotbar.size()) {
+        if(heldIndex >= hotbar.size()) {
             heldIndex = 0;
         }
         if(hotbar.size() != 0)
