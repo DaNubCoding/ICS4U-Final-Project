@@ -12,7 +12,8 @@ public class WorldMap extends PixelWorld {
 
     static {
         colors.put(Crate.class, new Color(230, 190, 70));
-        colors.put(Tree.class, new Color(20, 255, 20));
+        colors.put(Tree1.class, new Color(20, 255, 20));
+        colors.put(Tree2.class, new Color(98, 253, 128));
         colors.put(Tombstone.class, new Color(99, 99, 99));
     }
 
@@ -29,7 +30,7 @@ public class WorldMap extends PixelWorld {
         // update instance variables
         initialWorld = oldWorld;
         map = new Color[2 * genRad + 1][2 * genRad + 1];
-        
+
         // fetch features
         for (Vector2 v : surroundings.keySet()) {
             if(surroundings.get(v) == null) continue;
@@ -55,9 +56,9 @@ public class WorldMap extends PixelWorld {
 
         // show coordinates
         String coords = "Coordinates:\n(" + (int) playerPos.x + ", " + (int) playerPos.y + ")";
-        addSprite(new Text(coords, 
-                            Text.AnchorX.CENTER, 
-                            Text.AnchorY.CENTER, 
+        addSprite(new Text(coords,
+                            Text.AnchorX.CENTER,
+                            Text.AnchorY.CENTER,
                             new Color(180, 180, 180)),
                     50, 50);
 
@@ -85,7 +86,7 @@ public class WorldMap extends PixelWorld {
             for (int j = 0; j < map[i].length; j++) {
                 if (map[i][j] != null) {
                     background.setColor(map[i][j]);
-                    background.drawRect(CELL_SIZE * j + widAdj, 
+                    background.drawRect(CELL_SIZE * j + widAdj,
                                         CELL_SIZE * i + heiAdj,
                                         CELL_SIZE - 2,
                                         CELL_SIZE - 2);
@@ -93,7 +94,7 @@ public class WorldMap extends PixelWorld {
             }
         }
         background.setColor(new Color(180, 180, 180));
-        background.drawRect(widAdj - 1, heiAdj - 1, 
+        background.drawRect(widAdj - 1, heiAdj - 1,
                             CELL_SIZE * map.length, CELL_SIZE * map.length);
 
         renderSprites();

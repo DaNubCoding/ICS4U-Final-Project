@@ -5,16 +5,16 @@ import greenfoot.*;
  * @author Lucas Fu
  * @version May 2024
  */
-public class Tree extends Feature {
+public class Tree1 extends Feature {
     private Sprack canopy;
 
     /**
      * Create a new Tree.
      */
-    public Tree(FeatureData data) {
-        super("tree_trunk", data);
+    public Tree1(FeatureData data) {
+        super("tree_trunk1", data);
         setWorldRotation(Greenfoot.getRandomNumber(360));
-        canopy = new TreeCanopy("tree_canopy");
+        canopy = new TreeCanopy("tree_canopy1");
     }
 
     @Override

@@ -29,9 +29,10 @@ public class Feature extends Sprack {
      * @version May 2024
      */
     public static enum Type {
-        TREE(Tree.class, Tree::new, 1),
-        CRATE(Crate.class, Crate::new, 2),
-        TOMBSTONE(Tombstone.class, Tombstone::new, 1),
+        TREE1(Tree1.class, Tree1::new, 6),
+        TREE2(Tree2.class, Tree2::new, 3),
+        CRATE(Crate.class, Crate::new, 20),
+        TOMBSTONE(Tombstone.class, Tombstone::new, 10),
         ;
 
         private static int[] spawnRates = new int[Type.length()];

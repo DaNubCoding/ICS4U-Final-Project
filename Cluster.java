@@ -10,8 +10,9 @@ import java.util.ArrayList;
  * @version May 2024
  */
 public enum Cluster {
-    TREE(Tree.class, 1, 15, 8),
-    TOMBSTONE(Tombstone.class, 3, 60, 3),
+    TREE1(Tree1.class, 6, 14, 12),
+    TREE2(Tree2.class, 4, 12, 10),
+    TOMBSTONE(Tombstone.class, 10, 60, 3),
     ;
 
     public final Class<? extends Feature> cls;

@@ -49,8 +49,10 @@ public class SprackView {
         new Thread(() -> {
             Map<String, Integer> sheetInfo = new HashMap<>();
             sheetInfo.put("crate", 16);
-            sheetInfo.put("tree_trunk", 29);
-            sheetInfo.put("tree_canopy", 21);
+            sheetInfo.put("tree_trunk1", 29);
+            sheetInfo.put("tree_canopy1", 21);
+            sheetInfo.put("tree_trunk2", 29);
+            sheetInfo.put("tree_canopy2", 31);
             sheetInfo.put("knight_standing", 24);
             sheetInfo.put("knight_walk1", 24);
             sheetInfo.put("knight_walk2", 24);

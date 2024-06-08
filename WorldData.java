@@ -22,7 +22,7 @@ public class WorldData {
 
     // settings
     private static final int generationRadius = 15;
-    private static final int emptyFeatureChance = 200;
+    private static final int emptyFeatureChance = 2000;
     private static final HashMap<Vector2, Feature> landmarks = new HashMap<>() {{
         // put(new Vector2(0, 0), new Feature("tower"));
         // more landmarks can be placed here
@@ -164,9 +164,11 @@ public class WorldData {
     private static Cluster generateCluster(long id) {
         rand = new Random(id);
         // clusters currently use a probability system
-        int roll = rand.nextInt(500);
+        int roll = rand.nextInt(5000);
+        int sum = 0;
         for (Cluster cluster : Cluster.values()) {
-            if(roll < cluster.spawnRate) {
+            sum += cluster.spawnRate;
+            if(roll < sum) {
                 return cluster;
             }
         }
@@ -179,9 +181,11 @@ public class WorldData {
      * @param dy the change in y-value of grid location of the player location
      * @param radius the radius in which the update takes place
      * @param adder the operation used to add a feature
-     * @param remove the operation used to remove a feature
+     * @param remover the operation used to remove a feature
      */
-    private void updateFeatures(int dx, int dy, int radius, BiConsumer<WorldData, Vector2> adder, BiConsumer<WorldData, Vector2> remover) {
+    private void updateFeatures(int dx, int dy, int radius,
+                                BiConsumer<WorldData, Vector2> adder,
+                                BiConsumer<WorldData, Vector2> remover) {
         double x = playerLocation.x + dx;
         double y = playerLocation.y + dy;
         int topBorder = (int) Math.max(y, playerLocation.y) + radius;
@@ -275,7 +279,7 @@ public class WorldData {
 
     /**
      * Set the player location without updating surrounding features.
-     * 
+     *
      * @param x the new player x-location, in grid coordinate
      * @param y the new player y-location, in grid coordinate
      */
@@ -285,7 +289,7 @@ public class WorldData {
 
     /**
      * Teleport the player.
-     * 
+     *
      * @param x the new player x-location, in grid coordinate
      * @param y the new player y-location, in grid coordinate
      */
