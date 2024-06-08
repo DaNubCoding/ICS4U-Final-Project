@@ -16,9 +16,7 @@ public class TreeCanopy extends Sprack {
     public void update() {
         Vector2 playerPos = getWorld().getPlayer().getScreenPos();
         Vector2 canopyPos = getScreenPos();
-        double distance = playerPos.distanceTo(canopyPos);
-        if (distance < 60) {
-            setTransparency((int) (255 - (1 - (distance / 60.0)) * 180));
-        }
+        double distance = playerPos.distanceTo(canopyPos) / Camera.getZoom();
+        setTransparency((int) Math.min(255 - (1 - (distance / 60.0)) * 180, 255));
     }
 }
