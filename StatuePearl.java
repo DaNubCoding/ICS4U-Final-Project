@@ -39,7 +39,7 @@ public class StatuePearl extends Projectile {
         physics.applyImpulse(impulse);
 
         // create damage and knockback
-        Damage dmg = new Damage(owner, owner, 20, getWorldPos(), 10);
+        Damage dmg = new Damage(owner, owner, 20, getWorldPos(), 15);
         getWorld().getDamages().add(dmg);
         List<Sprack> l = getWorld().getSpracksInRange(getWorldPos(), 10);
         for (Sprack s:l) {
