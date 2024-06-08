@@ -28,6 +28,7 @@ public class Sprack extends Sprite implements WorldObject {
 
     private Vector3 worldPos;
     private double rotation;
+    private int transparency;
 
     /**
      * Create a new Sprack with the given fixed sheet name.
@@ -81,6 +82,7 @@ public class Sprack extends Sprite implements WorldObject {
         loopingAnimation = sheetAnimation;
         oneTimeAnimation = null;
         worldPos = new Vector3();
+        transparency = 255;
     }
 
     /**
@@ -226,6 +228,7 @@ public class Sprack extends Sprite implements WorldObject {
         if (image == null) {
             return;
         }
+        image.setTransparency(transparency);
         canvas.drawImage(image, (int) screenX - centerX, (int) screenY - centerY);
     }
 
@@ -288,5 +291,15 @@ public class Sprack extends Sprite implements WorldObject {
     @Override
     public SpriteStackingWorld getWorld() {
         return (SpriteStackingWorld) super.getWorld();
+    }
+
+    /**
+     * Set the transparency of the Sprack.
+     *
+     * @param transparency the transparency of the Sprack, from 0 (invisible) to
+     *                     255 (opaque)
+     */
+    public void setTransparency(int transparency) {
+        this.transparency = transparency;
     }
 }
