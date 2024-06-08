@@ -68,10 +68,10 @@ public class Player extends Entity {
 
         // Apply weapon changing
         if (Greenfoot.isKeyDown("tab") && !tabFlag) {
-            if (hotbar.size() > 0) {
+            if (hotbar.size() > 1) {
                 getWorld().removeSprite(hotbar.get(heldIndex));
                 heldIndex = (heldIndex + 1) % hotbar.size();
-                getWorld().addWorldObject(hotbar.get(heldIndex), getWorldPos().setY(1000));
+                getWorld().addWorldObject(hotbar.get(heldIndex), getWorldPos().setY(getWorldY()+200));
             }
             tabFlag = true;
         } else if (tabFlag && !Greenfoot.isKeyDown("tab")) {
@@ -160,9 +160,9 @@ public class Player extends Entity {
         hotbar.remove(heldIndex);
         if(heldIndex < 0 || heldIndex >= hotbar.size()) {
             heldIndex = 0;
-            if(hotbar.size() != 0)
-                getWorld().addSprite(hotbar.get(heldIndex), 0, 0);
         }
+        if(hotbar.size() != 0)
+            getWorld().addWorldObject(hotbar.get(heldIndex), getWorldPos().setY(getWorldY()+200));
     }
 
     @Override
