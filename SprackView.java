@@ -56,6 +56,7 @@ public class SprackView {
             sheetInfo.put("knight_walk2", 24);
             sheetInfo.put("knight_walk3", 24);
             sheetInfo.put("knight_walk4", 24);
+            sheetInfo.put("knight_dash", 21);
             sheetInfo.put("tombstone", 14);
             sheetInfo.put("statue_dormant", 27);
             sheetInfo.put("statue_active", 29);

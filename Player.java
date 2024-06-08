@@ -17,6 +17,7 @@ public class Player extends Entity {
         "knight_walk4"
     );
     private static final Animation standingAnimation = new Animation(-1, "knight_standing");
+    private static final Animation dashAnimation = new Animation(25, "knight_dash");
     public static final int MAX_ITEM_NUM = 2;
 
     private double cameraTargetRotation;
@@ -59,6 +60,7 @@ public class Player extends Entity {
         // Dashing
         if (Greenfoot.isKeyDown("space") && dashTimer.ended()) {
             physics.applyImpulse(new Vector2(getWorldRotation()).multiply(6));
+            playOneTimeAnimation(dashAnimation);
             dashTimer.restart();
         }
 
