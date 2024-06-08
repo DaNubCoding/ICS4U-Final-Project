@@ -107,7 +107,7 @@ public class SpriteStackingWorld extends PixelWorld {
     @Override
     public void render() {
         GreenfootImage background = getCanvas();
-        background.setColor(new Color(56, 56, 56));
+        background.setColor(new Color(182, 189, 160));
         background.fill();
         renderSprites();
     }
