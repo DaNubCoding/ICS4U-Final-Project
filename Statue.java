@@ -44,13 +44,11 @@ public class Statue extends Enemy {
 
     @Override
     public void notice(Player player) {
-        System.out.println("Golem noticed player");
         playOneTimeAnimation(activatingAnimation);
     }
 
     @Override
     public void forget(Player player) {
-        System.out.println("Golem forgot player");
         setLoopingAnimation(dormantAnimation);
     }
 
@@ -75,7 +73,6 @@ public class Statue extends Enemy {
         // immune to projectile damage
         if (damage.getSource() instanceof Projectile) return;
         super.damage(damage);
-        System.out.println("Golem took " + damage.getDamage() + " points of damage");
     }
 
     public void triggerAttack() {
