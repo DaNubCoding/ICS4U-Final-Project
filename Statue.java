@@ -28,7 +28,7 @@ public class Statue extends Enemy {
         setForgetRange(150);
         setHealth(100);
         physics.setMaxSpeed(1.0);
-        physics.setMaxAccel(0.25);
+        physics.setMaxAccelMag(0.25);
         physics.setAlwaysTurnTowardsMovement(true);
     }
 
