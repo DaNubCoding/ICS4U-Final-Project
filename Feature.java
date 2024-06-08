@@ -1,6 +1,6 @@
 /**
  * Features are permanent spracks of the world, generated using {@link WorldData}.
- * 
+ *
  * @author Lucas Fu
  * @version May 2024
  */
@@ -120,9 +120,6 @@ public class Feature extends Sprack {
 
     /**
      * Remove this Feature from the world.
-     *
-     * @author Andrew Wang
-     * @version May 2024
      */
     public void removeFromWorld() {
         getWorld().removeSprite(this);
