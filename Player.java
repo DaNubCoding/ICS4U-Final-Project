@@ -116,8 +116,7 @@ public class Player extends Entity {
             setLoopingAnimation(standingAnimation);
         }
 
-        // Update camera stuff
-        Camera.targetPosition(getWorldPos().add(new Vector3(0, 10, 0)));
+        // Update camera
         updateCameraRotation();
     }
 
@@ -135,6 +134,8 @@ public class Player extends Entity {
     }
 
     private void updateCameraRotation() {
+        Camera.targetPosition(getWorldPos().add(new Vector3(0, 10, 0)));
+
         MouseInfo mouse = Greenfoot.getMouseInfo();
         if (mouse != null && mouse.getButton() == 1) {
             if (Greenfoot.mousePressed(null)) {
@@ -145,11 +146,13 @@ public class Player extends Entity {
             MouseManager.releaseMouseLock();
         }
         if (!MouseManager.isLocked()) return;
+
         Vector2 mouseRel = MouseManager.getMouseRel();
         MouseManager.lockMouse();
         cameraTargetRotation += mouseRel.x * 0.13;
+
         double zoom = Camera.getZoom() * (1 + mouseRel.y * 0.002);
-        Camera.setZoom(Math.max(0.8, Math.min(6, zoom)));
+        Camera.setZoom(Math.max(0.5, Math.min(2, zoom)));
         Camera.targetRotation(cameraTargetRotation);
     }
 

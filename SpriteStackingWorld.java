@@ -30,7 +30,7 @@ public class SpriteStackingWorld extends PixelWorld {
         player = new Player();
         addWorldObject(player, playerPos.x * 20, 0, playerPos.y * 20);
 
-        Camera.resetTo(playerPos.x * 20, 0, playerPos.y * 20, 0, 1.5);
+        Camera.resetTo(playerPos.x * 20, 0, playerPos.y * 20, 0, 1);
         Camera.setCloseness(0.3);
 
         worldData.generateWorld();
