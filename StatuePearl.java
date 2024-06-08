@@ -9,7 +9,7 @@ import java.util.List;
  */
 public class StatuePearl extends Projectile {
     public StatuePearl(Entity owner, Vector3 initialVel, Vector3 startpos) {
-        super(owner, initialVel, startpos, 300);
+        super(owner, initialVel, startpos, 200);
         setOriginalImage(new GreenfootImage("statue_projectile.png"));
         physics.setAffectedByGravity(false);
         setWorldRotation(initialVel.xz.angle()-Camera.getRotation());
