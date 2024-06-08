@@ -10,7 +10,6 @@ import java.util.Random;
 public abstract class Projectile extends WorldSprite {
     private Entity owner;
     private Timer lifeTimer;
-    private Random rand = new Random();
     public final PhysicsController physics = new PhysicsController(this);
 
     /**
@@ -22,23 +21,15 @@ public abstract class Projectile extends WorldSprite {
      * @param inaccuracy the inaccuracy of the projectile, measured in degrees
      * @param lifespan the number of frames this projectile can last
      */
-    public Projectile(Entity owner, Vector3 initialVel, Vector3 startPos,
-                      int inaccuracy, int lifespan) {
+    public Projectile(Entity owner, Vector3 initialVel, Vector3 startPos, int lifespan) {
         this.owner = owner;
 
-        physics.applyImpulse(adjustForInaccuracy(initialVel, inaccuracy));
+        physics.applyImpulse(initialVel);
         physics.setAffectedByFrictionalForces(false);
         physics.setAffectedByGravity(false);
         setWorldPos(startPos);
 
         lifeTimer = new Timer(lifespan);
-    }
-
-    private Vector3 adjustForInaccuracy(Vector3 initialVel, int inaccuracy) {
-        double dAngle = rand.nextDouble() * inaccuracy - inaccuracy / 2.0;
-        double adjustedAngle = initialVel.xz.angle() + dAngle;
-        Vector2 adjVector = new Vector2(adjustedAngle);
-        return initialVel.add(Vector3.fromXZ(adjVector));
     }
 
     @Override

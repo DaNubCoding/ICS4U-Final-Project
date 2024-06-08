@@ -9,7 +9,7 @@ public abstract class RangedWeapon extends Weapon {
 
     @FunctionalInterface
     public static interface ProjectileFactory {
-        public Projectile create(Entity owner, Vector3 initialVel, Vector3 pos, int inaccuracy);
+        public Projectile create(Entity owner, Vector3 initialVel, Vector3 pos);
     }
 
     private ProjectileFactory projFactory;
@@ -50,8 +50,16 @@ public abstract class RangedWeapon extends Weapon {
         Vector3 spawnPos = getWorldPos();
         Vector3 direction = getProjectileDirection().multiply(speed);
         for(int i = 0; i < shotCount; i++) {
-            Projectile proj = projFactory.create(getPlayer(), direction, spawnPos, inaccuracy);
+            Vector3 newDir = adjustForInaccuracy(direction, inaccuracy);
+            Projectile proj = projFactory.create(getPlayer(), newDir, spawnPos);
             getPlayer().getWorld().addSprite(proj, 0, 0);
         }
+    }
+
+    private static Vector3 adjustForInaccuracy(Vector3 initialVel, int inaccuracy) {
+        double dAngle = Math.random() * inaccuracy - inaccuracy / 2.0;
+        double adjustedAngle = initialVel.xz.angle() + dAngle;
+        Vector2 adjVector = new Vector2(adjustedAngle);
+        return initialVel.add(Vector3.fromXZ(adjVector));
     }
 }

@@ -11,8 +11,8 @@ import greenfoot.GreenfootImage;
 public class TestProjectile extends Projectile {
     Random rand;
 
-    public TestProjectile(Entity owner, Vector3 direction, Vector3 startpos, int inaccuracy) {
-        super(owner, direction, startpos, inaccuracy, 100);
+    public TestProjectile(Entity owner, Vector3 direction, Vector3 startpos) {
+        super(owner, direction, startpos, 100);
         setOriginalImage(new GreenfootImage("test_pistol.png"));
         rand = new Random();
     }
