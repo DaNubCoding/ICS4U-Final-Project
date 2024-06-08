@@ -394,6 +394,21 @@ public class PhysicsController {
     }
 
     /**
+     * Turn the client towards the given {@link Vector3}.
+     *
+     * @param target the target position
+     */
+    public void turnTowards(Vector2 target) {
+        double targetAngle = target.subtract(getWorldPos().xz).angle();
+        double facing = Vector2.lerpAngle(
+            getWorldRotation(),
+            targetAngle,
+            ROT_ACCEL
+        );
+        setWorldRotation(facing);
+    }
+
+    /**
      * Set whether the client should always turn towards the direction it is
      * moving.
      *

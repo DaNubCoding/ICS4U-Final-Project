@@ -43,17 +43,19 @@ public class MouseManager {
      * @return the world position of the cursor
      */
     public static Vector2 getMouseWorldPos() {
-            Vector2 screenCenter = 
-                new Vector2(SpriteStackingWorld.WORLD_WIDTH * PixelWorld.PIXEL_SCALE / 2, 
-                            SpriteStackingWorld.WORLD_HEIGHT * PixelWorld.PIXEL_SCALE / 2);
-            int x = Greenfoot.getMouseInfo().getX();
-            int y = Greenfoot.getMouseInfo().getY();
-            Vector2 mousePos = new Vector2(x, y).subtract(screenCenter);           
-            double screenRot = Camera.getRotation();
-            double scale = Camera.getZoom() * PixelWorld.PIXEL_SCALE;
-            mousePos = mousePos.divide(scale);
-            mousePos = mousePos.rotate(screenRot);
-            return new Vector2(Camera.getX(), Camera.getZ()).add(mousePos);
+        greenfoot.MouseInfo mouseInfo = Greenfoot.getMouseInfo();
+        if (mouseInfo == null) return null;
+        Vector2 screenCenter =
+            new Vector2(SpriteStackingWorld.WORLD_WIDTH * PixelWorld.PIXEL_SCALE / 2,
+                        SpriteStackingWorld.WORLD_HEIGHT * PixelWorld.PIXEL_SCALE / 2);
+        int x = Greenfoot.getMouseInfo().getX();
+        int y = Greenfoot.getMouseInfo().getY();
+        Vector2 mousePos = new Vector2(x, y).subtract(screenCenter);
+        double screenRot = Camera.getRotation();
+        double scale = Camera.getZoom() * PixelWorld.PIXEL_SCALE;
+        mousePos = mousePos.divide(scale);
+        mousePos = mousePos.rotate(screenRot);
+        return new Vector2(Camera.getX(), Camera.getZ()).add(mousePos);
     }
 
     /**
