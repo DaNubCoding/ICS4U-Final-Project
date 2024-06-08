@@ -32,8 +32,8 @@ public abstract class MeleeWeapon extends Weapon {
     }
 
     @Override
-    public void update() {
-        super.update();
+    public void lockToPlayer() {
+        super.lockToPlayer();
 
         if (swingTimer != null) {
             swingAngle = Math.sin(swingTimer.progress() * Math.PI * 2) * sweepAngle / 2;
