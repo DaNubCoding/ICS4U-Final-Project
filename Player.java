@@ -27,6 +27,7 @@ public class Player extends Entity {
     private int heldIndex;
 
     private boolean tabFlag = false;
+    private boolean qFlag = false;
 
     public Player() {
         super(standingAnimation);
@@ -80,10 +81,11 @@ public class Player extends Entity {
         }
 
         // Throw item
-        if (Greenfoot.isKeyDown("q") && getWorldY() == 0) {
-            physics.reduceMomentum(0.33);
-            physics.applyImpulse(new Vector3(0, 4, 0));
+        if (Greenfoot.isKeyDown("q") && !qFlag) {
             throwItem();
+            qFlag = true;
+        } else if (qFlag && !Greenfoot.isKeyDown("q")) {
+            qFlag = false;
         }
 
         // TODO: TEMPORARY for demo purposes
