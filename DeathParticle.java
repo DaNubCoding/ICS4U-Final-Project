@@ -18,7 +18,6 @@ public class DeathParticle extends Particle {
     @Override
     public void updateMovement() {
         physics.applyForce(bouyancyForce);
-        physics.update();
     }
 
     private static GreenfootImage getSmokeImage() {

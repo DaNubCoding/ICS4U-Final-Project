@@ -25,6 +25,7 @@ public class Particle extends WorldSprite {
     @Override
     public void update() {
         updateMovement();
+        physics.update();
 
         if (lifeTimer.ended()) {
             getWorld().removeSprite(this);

@@ -31,7 +31,6 @@ public class Player extends Entity {
         super(standingAnimation);
         hotbar = new ArrayList<Item>();
         dashTimer = new Timer(90);
-        physics.setAlwaysTurnTowardsMovement(true);
         setHealth(200);
         heldIndex = 0;
     }
@@ -95,6 +94,17 @@ public class Player extends Entity {
         // Update physics
         physics.update();
 
+        // Update rotation
+        if (MouseManager.isLocked()) {
+            physics.setAlwaysTurnTowardsMovement(true);
+        } else {
+            physics.setAlwaysTurnTowardsMovement(false);
+            Vector2 mousePos = MouseManager.getMouseWorldPos();
+            if (mousePos != null) {
+                physics.turnTowards(mousePos);
+            }
+        }
+
         // Set the animation based on whether the player is moving
         if (physics.isMoving()) {
             setLoopingAnimation(walkingAnimation);
@@ -141,7 +151,7 @@ public class Player extends Entity {
 
     /**
      * Get the number of items currently held.
-     * 
+     *
      * @return the size of the hotbar
      */
     public int getHotbarSize() {
