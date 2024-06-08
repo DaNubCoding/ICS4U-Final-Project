@@ -8,6 +8,8 @@ public abstract class MeleeWeapon extends Weapon {
     private int range;
     private double damage;
     private int sweepAngle;
+    private Timer swingTimer;
+    private double swingAngle;
 
     /**
      * Create a new melee weapon.
@@ -32,6 +34,14 @@ public abstract class MeleeWeapon extends Weapon {
     @Override
     public void update() {
         super.update();
+
+        if (swingTimer != null) {
+            swingAngle = Math.sin(swingTimer.progress() * Math.PI * 2) * sweepAngle / 2;
+            if (swingTimer.ended()) {
+                swingTimer = null;
+            }
+        }
+        setWorldRotation(getPlayer().getWorldRotation() + swingAngle);
     }
 
     @Override
@@ -45,5 +55,7 @@ public abstract class MeleeWeapon extends Weapon {
         damage.setAngularRange(targetAngle, sweepAngle);
 
         getWorld().getDamages().add(damage);
+
+        swingTimer = new Timer(18);
     }
 }

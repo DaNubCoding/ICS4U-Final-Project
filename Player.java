@@ -37,7 +37,7 @@ public class Player extends Entity {
 
     @Override
     public void addedToWorld(PixelWorld world) {
-        getWorld().addWorldObject(new TestSword(this), getWorldPos());
+        getWorld().addWorldObject(new Sword(this), getWorldPos());
     }
 
     @Override

@@ -10,7 +10,7 @@ import java.util.Random;
 public class Crate extends Feature {
     private Weapon[] contents = new Weapon[] {
         new TestPistol(null),
-        new TestSword(null)
+        new Sword(null)
     };
     Random rand = new Random();
 

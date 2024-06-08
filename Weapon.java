@@ -41,14 +41,7 @@ public abstract class Weapon extends Item {
         Vector3 handOffset = new Vector3(5, 8, -5).rotateY(player.getWorldRotation());
         setWorldPos(playerPos.add(handOffset));
 
-        final double rotation = player.getVisualRotation();
-        if (rotation > 90 && rotation < 270) {
-            setMirrorX(true);
-            setScreenRotation(rotation + 180);
-        } else {
-            setMirrorX(false);
-            setScreenRotation(rotation);
-        }
+        setWorldRotation(player.getWorldRotation());
     }
 
     @Override
