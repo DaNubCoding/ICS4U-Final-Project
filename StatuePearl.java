@@ -12,12 +12,12 @@ public class StatuePearl extends Projectile {
         super(owner, initialVel, startpos, 200);
         setOriginalImage(new GreenfootImage("statue_projectile.png"));
         physics.setAffectedByGravity(false);
-        setWorldRotation(initialVel.xz.angle()-Camera.getRotation());
+        setWorldRotation(initialVel.xz.angle());
     }
 
     @Override
     public void movingUpdate() {
-        setScreenRotation(physics.getVelocity().xz.angle()-Camera.getRotation());
+        // nothing to do
     }
 
     @Override

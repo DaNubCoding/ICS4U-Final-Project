@@ -8,6 +8,7 @@ import greenfoot.*;
  */
 public class WorldSprite extends TransformableSprite implements WorldObject {
     private Vector3 worldPos;
+    private double worldRotation;
 
     public WorldSprite() {
         super(Layer.SPRACK_DEFAULT);
@@ -101,7 +102,7 @@ public class WorldSprite extends TransformableSprite implements WorldObject {
      */
     @Override
     public double getWorldRotation() {
-        return getScreenRotation();
+        return worldRotation;
     }
 
     /**
@@ -111,7 +112,7 @@ public class WorldSprite extends TransformableSprite implements WorldObject {
      */
     @Override
     public void setWorldRotation(double rotation) {
-        setScreenRotation(rotation);
+        worldRotation = rotation;
     }
 
     public void render(GreenfootImage canvas) {
@@ -125,6 +126,7 @@ public class WorldSprite extends TransformableSprite implements WorldObject {
         double screenY = canvas.getHeight() / 2 + offsetX * Math.sin(screenRad) + offsetZ * Math.cos(screenRad);
         screenY -= offsetY;
         setScreenPos(screenX, screenY);
+        setScreenRotation(worldRotation - Camera.getRotation());
         super.render(canvas);
     }
 
