@@ -24,6 +24,7 @@ public class SpriteStackingWorld extends PixelWorld {
 
         damages = new ArrayList<>();
 
+        Cluster.clearClusters();
         worldData = new WorldData(1);
 
         Vector2 playerPos = worldData.getPlayerLocation();
