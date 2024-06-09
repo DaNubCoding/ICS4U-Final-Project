@@ -42,7 +42,7 @@ public class SpriteStackingWorld extends PixelWorld {
             }
         }
 
-        addWorldObject(new Statue(), 20, 0, 20);
+        addWorldObject(new Statue(), 410, 0, 0);
 
         render();
     }
