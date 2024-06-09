@@ -47,8 +47,12 @@ public class WorldMap extends PixelWorld {
             Vector3 v = e.getWorldPos().divide(20);
             v = v.subtract(Vector3.fromXZ(playerPos));
             v = v.add(new Vector3(genRad, 0, genRad));
-            if(v.z > -1 && v.z < map.length && v.z > -1 && v.z < map.length)
-                map[(int)v.z][(int)v.x] = new Color(180, 20, 20);
+            try {
+                if(v.z > -1 && v.z < map.length && v.z > -1 && v.z < map.length)
+                    map[(int)v.z][(int)v.x] = new Color(180, 20, 20);
+            } catch (ArrayIndexOutOfBoundsException ex) {
+                // do nothing if the entity is outside the map
+            }
         }
 
         // put player
@@ -61,9 +65,6 @@ public class WorldMap extends PixelWorld {
                             Text.AnchorY.CENTER,
                             new Color(180, 180, 180)),
                     50, 50);
-
-        // PRINT DEBUG TODO: remove this
-        System.out.println(initialWorld.getSprites(TreeCanopy.class).size());
     }
 
     @Override
