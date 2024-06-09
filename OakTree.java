@@ -2,19 +2,21 @@ import greenfoot.*;
 
 /**
  * Trees are your average world decoration. They're quite pretty!
+ *
  * @author Lucas Fu
+ * @author Sandra Huang
  * @version May 2024
  */
-public class Tree1 extends Feature {
+public class OakTree extends Feature {
     private Sprack canopy;
 
     /**
      * Create a new Tree.
      */
-    public Tree1(FeatureData data) {
-        super("tree_trunk1", data);
+    public OakTree(FeatureData data) {
+        super("tree_oak_trunk", data);
         setWorldRotation(Greenfoot.getRandomNumber(360));
-        canopy = new TreeCanopy("tree_canopy1");
+        canopy = new TreeCanopy("tree_oak_canopy");
     }
 
     @Override

@@ -12,8 +12,8 @@ public class WorldMap extends PixelWorld {
 
     static {
         colors.put(Crate.class, new Color(230, 190, 70));
-        colors.put(Tree1.class, new Color(20, 255, 20));
-        colors.put(Tree2.class, new Color(98, 253, 128));
+        colors.put(OakTree.class, new Color(20, 255, 20));
+        colors.put(WillowTree.class, new Color(98, 253, 128));
         colors.put(Tombstone.class, new Color(99, 99, 99));
     }
 

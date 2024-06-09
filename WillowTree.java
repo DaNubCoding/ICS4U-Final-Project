@@ -1,16 +1,22 @@
 import greenfoot.*;
 
-public class Tree2 extends Feature {
-
+/**
+ * A willow tree.
+ *
+ * @author Andrew Wang
+ * @author Sandra Huang
+ * @version May 2024
+ */
+public class WillowTree extends Feature {
     private Sprack canopy;
 
     /**
      * Create a new Tree.
      */
-    public Tree2(FeatureData data) {
-        super("tree_trunk2", data);
+    public WillowTree(FeatureData data) {
+        super("tree_willow_trunk", data);
         setWorldRotation(Greenfoot.getRandomNumber(360));
-        canopy = new TreeCanopy("tree_canopy2");
+        canopy = new TreeCanopy("tree_willow_canopy");
     }
 
     @Override

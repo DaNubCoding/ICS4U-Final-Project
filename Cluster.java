@@ -10,8 +10,8 @@ import java.util.ArrayList;
  * @version May 2024
  */
 public enum Cluster {
-    TREE1(Tree1.class, 6, 14, 12),
-    TREE2(Tree2.class, 4, 12, 10),
+    OAK_TREE(OakTree.class, 6, 14, 12),
+    WILLOW_TREE(WillowTree.class, 4, 12, 10),
     TOMBSTONE(Tombstone.class, 10, 60, 3),
     ;
 
