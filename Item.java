@@ -1,8 +1,9 @@
+import greenfoot.GreenfootImage;
 
 /**
  * Items are world sprites that can be held in the player inventory, used, and
  * dropped into the world.
- * TODO: map visibility, loading and unloading, figure out why dropping too fast ruins the whole thing
+ * TODO: map visibility, loading and unloading
  * 
  * @author Lucas Fu
  * @version June 2024
@@ -13,15 +14,35 @@ public class Item extends WorldSprite {
     private PhysicsController physics = new PhysicsController(this);
     private Timer pickupTimer = new Timer(0);
 
-    public Item(Player player, boolean isOnGround) {
+    public Item(Player player, String image, boolean isOnGround) {
         this.isOnGround = isOnGround;
         this.player = player;
+        setOriginalImage(new GreenfootImage(image));
     }
 
     @Override
     public void update() {
-        if(isOnGround) awaitPickup();
         physics.update();
+
+        if(isOnGround) {
+            awaitPickup();
+            return;
+        }
+
+        lockToPlayer();
+    }
+
+    /**
+     * Lock the weapon to the player's hand position and rotation.
+     */
+    public void lockToPlayer() {
+        Player player = getPlayer();
+        Vector3 playerPos = player.getWorldPos();
+        // transform player's bottom-center location to hand location
+        Vector3 handOffset = Player.HAND_LOCATION.rotateY(player.getWorldRotation());
+        setWorldPos(playerPos.add(handOffset));
+
+        setWorldRotation(player.getWorldRotation());
     }
 
     public boolean isOnGround() {
