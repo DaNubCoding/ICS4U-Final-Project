@@ -17,7 +17,9 @@ public class StatuePearl extends Projectile {
 
     @Override
     public void movingUpdate() {
-        // nothing to do
+        if (Math.random() < 0.5) {
+            getWorld().addWorldObject(new StatueParticle(), getWorldPos());
+        }
     }
 
     @Override
