@@ -283,6 +283,16 @@ public class Sprack extends Sprite implements WorldObject {
     }
 
     /**
+     * Get the height of the Sprack in the world.
+     *
+     * @return the height of the Sprack
+     */
+    public int getHeight() {
+        return SprackView.getView(loopingAnimation.getCurrentName())
+            .getLayerCount();
+    }
+
+    /**
      * Get the world the Sprack is in, this is always an instance of a
      * {@link SprackWorld} for Spracks.
      *

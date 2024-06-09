@@ -113,6 +113,7 @@ public class SprackView {
      * i / IMAGE_CACHE_ANGLE_COUNT * 360, scaled by a factor of IMAGE_CACHE_SCALE.
      */
     private final CacheEntry[] rotCache;
+    private final int layerCount;
 
     /**
      * Create a new cache for a sprite stack created by layering the specified
@@ -124,6 +125,8 @@ public class SprackView {
      *                   sheet
      */
     public SprackView(GreenfootImage layerSheet, int layerCount) {
+        this.layerCount = layerCount;
+
         // Create individual layer images from sheet
         layerWidth = layerSheet.getWidth();
         layerHeight = layerSheet.getHeight() / layerCount;
@@ -301,5 +304,16 @@ public class SprackView {
      */
     public int getCenterY(double rotation, double scale) {
         return (int) (rotCache[getCacheIndex(rotation)].centerY / IMAGE_CACHE_SCALE * scale);
+    }
+
+    /**
+     * Return the number of layers in the sprite stack of this SprackView.
+     * <p>
+     * This can be considered the height of the sprite stack.
+     *
+     * @return the number of layers in the sprite stack
+     */
+    public int getLayerCount() {
+        return layerCount;
     }
 }

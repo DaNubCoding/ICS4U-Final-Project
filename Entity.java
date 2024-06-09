@@ -121,7 +121,11 @@ public class Entity extends Sprack {
         }
         for (int i = 0; i < damage.getDamage() + 4; i++) {
             DamageParticle particle = new DamageParticle();
-            Vector3 offset = new Vector3(Math.random() * 20 - 10, Math.random() * 20, Math.random() * 20 - 10);
+            Vector3 offset = new Vector3(
+                Math.random() * 20 - 10,
+                Math.random() * getHeight(),
+                Math.random() * 20 - 10
+            );
             getWorld().addWorldObject(particle, getWorldPos().add(offset));
         }
     }
@@ -129,7 +133,11 @@ public class Entity extends Sprack {
     public void die() {
         for (int i = 0; i < 20; i++) {
             DeathParticle particle = new DeathParticle();
-            Vector3 offset = new Vector3(Math.random() * 20 - 10, Math.random() * 20, Math.random() * 20 - 10);
+            Vector3 offset = new Vector3(
+                Math.random() * 20 - 10,
+                Math.random() * getHeight(),
+                Math.random() * 20 - 10
+            );
             getWorld().addWorldObject(particle, getWorldPos().add(offset));
         }
         getWorld().removeSprite(this);
