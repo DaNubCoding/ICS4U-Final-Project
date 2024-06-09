@@ -39,7 +39,7 @@ public abstract class Weapon extends Item {
 
         updateImage();
         if (Greenfoot.mouseClicked(null)
-         && Greenfoot.getMouseInfo().getButton() == 3
+         && Greenfoot.getMouseInfo().getButton() == 1
          && !casting && recastTimer.ended()) {
             casting = true;
             castTimer.restart(castTime);

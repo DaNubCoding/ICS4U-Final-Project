@@ -139,7 +139,7 @@ public class Player extends Entity {
         Camera.targetPosition(getWorldPos().add(new Vector3(0, 10, 0)));
 
         MouseInfo mouse = Greenfoot.getMouseInfo();
-        if (mouse != null && mouse.getButton() == 1) {
+        if (mouse != null && mouse.getButton() == 3) {
             if (Greenfoot.mousePressed(null)) {
                 MouseManager.initMouseLock();
             }
