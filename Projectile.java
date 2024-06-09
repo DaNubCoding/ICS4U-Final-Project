@@ -1,5 +1,4 @@
 import java.util.List;
-import java.util.Random;
 
 /**
  * A projectile, shot by a ranged weapon.
