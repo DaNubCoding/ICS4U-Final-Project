@@ -23,10 +23,6 @@ public class WorldData {
     // settings
     private static final int generationRadius = 15;
     private static final int emptyFeatureChance = 2000;
-    private static final HashMap<Vector2, Feature> landmarks = new HashMap<>() {{
-        // put(new Vector2(0, 0), new Feature("tower"));
-        // more landmarks can be placed here
-    }};
 
     // storage variables
     private long seed;
@@ -311,12 +307,6 @@ public class WorldData {
         long localID = data.getSeed() + coord.getSzudzikValue();
 
         HashMap<Vector2, Feature> surroundings = data.getSurroundings();
-
-        // add landmark if possible
-        if(landmarks.containsKey(coord)) {
-            surroundings.put(coord, landmarks.get(coord));
-            return;
-        }
 
         // check if feature has modified data
         FeatureData featureData = data.getModifiedFeatures().get(localID);
