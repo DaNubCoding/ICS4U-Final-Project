@@ -1,5 +1,3 @@
-import greenfoot.Greenfoot;
-
 /**
  * A... grave?
  *
