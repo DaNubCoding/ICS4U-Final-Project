@@ -17,10 +17,21 @@ public abstract class RangedWeapon extends Weapon {
     private double speed;
     private int shotCount;
 
-    public RangedWeapon(Player player, String image, int inaccuracy,
+    /**
+     * Create a new ranged weapon with all specifications.
+     * 
+     * @param image the file name of the image
+     * @param inaccuracy the spread angle of the weapon
+     * @param speed the projectile speed of projectiles shot
+     * @param shotCount the number of projectiles shot each attack
+     * @param windup the delay between input and the weapon firing
+     * @param cooldown the delay between the weapon firing and registring the next input
+     * @param projectileFactory the constructor of the projectile shot by this weapon
+     */
+    public RangedWeapon(String image, int inaccuracy,
                         double speed, int shotCount, int windup, int cooldown,
                         ProjectileFactory projectileFactory) {
-        super(player, image, windup, cooldown);
+        super(image, windup, cooldown);
         projFactory = projectileFactory;
         this.inaccuracy = inaccuracy;
         this.speed = speed;
@@ -56,6 +67,13 @@ public abstract class RangedWeapon extends Weapon {
         }
     }
 
+    /**
+     * Modifies the initial velocity using inaccuracy.
+     * 
+     * @param initialVel the velocity before modifications
+     * @param inaccuracy the inaccuracy modifier
+     * @return the new modified velocity
+     */
     private static Vector3 adjustForInaccuracy(Vector3 initialVel, int inaccuracy) {
         double dAngle = Math.random() * inaccuracy - inaccuracy / 2.0;
         double adjustedAngle = initialVel.xz.angle() + dAngle;

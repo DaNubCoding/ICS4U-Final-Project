@@ -14,9 +14,14 @@ public class Item extends WorldSprite {
     private PhysicsController physics = new PhysicsController(this);
     private Timer pickupTimer = new Timer(0);
 
-    public Item(Player player, String image, boolean isOnGround) {
+    /**
+     * Create a new Item with 
+     * @param player
+     * @param image
+     * @param isOnGround
+     */
+    public Item(String image, boolean isOnGround) {
         this.isOnGround = isOnGround;
-        this.player = player;
         setOriginalImage(new GreenfootImage(image));
     }
 
@@ -45,10 +50,21 @@ public class Item extends WorldSprite {
         setWorldRotation(player.getWorldRotation());
     }
 
+    /**
+     * Whether the item is on the ground.
+     * 
+     * @return whether this item is on the ground
+     */
     public boolean isOnGround() {
         return isOnGround;
     }
 
+    /**
+     * Wait for a player to pick this item up.
+     * <p>
+     * Magnetizes to a player within 45 pixels, and 
+     * gets picked up by a player within 15 pixels
+     */
     private void awaitPickup() {
         player = getWorld().getPlayer();
         Vector3 playerPos = player.getWorldPos();
@@ -64,6 +80,11 @@ public class Item extends WorldSprite {
         }
     }
 
+    /**
+     * Untether this item from the player, flinging this in the process.
+     * <p>
+     * A timer of 100 frames is applied to prevent re-pickup
+     */
     public void drop() {
         physics.applyImpulse(new Vector3(3, 3, 0).rotateY(getPlayer().getWorldRotation()));
         isOnGround = true;

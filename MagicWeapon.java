@@ -19,7 +19,6 @@ public abstract class MagicWeapon extends Weapon {
     /**
      * Create a new magic weapon with all the specifications.
      * 
-     * @param player the player to attach this weapon to
      * @param image the image file name that this weapon will use
      * @param inaccuracy the maximum radius
      * @param castCount the number of magics created per cast
@@ -27,10 +26,10 @@ public abstract class MagicWeapon extends Weapon {
      * @param cooldown the time needed to wait before clicking again
      * @param magicFactory the magic to be created (use ::new)
      */
-    public MagicWeapon(Player player, String image, int inaccuracy, 
+    public MagicWeapon(String image, int inaccuracy, 
                        int castCount, int windup, int cooldown, 
                        MagicFactory magicFactory) {
-        super(player, image, windup, cooldown);
+        super(image, windup, cooldown);
         this.inaccuracy = inaccuracy;
         this.castCount = castCount;
         this.magicFactory = magicFactory;

@@ -21,8 +21,8 @@ public abstract class Weapon extends Item {
      * @param windup
      * @param cooldown
      */
-    public Weapon(Player player, String image, int windup, int cooldown) {
-        super(player, image, true);
+    public Weapon(String image, int windup, int cooldown) {
+        super(image, true);
         casting = false;
         castTime = windup;
         recastTime = cooldown;

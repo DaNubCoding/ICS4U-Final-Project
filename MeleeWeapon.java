@@ -15,7 +15,6 @@ public abstract class MeleeWeapon extends Weapon {
      * Create a new melee weapon.
      * TODO: add documentation here when weapons are finalized
      *
-     * @param player
      * @param image
      * @param windup
      * @param cooldown
@@ -23,9 +22,9 @@ public abstract class MeleeWeapon extends Weapon {
      * @param damage
      * @param sweepAngle
      */
-    public MeleeWeapon(Player player, String image, int windup, int cooldown,
+    public MeleeWeapon(String image, int windup, int cooldown,
                        int range, double damage, int sweepAngle) {
-        super(player, image, windup, cooldown);
+        super(image, windup, cooldown);
         this.range = range;
         this.damage = damage;
         this.sweepAngle = sweepAngle;
