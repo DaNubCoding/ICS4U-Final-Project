@@ -45,7 +45,7 @@ public abstract class Projectile extends WorldSprite {
      * This method currently only rotates, so override it to add some features!
      */
     public void movingUpdate() {
-        setScreenRotation(getScreenRotation()+5);
+        physics.setWorldRotation(getScreenRotation()+5);
     }
 
     /**
