@@ -24,13 +24,11 @@ public class Crate extends Feature {
     }
 
     @Override
-    public void update() {
-        Player player = getWorld().getPlayer();
+    public void addedToWorld(PixelWorld world) {
+        getWorld().addCollisionController(new CollisionController(this, 10, 1.0, 0.0));
+    }
 
-        // Temporary behavior
-        if (new Vector2(player.getWorldX(), player.getWorldZ()).distanceTo(getWorldX(), getWorldZ()) < 15) {
-            getWorld().addWorldObject(contents[rand.nextInt(contents.length)], getWorldPos());
-            removeFromWorld();
-        }
+    @Override
+    public void update() {
     }
 }

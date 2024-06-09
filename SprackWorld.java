@@ -10,6 +10,7 @@ public class SprackWorld extends PixelWorld {
     private WorldData worldData;
     private Player player;
     private List<Damage> damages;
+    private List<CollisionController> collisionControllers;
 
     // world information
     public static final int WORLD_WIDTH = 256;
@@ -23,6 +24,7 @@ public class SprackWorld extends PixelWorld {
         super(WORLD_WIDTH, WORLD_HEIGHT);
 
         damages = new ArrayList<>();
+        collisionControllers = new ArrayList<>();
 
         Cluster.clearClusters();
         worldData = new WorldData(1);
@@ -57,6 +59,8 @@ public class SprackWorld extends PixelWorld {
         updateDamages();
 
         updateSprites();
+
+        updateCollision();
 
         updateSurroundings();
 
@@ -103,6 +107,17 @@ public class SprackWorld extends PixelWorld {
             }
         }
         damages.removeAll(removals);
+    }
+
+    private void updateCollision() {
+        List<CollisionController> removals = new ArrayList<>();
+        for (CollisionController controller : collisionControllers) {
+            controller.update();
+            if (controller.isRemoved()) {
+                removals.add(controller);
+            }
+        }
+        collisionControllers.removeAll(removals);
     }
 
     @Override
@@ -232,5 +247,17 @@ public class SprackWorld extends PixelWorld {
      */
     public void addDamage(Damage damage) {
         damages.add(damage);
+    }
+
+    public void addCollisionController(CollisionController controller) {
+        collisionControllers.add(controller);
+    }
+
+    public void removeCollisionController(CollisionController controller) {
+        collisionControllers.remove(controller);
+    }
+
+    public List<CollisionController> getCollisionControllers() {
+        return collisionControllers;
     }
 }

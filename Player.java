@@ -40,6 +40,7 @@ public class Player extends Entity {
 
     @Override
     public void addedToWorld(PixelWorld world) {
+        getWorld().addCollisionController(new CollisionController(this, 8, 0.1, 0.0));
         getWorld().addWorldObject(new Sword(this), getWorldPos());
     }
 
