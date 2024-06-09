@@ -30,5 +30,9 @@ public class Crate extends Feature {
 
     @Override
     public void update() {
+        if(getWorld().getPlayer().getWorldPos().distanceTo(getWorldPos()) <= 20) {
+            getWorld().addWorldObject(contents[rand.nextInt(contents.length)], getWorldPos());
+            removeFromWorld();
+        }
     }
 }
