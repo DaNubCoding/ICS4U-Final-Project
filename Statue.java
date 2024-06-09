@@ -23,7 +23,7 @@ public class Statue extends Enemy {
     private Timer attackTimer = new Timer(150);
 
     public Statue() {
-        super("statue_active");
+        super("statue_dormant");
         setNoticeRange(65);
         setForgetRange(400);
         setHealth(MAX_HP);
