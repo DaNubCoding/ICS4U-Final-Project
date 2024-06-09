@@ -1,5 +1,15 @@
 /**
  * Features are permanent spracks of the world, generated using {@link WorldData}.
+ * <p>
+ * Subclass this class to create a new type of Feature. To give it a texture,
+ * add a new entry to {@link SprackView}, and pass the name of the entry to the
+ * constructor of the superclass.
+ * <p>
+ * In order to spawn a new Feature in the world, add a new entry to {@link Type}
+ * and pass in the class of the Feature, the constructor of the Feature (
+ * {@code MyFeature::new}), and the spawn rate of the Feature.
+ * <p>
+ * To spawn the new Feature in clusters, see {@link Cluster}.
  *
  * @author Lucas Fu
  * @version May 2024
