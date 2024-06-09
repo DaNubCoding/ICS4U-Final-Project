@@ -10,7 +10,8 @@ import java.util.Random;
 public class Crate extends Feature {
     private Weapon[] contents = new Weapon[] {
         new TestPistol(null),
-        new Sword(null)
+        new Sword(null),
+        new EnderPearlGun(null)
     };
     Random rand = new Random();
 
@@ -28,7 +29,7 @@ public class Crate extends Feature {
 
         // Temporary behavior
         if (new Vector2(player.getWorldX(), player.getWorldZ()).distanceTo(getWorldX(), getWorldZ()) < 15) {
-            getWorld().addWorldObject(contents[rand.nextInt(2)], getWorldPos());
+            getWorld().addWorldObject(contents[rand.nextInt(contents.length)], getWorldPos());
             removeFromWorld();
         }
     }
