@@ -22,7 +22,7 @@ public abstract class Weapon extends Item {
      * @param cooldown
      */
     public Weapon(String image, int windup, int cooldown) {
-        super(image, true);
+        super(image);
         casting = false;
         castTime = windup;
         recastTime = cooldown;
