@@ -66,6 +66,15 @@ public class Statue extends Enemy {
             getWorld().addSprite(sPearl, 0, 0);
             attackTimer.restart((int) (Math.random() * 65 + super.getHealth()*100/MAX_HP) + 60);
         }
+
+        if (Math.random() < 0.1) {
+            Vector3 offset = new Vector3(
+                Math.random() * 20 - 10,
+                getHeight() - Math.random() * 10,
+                Math.random() * 20 - 10
+            );
+            getWorld().addWorldObject(new StatueParticle(), getWorldPos().add(offset));
+        }
     }
 
     @Override
@@ -79,5 +88,13 @@ public class Statue extends Enemy {
         Animation attackAnim = attackAnimations[(int) (Math.random() * attackAnimations.length)];
         setLoopingAnimation(attackAnim);
         Camera.shake(5, 18);
+        for (int i = 0; i < 25; i++) {
+            Vector3 offset = new Vector3(
+                Math.random() * 20 - 10,
+                getHeight() - Math.random() * 10,
+                Math.random() * 20 - 10
+            );
+            getWorld().addWorldObject(new StatueParticle(), getWorldPos().add(offset));
+        }
     }
 }
