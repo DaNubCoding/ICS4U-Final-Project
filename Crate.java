@@ -9,9 +9,9 @@ import java.util.Random;
  */
 public class Crate extends Feature {
     private Weapon[] contents = new Weapon[] {
-        new Pistol(null),
-        new Sword(null),
-        new EnderPearlGun(null)
+        new Pistol(),
+        new Sword(),
+        new EnderPearlGun()
     };
     Random rand = new Random();
 
