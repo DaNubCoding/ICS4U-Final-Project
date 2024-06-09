@@ -113,6 +113,7 @@ public abstract class PixelWorld extends World {
     public void updateSprites() {
         for (List<Sprite> layerSprites : spritesByLayer.values()) {
             for (Sprite sprite : layerSprites) {
+                if (!sprite.isUpdating()) continue;
                 sprite.update();
             }
         }

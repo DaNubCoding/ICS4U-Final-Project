@@ -13,6 +13,7 @@ public abstract class Sprite {
     private Vector2 screenPos;
     private GreenfootImage image;
     private PixelWorld world;
+    private boolean updating = true;
 
     /**
      * Create a new Sprite on the given {@link Layer}.
@@ -174,5 +175,30 @@ public abstract class Sprite {
      */
     public double distanceTo(double x, double y) {
         return screenPos.distanceTo(x, y);
+    }
+
+    /**
+     * Disable updates. If updates are disabled, the update method of the sprite
+     * will not be called.
+     */
+    public void disableUpdates() {
+        updating = false;
+    }
+
+    /**
+     * Enable updates. If updates are enabled, the update method of the sprite
+     * will be called.
+     */
+    public void enableUpdates() {
+        updating = true;
+    }
+
+    /**
+     * Check if updates are enabled.
+     *
+     * @return true if updates are enabled, false otherwise
+     */
+    public boolean isUpdating() {
+        return updating;
     }
 }
