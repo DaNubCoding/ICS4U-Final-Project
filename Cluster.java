@@ -4,6 +4,15 @@ import java.util.ArrayList;
 
 /**
  * The different types of clusters that can be generated.
+ * <p>
+ * To add a new cluster of a certain type of {@link Feature}, add a new entry to
+ * this enum with the following parameters:
+ * <ul>
+ * <li>The class of the {@link Feature} to generate</li>
+ * <li>The spawn rate of the cluster</li>
+ * <li>The density of the cluster</li>
+ * <li>The maximum radius of the cluster (actually a square)</li>
+ * </ul>
  *
  * @author Lucas Fu
  * @author Andrew Wang

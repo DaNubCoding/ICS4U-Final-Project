@@ -9,7 +9,7 @@ import greenfoot.GreenfootImage;
 public class CanopyBomb extends Magic {
     public CanopyBomb(Vector3 startpos, int inaccuracy) {
         super(startpos.add(new Vector3(0, 300, 0)), inaccuracy, 0, 10000, 10, 100);
-        setOriginalImage(new GreenfootImage("test_pistol.png"));
+        setOriginalImage(new GreenfootImage("pistol.png"));
     }
 
     @Override

@@ -13,7 +13,7 @@ public class TestProjectile extends Projectile {
 
     public TestProjectile(Entity owner, Vector3 direction, Vector3 startpos) {
         super(owner, direction, startpos, 100);
-        setOriginalImage(new GreenfootImage("test_pistol.png"));
+        setOriginalImage(new GreenfootImage("pistol.png"));
         rand = new Random();
     }
 
