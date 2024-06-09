@@ -78,5 +78,6 @@ public class Statue extends Enemy {
     public void triggerAttack() {
         Animation attackAnim = attackAnimations[(int) (Math.random() * attackAnimations.length)];
         setLoopingAnimation(attackAnim);
+        Camera.shake(5, 18);
     }
 }

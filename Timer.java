@@ -84,4 +84,13 @@ public class Timer {
         startFrame = currentAct;
         totalFrames = newTotalFrames;
     }
+
+    /**
+     * Get the total number of frame set for the Timer.
+     *
+     * @return the total number of frames
+     */
+    public int getTotalFrames() {
+        return totalFrames;
+    }
 }

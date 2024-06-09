@@ -10,10 +10,13 @@ public class Camera {
     // Don't let anyone instantiate this class
     private Camera() {}
 
-    private static Vector3 position;
+    private static Vector3 centralPosition = new Vector3(0, 0, 0);
+    private static Vector3 position = new Vector3(0, 0, 0);
     private static double rotation;
     private static double zoom;
     private static double closeness;
+    private static Timer shakeTimer;
+    private static int shakeStrength;
 
     /**
      * Set the factor by which the {@link #targetPosition} and
@@ -51,8 +54,19 @@ public class Camera {
      * @param position the position to interpolate towards
      */
     public static void targetPosition(Vector3 position) {
-        Vector3 delta = position.subtract(Camera.position);
-        Camera.position = Camera.position.add(delta.multiply(closeness));
+        Vector3 delta = position.subtract(Camera.centralPosition);
+        Camera.centralPosition = Camera.centralPosition.add(delta.multiply(closeness));
+
+        if (shakeTimer != null && !shakeTimer.ended()) {
+            Camera.position = Camera.centralPosition.add(new Vector3(
+                (Math.random() - 0.5) * shakeStrength,
+                (Math.random() - 0.5) * shakeStrength,
+                (Math.random() - 0.5) * shakeStrength
+            ));
+        } else {
+            Camera.position = Camera.centralPosition;
+            shakeTimer = null;
+        }
     }
 
     /**
@@ -95,9 +109,28 @@ public class Camera {
      * @param zoom the zoom factor to set the camera to
      */
     public static void resetTo(double x, double y, double z, double rotation, double zoom) {
-        Camera.position = new Vector3(x, y, z);
+        Camera.centralPosition = new Vector3(x, y, z);
         Camera.rotation = Vector2.normalizeAngle(rotation);
         setZoom(zoom);
+    }
+
+    /**
+     * Shake the camera for a specified duration with a specified strength.
+     * <p>
+     * The camera will shake randomly within a square of side length
+     * {@code strength} centered around the camera's current position.
+     *
+     * @param strength the maximum distance the camera will shake
+     * @param duration the duration of the shake
+     */
+    public static void shake(int strength, int duration) {
+        shakeStrength = strength;
+        if (shakeTimer == null) {
+            shakeTimer = new Timer(duration);
+        } else {
+            double remaining = shakeTimer.getTotalFrames() * (1 - shakeTimer.progress());
+            shakeTimer.restart((int) Math.max(remaining, duration));
+        }
     }
 
     /**
