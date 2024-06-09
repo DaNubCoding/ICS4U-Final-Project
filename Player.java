@@ -19,6 +19,7 @@ public class Player extends Entity {
     private static final Animation standingAnimation = new Animation(-1, "knight_standing");
     private static final Animation dashAnimation = new Animation(25, "knight_dash");
     public static final int MAX_ITEM_NUM = 2;
+    public static final Vector3 HAND_LOCATION = new Vector3(5, 8, -5);
 
     private double cameraTargetRotation;
     private Timer dashTimer;
@@ -73,7 +74,7 @@ public class Player extends Entity {
             if (hotbar.size() > 1) {
                 getWorld().removeSprite(hotbar.get(heldIndex));
                 heldIndex = (heldIndex + 1) % hotbar.size();
-                getWorld().addWorldObject(hotbar.get(heldIndex), getWorldPos().setY(getWorldY()+200));
+                getWorld().addWorldObject(hotbar.get(heldIndex), HAND_LOCATION.rotateY(getWorldRotation()));
             }
             tabFlag = true;
         } else if (tabFlag && !Greenfoot.isKeyDown("tab")) {
@@ -179,7 +180,7 @@ public class Player extends Entity {
             heldIndex = 0;
         }
         if(hotbar.size() != 0)
-            getWorld().addWorldObject(hotbar.get(heldIndex), getWorldPos().setY(getWorldY()+200));
+            getWorld().addWorldObject(hotbar.get(heldIndex), HAND_LOCATION.rotateY(getWorldRotation()));
     }
 
     @Override
