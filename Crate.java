@@ -11,7 +11,10 @@ public class Crate extends Feature {
     private Weapon[] contents = new Weapon[] {
         new Pistol(),
         new Sword(),
-        new EnderPearlGun()
+        new EnderPearlGun(),
+        new Pitchfork(),
+        new Axe(),
+        new Bat()
     };
     Random rand = new Random();
 

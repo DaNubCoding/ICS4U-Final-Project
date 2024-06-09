@@ -2,14 +2,18 @@
  * Weapon that does point damage within a range.
  *
  * @author Andrew Wang
+ * @author Sandra Huang
  * @version May 2024
  */
 public abstract class MeleeWeapon extends Weapon {
     private int range;
     private double damage;
     private int sweepAngle;
-    private Timer swingTimer;
     private double swingAngle;
+    private Timer swingTimer;
+    private int swingDuration;
+    private Timer unswingTimer;
+    private int unswingDuration;
 
     /**
      * Create a new melee weapon.
@@ -21,13 +25,18 @@ public abstract class MeleeWeapon extends Weapon {
      * @param range
      * @param damage
      * @param sweepAngle
+     * @param swingDuration
+     * @param unswingDuration
      */
     public MeleeWeapon(String image, int windup, int cooldown,
-                       int range, double damage, int sweepAngle) {
+                       int range, double damage, int sweepAngle,
+                       int swingDuration, int unswingDuration) {
         super(image, windup, cooldown);
         this.range = range;
         this.damage = damage;
         this.sweepAngle = sweepAngle;
+        this.swingDuration = swingDuration;
+        this.unswingDuration = unswingDuration;
     }
 
     @Override
@@ -35,9 +44,15 @@ public abstract class MeleeWeapon extends Weapon {
         super.lockToPlayer();
 
         if (swingTimer != null) {
-            swingAngle = Math.sin(swingTimer.progress() * Math.PI * 2) * sweepAngle / 2;
+            swingAngle = -1 * Math.sin(swingTimer.progress() * Math.PI / 2) * sweepAngle;
             if (swingTimer.ended()) {
                 swingTimer = null;
+                unswingTimer = new Timer(unswingDuration);
+            }
+        }else if(unswingTimer != null){
+            swingAngle = -1 * Math.sin(unswingTimer.progress() * Math.PI / 2 + Math.PI / 2) * sweepAngle;
+            if (unswingTimer.ended()) {
+                unswingTimer = null;
             }
         }
         setWorldRotation(getPlayer().getWorldRotation() + swingAngle);
@@ -55,6 +70,10 @@ public abstract class MeleeWeapon extends Weapon {
 
         getWorld().getDamages().add(damage);
 
-        swingTimer = new Timer(18);
+        swingTimer = new Timer(swingDuration);
+    }
+
+    public Timer getSwingTimer(){
+        return swingTimer;
     }
 }
