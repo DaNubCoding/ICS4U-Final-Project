@@ -284,13 +284,13 @@ public class Sprack extends Sprite implements WorldObject {
 
     /**
      * Get the world the Sprack is in, this is always an instance of a
-     * {@link SpriteStackingWorld} for Spracks.
+     * {@link SprackWorld} for Spracks.
      *
      * @return the world the Sprack is in
      */
     @Override
-    public SpriteStackingWorld getWorld() {
-        return (SpriteStackingWorld) super.getWorld();
+    public SprackWorld getWorld() {
+        return (SprackWorld) super.getWorld();
     }
 
     /**

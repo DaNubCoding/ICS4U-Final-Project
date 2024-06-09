@@ -66,9 +66,9 @@ public interface WorldObject {
 
     /**
      * Get the world this object is in, this is always an instance of a
-     * {@link SpriteStackingWorld}.
+     * {@link SprackWorld}.
      *
      * @return the world
      */
-    public SpriteStackingWorld getWorld();
+    public SprackWorld getWorld();
 }

@@ -129,7 +129,7 @@ public class Damage {
      */
     public void update() {
         if (damageTimer.ended()) {
-            SpriteStackingWorld world = owner.getWorld();
+            SprackWorld world = owner.getWorld();
             // If the owner is removed from the world, remove the damage
             if (world == null) {
                 removed = true;

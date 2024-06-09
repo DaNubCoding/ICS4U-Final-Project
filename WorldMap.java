@@ -4,7 +4,7 @@ import greenfoot.Greenfoot;
 import greenfoot.GreenfootImage;
 
 public class WorldMap extends PixelWorld {
-    private SpriteStackingWorld initialWorld;
+    private SprackWorld initialWorld;
     private Color[][] map;
 
     private static final int CELL_SIZE = 5;
@@ -17,7 +17,7 @@ public class WorldMap extends PixelWorld {
         colors.put(Tombstone.class, new Color(99, 99, 99));
     }
 
-    public WorldMap(SpriteStackingWorld oldWorld, WorldData worldData) {
+    public WorldMap(SprackWorld oldWorld, WorldData worldData) {
         super(oldWorld.getWidth(), oldWorld.getHeight());
 
         worldData.saveData();

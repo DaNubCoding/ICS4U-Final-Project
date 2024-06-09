@@ -5,7 +5,7 @@ import java.util.Comparator;
 import java.util.stream.Stream;
 import java.util.stream.Collectors;
 
-public class SpriteStackingWorld extends PixelWorld {
+public class SprackWorld extends PixelWorld {
     // private static final int OBJECT_SPAWN_RANGE = 2000;
     private WorldData worldData;
     private Player player;
@@ -19,7 +19,7 @@ public class SpriteStackingWorld extends PixelWorld {
         SprackView.loadAll();
     }
 
-    public SpriteStackingWorld() {
+    public SprackWorld() {
         super(WORLD_WIDTH, WORLD_HEIGHT);
 
         damages = new ArrayList<>();

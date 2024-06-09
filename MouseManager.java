@@ -46,8 +46,8 @@ public class MouseManager {
         greenfoot.MouseInfo mouseInfo = Greenfoot.getMouseInfo();
         if (mouseInfo == null) return null;
         Vector2 screenCenter =
-            new Vector2(SpriteStackingWorld.WORLD_WIDTH * PixelWorld.PIXEL_SCALE / 2,
-                        SpriteStackingWorld.WORLD_HEIGHT * PixelWorld.PIXEL_SCALE / 2);
+            new Vector2(SprackWorld.WORLD_WIDTH * PixelWorld.PIXEL_SCALE / 2,
+                        SprackWorld.WORLD_HEIGHT * PixelWorld.PIXEL_SCALE / 2);
         int x = Greenfoot.getMouseInfo().getX();
         int y = Greenfoot.getMouseInfo().getY();
         Vector2 mousePos = new Vector2(x, y).subtract(screenCenter);

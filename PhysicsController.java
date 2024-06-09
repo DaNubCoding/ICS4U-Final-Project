@@ -76,11 +76,11 @@ public class PhysicsController {
 
     /**
      * Get the world the client of this controller is in. This is always a
-     * {@link SpriteStackingWorld}.
+     * {@link SprackWorld}.
      *
      * @return the world
      */
-    public SpriteStackingWorld getWorld() {
+    public SprackWorld getWorld() {
         return client.getWorld();
     }
 

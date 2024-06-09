@@ -131,7 +131,7 @@ public class WorldSprite extends TransformableSprite implements WorldObject {
     }
 
     @Override
-    public SpriteStackingWorld getWorld() {
-        return (SpriteStackingWorld) super.getWorld();
+    public SprackWorld getWorld() {
+        return (SprackWorld) super.getWorld();
     }
 }
