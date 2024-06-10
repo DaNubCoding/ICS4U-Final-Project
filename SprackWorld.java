@@ -80,6 +80,8 @@ public class SprackWorld extends PixelWorld {
         int cameraGridZ = (int) (Camera.getZ() / 20);
         if (worldData.updatePlayerLocation(cameraGridX, cameraGridZ)) {
             List<? extends Sprite> features = getSprites(Feature.class);
+            Vector2 playerPos = worldData.getPlayerLocation();
+            int genRad = worldData.getGenerationRadius();
             // remove objects not present in world data
             for (Sprite sprite : features) {
                 Feature feature = (Feature) sprite;
@@ -93,6 +95,19 @@ public class SprackWorld extends PixelWorld {
                 && !features.contains(worldData.getSurroundings().get(coord))) {
                     final int x = (int) coord.x * 20, z = (int) coord.y * 20;
                     addWorldObject(worldData.getSurroundings().get(coord), x, 0, z);
+                }
+            }
+            // remove offscreen items and add onscreen items
+            List<? extends Sprite> items = getSprites(Item.class);
+            for (Vector2 coord : worldData.getStoredItems().keySet()) {
+                Item i = worldData.getStoredItems().get(coord);
+                // remove if offscreen
+                if(coord.distanceTo(playerPos) > genRad && items.contains(i)) {
+                    removeSprite(i);
+                }
+                // add if onscreen
+                if (coord.distanceTo(playerPos) <= genRad && !items.contains(i)) {
+                    addWorldObject(i, Vector3.fromXZ(coord));
                 }
             }
         }

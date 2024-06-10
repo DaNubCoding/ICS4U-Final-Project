@@ -1,3 +1,5 @@
+import java.util.HashMap;
+import java.util.function.Supplier;
 import greenfoot.GreenfootImage;
 
 /**
@@ -13,11 +15,19 @@ public class Item extends WorldSprite {
     private boolean isOnGround;
     private PhysicsController physics = new PhysicsController(this);
     private Timer pickupTimer = new Timer(0);
+    private boolean updatedFlag = false;
+
+    public static final HashMap<String, Supplier<Item>> NAMES = new HashMap<>();
+
+    static {
+        NAMES.put("pistol", Pistol::new);
+        NAMES.put("sword", Sword::new);
+        NAMES.put("enderpearlgun", EnderPearlGun::new);
+    }
 
     /**
-     * Create a new Item with 
-     * @param image
-     * @param isOnGround
+     * Create a new Item on the ground.
+     * @param image the file name of the item's image
      */
     public Item(String image) {
         this.isOnGround = true;
@@ -29,6 +39,12 @@ public class Item extends WorldSprite {
         physics.update();
 
         if(isOnGround) {
+            if(pickupTimer.ended() && !updatedFlag) {
+                updatedFlag = true;
+                Vector3 pos = getWorldPos();
+                getWorld().getWorldData().storeItem(new Vector2(pos.x / 20, pos.z / 20), this);
+                System.out.println(pos);
+            }
             awaitPickup();
             return;
         }
@@ -74,14 +90,19 @@ public class Item extends WorldSprite {
     private void awaitPickup() {
         player = getWorld().getPlayer();
         Vector3 playerPos = player.getWorldPos();
-        if(getWorldPos().distanceTo(playerPos) < 45 && pickupTimer.ended()
+        if(getWorldPos().distanceTo(playerPos) < 30 && pickupTimer.ended()
         && player.getHotbarSize() < Player.MAX_ITEM_NUM) {
             physics.accelTowards(playerPos);
+            Vector3 pos = getWorldPos();
+            getWorld().getWorldData().removeItem(new Vector2(pos.x / 20, pos.z / 20));
         }
         if(getWorldPos().distanceTo(playerPos) < 15 && pickupTimer.ended()) {
             if(player.getHotbarSize() < Player.MAX_ITEM_NUM) {
                 isOnGround = false;
                 player.pickupItem(this);
+                updatedFlag = false;
+                Vector3 pos = getWorldPos();
+                getWorld().getWorldData().removeItem(new Vector2(pos.x / 20, pos.z / 20));
             }
         }
     }
@@ -103,5 +124,10 @@ public class Item extends WorldSprite {
 
     public Player getPlayer() {
         return player;
+    }
+
+    @Override
+    public String toString() {
+        return getClass().getName().toLowerCase();
     }
 }

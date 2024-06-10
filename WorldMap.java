@@ -6,6 +6,8 @@ import greenfoot.GreenfootImage;
 public class WorldMap extends PixelWorld {
     private SprackWorld initialWorld;
     private Color[][] map;
+    private Color[][] itemMap;
+    private Color[][] entityMap;
 
     private static final int CELL_SIZE = 5;
     private static final HashMap<Class<? extends Feature>, Color> colors = new HashMap<>();
@@ -20,16 +22,17 @@ public class WorldMap extends PixelWorld {
     public WorldMap(SprackWorld oldWorld, WorldData worldData) {
         super(oldWorld.getWidth(), oldWorld.getHeight());
 
-        worldData.saveData();
-
         // define variables
         int genRad = worldData.getGenerationRadius();
         Vector2 playerPos = worldData.getPlayerLocation();
         HashMap<Vector2, Feature> surroundings = worldData.getSurroundings();
+        HashMap<Vector2, Item> items = worldData.getStoredItems();
 
         // update instance variables
         initialWorld = oldWorld;
         map = new Color[2 * genRad + 1][2 * genRad + 1];
+        itemMap = new Color[2 * genRad + 1][2 * genRad + 1];
+        entityMap = new Color[2 * genRad + 1][2 * genRad + 1];
 
         // fetch features
         for (Vector2 v : surroundings.keySet()) {
@@ -41,35 +44,39 @@ public class WorldMap extends PixelWorld {
                 map[(int)v.y][(int)v.x] = colors.get(f.getClass());
         }
 
+        // put items
+        for (Vector2 v : items.keySet()) {
+            v = v.subtract(playerPos);
+            v = v.add(new Vector2(genRad, genRad));
+            if (v.y > -1 && v.y < itemMap.length && v.x > -1 && v.x < itemMap.length)
+                itemMap[(int)v.y][(int)v.x] = new Color(160, 20, 160);
+        }
+
         // put entities
-        for(Entity e : initialWorld.getEntitiesInRange(Vector3.fromXZ(playerPos), genRad * 20)) {
+        for (Entity e : initialWorld.getEntitiesInRange(Vector3.fromXZ(playerPos), genRad * 20)) {
             if(e instanceof Player) continue;
             Vector3 v = e.getWorldPos().divide(20);
             v = v.subtract(Vector3.fromXZ(playerPos));
             v = v.add(new Vector3(genRad, 0, genRad));
-            try {
-                if(v.z > -1 && v.z < map.length && v.z > -1 && v.z < map.length)
-                    map[(int)v.z][(int)v.x] = new Color(180, 20, 20);
-            } catch (ArrayIndexOutOfBoundsException ex) {
-                // do nothing if the entity is outside the map
-            }
+            if (v.z > -1 && v.z < entityMap.length && v.x > -1 && v.x < entityMap.length)
+                entityMap[(int)v.z][(int)v.x] = new Color(160, 20, 20);
         }
 
         // put player
-        map[genRad][genRad] = new Color(255, 10, 10);
+        entityMap[genRad][genRad] = new Color(255, 10, 10);
 
         // show coordinates
         String coords = "Coordinates:\n(" + (int) playerPos.x + ", " + (int) playerPos.y + ")";
         addSprite(new Text(coords,
-                            Text.AnchorX.CENTER,
-                            Text.AnchorY.CENTER,
-                            new Color(180, 180, 180)),
-                    50, 50);
+                           Text.AnchorX.CENTER,
+                           Text.AnchorY.CENTER,
+                           new Color(180, 180, 180)),
+                         50, 50);
     }
 
     @Override
     public void update() {
-        if(Greenfoot.isKeyDown("escape")) {
+        if (Greenfoot.isKeyDown("escape")) {
             Greenfoot.setWorld(initialWorld);
         }
         updateSprites();
@@ -83,20 +90,45 @@ public class WorldMap extends PixelWorld {
         int heiAdj = (initialWorld.getHeight() - CELL_SIZE * map.length) / 2;
         background.setColor(new Color(56, 56, 56));
         background.fill();
+        // feature map
         for (int i = 0; i < map.length; i++) {
             for (int j = 0; j < map[i].length; j++) {
                 if (map[i][j] != null) {
                     background.setColor(map[i][j]);
                     background.drawRect(CELL_SIZE * j + widAdj,
                                         CELL_SIZE * i + heiAdj,
-                                        CELL_SIZE - 2,
-                                        CELL_SIZE - 2);
+                                        CELL_SIZE - 1,
+                                        CELL_SIZE - 1);
+                }
+            }
+        }
+        // entity map
+        for (int i = 0; i < entityMap.length; i++) {
+            for (int j = 0; j < entityMap[i].length; j++) {
+                if (entityMap[i][j] != null) {
+                    background.setColor(entityMap[i][j]);
+                    background.drawRect(CELL_SIZE * j + widAdj + 1,
+                                        CELL_SIZE * i + heiAdj + 1,
+                                        CELL_SIZE - 3,
+                                        CELL_SIZE - 3);
+                }
+            }
+        }
+        // item map
+        for (int i = 0; i < itemMap.length; i++) {
+            for (int j = 0; j < itemMap[i].length; j++) {
+                if (itemMap[i][j] != null) {
+                    background.setColor(itemMap[i][j]);
+                    background.drawRect(CELL_SIZE * j + widAdj + 2,
+                                        CELL_SIZE * i + heiAdj + 2,
+                                        CELL_SIZE - 5,
+                                        CELL_SIZE - 5);
                 }
             }
         }
         background.setColor(new Color(180, 180, 180));
         background.drawRect(widAdj - 1, heiAdj - 1,
-                            CELL_SIZE * map.length, CELL_SIZE * map.length);
+                            CELL_SIZE * map.length + 1, CELL_SIZE * map.length + 1);
 
         renderSprites();
     }

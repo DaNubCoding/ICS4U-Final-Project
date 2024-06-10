@@ -29,6 +29,7 @@ public class WorldData {
     private Vector2 playerLocation;
     private HashMap<Long, FeatureData> modifiedFeatures;
     private HashMap<Vector2, Feature> surroundings;
+    private HashMap<Vector2, Item> storedItems;
 
     /**
      * Create a new WorldData object with default settings.
@@ -39,6 +40,7 @@ public class WorldData {
         playerLocation = new Vector2(0, 0);
         surroundings = new HashMap<Vector2, Feature>();
         modifiedFeatures = new HashMap<Long, FeatureData>();
+        storedItems = new HashMap<Vector2, Item>();
     }
 
     /**
@@ -54,16 +56,23 @@ public class WorldData {
         Scanner scf;
         try {
             scf = new Scanner(new File("saves/save_" + seed + ".csv"));
+
             // get the seed
             this.seed = Long.valueOf(scf.nextLine());
+
             // get the player coordinates
             StringTokenizer st = new StringTokenizer(scf.nextLine(), ",");
             long x = Integer.valueOf(st.nextToken());
             long y = Integer.valueOf(st.nextToken());
             playerLocation = new Vector2(x, y);
-            // get the list of modified elements
+
+            // get the list of modified features
             while (scf.hasNextLine()) {
-                st = new StringTokenizer(scf.nextLine(), ",");
+                String check = scf.nextLine();
+                if(!check.contains("feature")) break;
+
+                st = new StringTokenizer(check, ",");
+                st.nextToken(); // remove feature token
                 long id = Long.valueOf(st.nextToken());
                 FeatureData featureData = new FeatureData(id);
                 while (st.hasMoreTokens()) {
@@ -73,6 +82,20 @@ public class WorldData {
                 }
                 modifiedFeatures.put(id, featureData);
             }
+
+            // get the list of stored items
+            while (scf.hasNextLine()) {
+                String check = scf.nextLine();
+                if(!check.contains("item")) break;
+
+                st = new StringTokenizer(check, ",");
+                st.nextToken(); // remove item token
+                int itemX = Integer.valueOf(st.nextToken());
+                int itemY = Integer.valueOf(st.nextToken());
+                String itemType = st.nextToken();
+                storedItems.put(new Vector2(itemX, itemY), Item.NAMES.get(itemType).get());
+            }
+
         } catch(FileNotFoundException e) {
             this.seed = seed;
         }
@@ -380,6 +403,35 @@ public class WorldData {
     }
 
     /**
+     * Store an item into the world data, allowing it to be regenerated when
+     * coming back.
+     * 
+     * @param pos the position of the item, in grid coordinates
+     * @param i the item to be stored
+     */
+    public void storeItem(Vector2 pos, Item i) {
+        storedItems.put(pos, i);
+    }
+
+    /**
+     * Remove an item from storage, preventing it from being generated again.
+     * 
+     * @param pos the position of the item to be removed, in grid coordinates
+     */
+    public void removeItem(Vector2 pos) {
+        storedItems.remove(pos);
+    }
+
+    /**
+     * Get the stored items within the world.
+     * 
+     * @return the hashmap containing all stored items
+     */
+    public HashMap<Vector2, Item> getStoredItems() {
+        return storedItems;
+    }
+
+    /**
      * Get the seed of the world.
      *
      * @return the seed of the world
@@ -388,6 +440,11 @@ public class WorldData {
         return seed;
     }
 
+    /**
+     * Get the player location.
+     * 
+     * @return the player location, in grid coordinates
+     */
     public Vector2 getPlayerLocation() {
         return playerLocation;
     }
@@ -409,10 +466,20 @@ public class WorldData {
             System.out.println(e);
             return;
         }
+        // seed
         fileOutput.println(seed);
+        // player location
         fileOutput.println((int) (playerLocation.x) + "," + (int) playerLocation.y);
+        // modified features
         for (FeatureData featureData : modifiedFeatures.values()) {
+            fileOutput.print("feature,");
             fileOutput.println(featureData.toString());
+        }
+        // stored items
+        for (Vector2 v : storedItems.keySet()) {
+            Item i = storedItems.get(v);
+            fileOutput.print("item,");
+            fileOutput.println(v.x + ',' + v.y + ',' + i.toString());
         }
         fileOutput.close();
     }
