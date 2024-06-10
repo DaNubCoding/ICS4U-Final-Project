@@ -7,9 +7,6 @@
 public class Jester extends Enemy {
     int MAX_HP = 300;
 
-    private static final Animation idleAnimation = new Animation(-1, "jester_idle");
-    //private static final Animation guardAnimation = new Animation(-1, "jester_guard");
-
     private static final Animation walkingAnimation = new Animation(12,
             "jester_walk1",
             "jester_idle",
@@ -64,7 +61,7 @@ public class Jester extends Enemy {
         if (physics.isMoving()) {
             setLoopingAnimation(walkingAnimation);
         } else {
-            setLoopingAnimation(idleAnimation);
+            setLoopingAnimation(staticAnimations[0]);
         }
     } // Does nothing
 
