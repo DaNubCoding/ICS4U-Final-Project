@@ -1,10 +1,20 @@
 import greenfoot.*;
 
+/**
+ * A health bar that displays the health of an entity right above it. This will
+ * automatically follow the entity and update the health.
+ *
+ * @author Andrew Wang
+ * @version June 2024
+ */
 public class HealthBar extends WorldSprite {
     private Entity owner;
     private double maxHealth;
     private boolean maxHealthSet;
 
+    /**
+     * Create a new health bar for the given entity.
+     */
     public HealthBar(Entity owner) {
         super(Layer.HEALTH_BAR);
         this.owner = owner;
@@ -16,6 +26,9 @@ public class HealthBar extends WorldSprite {
         setWorldRotation(Camera.getRotation());
     }
 
+    /**
+     * Set the health of this health bar, which updates the health bar's image.
+     */
     public void setHealth(double health) {
         if (!maxHealthSet) {
             maxHealth = health;
