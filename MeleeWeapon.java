@@ -80,7 +80,11 @@ public abstract class MeleeWeapon extends Weapon {
         } 
         catch (NullPointerException e) {} // if the weapon got switched out before doing damage
 
-        unswingTimer1 = new Timer(unswingDuration / 2);
+        if (unswingDuration != 0) {
+            unswingTimer1 = new Timer(unswingDuration / 2);
+        } else {
+            swingTimer = new Timer(swingDuration);
+        }
     }
 
     public Timer getSwingTimer(){
