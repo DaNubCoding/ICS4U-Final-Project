@@ -48,6 +48,12 @@ public class Jester extends Enemy {
     }
 
     @Override
+    public void addedToWorld(PixelWorld world) {
+        super.addedToWorld(world);
+        getWorld().addCollisionController(new CollisionController(this, 8, 0.1, 0.0));
+    }
+
+    @Override
     public void idle(Player player) {
         if (moveTimer.ended()) {
             final double distance = Math.random() * 40 + 30;
