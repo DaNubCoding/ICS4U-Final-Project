@@ -90,7 +90,6 @@ public class Player extends Entity {
             qFlag = false;
         }
 
-        // TODO: TEMPORARY for demo purposes
         if (Greenfoot.isKeyDown("e") && getWorldY() == 0) {
             physics.reduceMomentum(0.9);
             Vector2 horImpulse = new Vector2(getWorldRotation()).multiply(5);
@@ -167,16 +166,26 @@ public class Player extends Entity {
         return hotbar.size();
     }
 
+    /**
+     * Add an Item to the hotbar.
+     * 
+     * @param i the item to be added
+     */
     public void pickupItem(Item i) {
         hotbar.add(i);
+        getWorld().getWorldData().setHotbar(hotbar);
         if(hotbar.size() > 1)
             getWorld().removeSprite(i);
     }
 
+    /**
+     * Toss an Item out of the hotbar, removing it.
+     */
     public void throwItem() {
         if(hotbar.size() == 0) return;
         hotbar.get(heldIndex).drop();
         hotbar.remove(heldIndex);
+        getWorld().getWorldData().setHotbar(hotbar);
         if(heldIndex >= hotbar.size()) {
             heldIndex = 0;
         }
@@ -187,6 +196,7 @@ public class Player extends Entity {
     @Override
     public void damage(Damage damage) {
         super.damage(damage);
-        System.out.println("Player took " + damage.getDamage() + " points of damage" + " and has " + getHealth() + " health left");
+        System.out.println("Player took " + damage.getDamage() + " points of damage and has " + getHealth() + " health left");
     }
+
 }
