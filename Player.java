@@ -153,7 +153,7 @@ public class Player extends Entity {
         cameraTargetRotation += mouseRel.x * 0.13;
 
         double zoom = Camera.getZoom() * (1 + mouseRel.y * 0.002);
-        Camera.setZoom(Math.max(0.5, Math.min(2, zoom)));
+        Camera.setZoom(Math.max(0.6, Math.min(2, zoom)));
         Camera.targetRotation(cameraTargetRotation);
     }
 
@@ -168,7 +168,7 @@ public class Player extends Entity {
 
     /**
      * Add an Item to the hotbar.
-     * 
+     *
      * @param i the item to be added
      */
     public void pickupItem(Item i) {
