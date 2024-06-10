@@ -71,6 +71,7 @@ public class Feature extends Sprack {
          * @return a new Feature of the given type
          */
         public static Feature createFeature(int i, FeatureData data) {
+            if (data.containsKey("removed")) return null;
             return values()[i].factory.create(data);
         }
 
