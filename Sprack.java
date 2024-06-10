@@ -288,8 +288,13 @@ public class Sprack extends Sprite implements WorldObject {
      * @return the height of the Sprack
      */
     public int getHeight() {
-        return SprackView.getView(loopingAnimation.getCurrentName())
-            .getLayerCount();
+        try {
+            return SprackView.getView(loopingAnimation.getCurrentName())
+                .getLayerCount();
+        } catch (NullPointerException e) {
+            // If the SprackView has not completed caching, return 0
+            return 0;
+        }
     }
 
     /**
