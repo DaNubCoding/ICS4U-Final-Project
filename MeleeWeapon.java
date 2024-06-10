@@ -12,7 +12,8 @@ public abstract class MeleeWeapon extends Weapon {
     private double swingAngle;
     private Timer swingTimer;
     private int swingDuration;
-    private Timer unswingTimer;
+    private Timer unswingTimer1;
+    private Timer unswingTimer2;
     private int unswingDuration;
 
     /**
@@ -43,16 +44,22 @@ public abstract class MeleeWeapon extends Weapon {
     public void lockToPlayer() {
         super.lockToPlayer();
 
-        if (swingTimer != null) {
-            swingAngle = -1 * Math.sin(swingTimer.progress() * Math.PI / 2) * sweepAngle;
+        if (unswingTimer1 != null) {
+            swingAngle = Math.sin(unswingTimer1.progress() * Math.PI / 2) * sweepAngle / 2;
+            if (unswingTimer1.ended()) {
+                unswingTimer1 = null;
+                swingTimer = new Timer(swingDuration);
+            }
+        } else if (swingTimer != null) {
+            swingAngle = Math.cos(swingTimer.progress() * Math.PI) * sweepAngle / 2;
             if (swingTimer.ended()) {
                 swingTimer = null;
-                unswingTimer = new Timer(unswingDuration);
+                unswingTimer2 = new Timer(unswingDuration / 2);
             }
-        }else if(unswingTimer != null){
-            swingAngle = -1 * Math.sin(unswingTimer.progress() * Math.PI / 2 + Math.PI / 2) * sweepAngle;
-            if (unswingTimer.ended()) {
-                unswingTimer = null;
+        } else if (unswingTimer2 != null) {
+            swingAngle = -Math.cos(unswingTimer2.progress() * Math.PI / 2) * sweepAngle / 2;
+            if (unswingTimer2.ended()){
+                unswingTimer2 = null;
             }
         }
         setWorldRotation(getPlayer().getWorldRotation() + swingAngle);
@@ -70,7 +77,7 @@ public abstract class MeleeWeapon extends Weapon {
 
         getWorld().getDamages().add(damage);
 
-        swingTimer = new Timer(swingDuration);
+        unswingTimer1 = new Timer(unswingDuration / 2);
     }
 
     public Timer getSwingTimer(){
