@@ -44,6 +44,9 @@ public abstract class Weapon extends Item {
             casting = true;
             castTimer.restart(castTime);
         }
+        if (casting) {
+            windup();
+        }
         if (casting && castTimer.ended()) {
             attack();
             casting = false;
@@ -55,4 +58,9 @@ public abstract class Weapon extends Item {
      * Perform the weapon's attack.
      */
     public abstract void attack();
+
+    /**
+     * Perform windup actions. Overriding this is optional.
+     */
+    public void windup() {};
 }

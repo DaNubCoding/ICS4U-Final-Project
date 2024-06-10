@@ -25,6 +25,7 @@ public class Item extends WorldSprite {
         NAMES.put("axe", Axe::new);
         NAMES.put("bat", Bat::new);
         NAMES.put("pitchfork", Pitchfork::new);
+        NAMES.put("jestersword", JesterSword::new);
     }
 
     /**
