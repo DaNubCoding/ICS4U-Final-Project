@@ -110,13 +110,6 @@ public class Feature extends Sprack {
         this.data = data;
     }
 
-    @Override
-    public void addedToWorld(PixelWorld world) {
-        if (data.containsKey("removed")) {
-            getWorld().removeSprite(this);
-        }
-    }
-
     /**
      * Modify the data of this Feature.
      * <p>
