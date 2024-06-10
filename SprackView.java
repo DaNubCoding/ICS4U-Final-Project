@@ -69,6 +69,17 @@ public class SprackView {
             sheetInfo.put("statue_attack3", 26);
             sheetInfo.put("statue_attack4", 28);
             sheetInfo.put("statue_attack5", 28);
+            sheetInfo.put("jester_idle", 32);
+            sheetInfo.put("jester_walk1", 32);
+            sheetInfo.put("jester_walk2", 32);
+            sheetInfo.put("jester_guard", 32);
+            sheetInfo.put("jester_counter", 32);
+            sheetInfo.put("jester_stab", 32);
+            sheetInfo.put("jester_spin", 32);
+            sheetInfo.put("jester_flip1", 31);
+            sheetInfo.put("jester_flip2", 29);
+            sheetInfo.put("jester_flip3", 31);
+            sheetInfo.put("jester_flip4", 28);
 
             ExecutorService service = Executors.newFixedThreadPool(sheetInfo.size());
             for (Map.Entry<String, Integer> entry : sheetInfo.entrySet()) {
