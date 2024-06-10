@@ -42,7 +42,7 @@ public class WorldMap extends PixelWorld {
             Feature f = surroundings.get(v);
             v = v.subtract(playerPos);
             v = v.add(new Vector2(genRad, genRad));
-            if(v.y > -1 && v.y < map.length && v.x > -1 && v.x < map.length)
+            if(v.y > -1 && v.y < map.length && v.x > -1 && v.x < map[0].length)
                 map[(int)v.y][(int)v.x] = colors.get(f.getClass());
         }
 
@@ -50,18 +50,19 @@ public class WorldMap extends PixelWorld {
         for (Vector2 v : items.keySet()) {
             v = v.subtract(playerPos);
             v = v.add(new Vector2(genRad, genRad));
-            if (v.y > -1 && v.y < itemMap.length && v.x > -1 && v.x < itemMap.length)
+            if (v.y > -1 && v.y < itemMap.length && v.x > -1 && v.x < itemMap[0].length)
                 itemMap[(int)v.y][(int)v.x] = new Color(160, 20, 160);
         }
 
         // put entities
-        for (Entity e : initialWorld.getEntitiesInRange(Vector3.fromXZ(playerPos), genRad * 20)) {
+        for (Entity e: initialWorld.getEntitiesInRange(Vector3.fromXZ(playerPos.multiply(20)), genRad * 20)) {
             if(e instanceof Player) continue;
-            Vector3 v = e.getWorldPos().divide(20);
-            v = v.subtract(Vector3.fromXZ(playerPos));
-            v = v.add(new Vector3(genRad, 0, genRad));
-            if (v.z > -1 && v.z < entityMap.length && v.x > -1 && v.x < entityMap.length)
-                entityMap[(int)v.z][(int)v.x] = new Color(160, 20, 20);
+            Vector2 v = new Vector2(e.getWorldPos().x, e.getWorldPos().z);
+            v = v.divide(20);
+            v = v.subtract(playerPos);
+            v = v.add(new Vector2(genRad, genRad));
+            if (v.y > -1 && v.y < entityMap.length && v.x > -1 && v.x < entityMap[0].length)
+                entityMap[(int)v.y][(int)v.x] = new Color(160, 20, 20);
         }
 
         // put player

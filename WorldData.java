@@ -31,7 +31,8 @@ public class WorldData {
     private HashMap<Long, FeatureData> modifiedFeatures;
     private HashMap<Vector2, Feature> surroundings;
     private HashMap<Vector2, Item> storedItems;
-    private ArrayList<Item> playerHotbar; // TODO: have the player update the hotbar
+    private HashMap<Vector2, Entity> storedEntities;
+    private ArrayList<Item> playerHotbar;
 
     /**
      * Create a new WorldData object with default settings.
@@ -43,6 +44,7 @@ public class WorldData {
         surroundings = new HashMap<Vector2, Feature>();
         modifiedFeatures = new HashMap<Long, FeatureData>();
         storedItems = new HashMap<Vector2, Item>();
+        storedEntities = new HashMap<Vector2, Entity>();
         playerHotbar = new ArrayList<Item>();
     }
 
@@ -65,8 +67,8 @@ public class WorldData {
 
             // get the player coordinates
             StringTokenizer st = new StringTokenizer(scf.nextLine(), ",");
-            long x = Integer.valueOf(st.nextToken());
-            long y = Integer.valueOf(st.nextToken());
+            int x = (int)(double) Double.valueOf(st.nextToken());
+            int y = (int)(double) Double.valueOf(st.nextToken());
             playerLocation = new Vector2(x, y);
 
             // get the player inventory
@@ -101,10 +103,24 @@ public class WorldData {
 
                 st = new StringTokenizer(check, ",");
                 st.nextToken(); // remove item token
-                int itemX = Integer.valueOf(st.nextToken());
-                int itemY = Integer.valueOf(st.nextToken());
+                int itemX = (int)(double) Double.valueOf(st.nextToken());
+                int itemY = (int)(double) Double.valueOf(st.nextToken());
                 String itemType = st.nextToken();
                 storedItems.put(new Vector2(itemX, itemY), Item.NAMES.get(itemType).get());
+            }
+
+            // get the list of stored entities
+            while (scf.hasNextLine()) {
+                String check = scf.nextLine();
+                if(!check.contains("entity")) break;
+
+                st = new StringTokenizer(check, ",");
+                st.nextToken(); // remove entity token
+                int entityX = (int)(double) Double.valueOf(st.nextToken());
+                int entityY = (int)(double) Double.valueOf(st.nextToken());
+                String entityType = st.nextToken();
+                if(entityType.equals("player")) continue;
+                storedEntities.put(new Vector2(entityX, entityY), Entity.NAMES.get(entityType).get());
             }
 
         } catch(FileNotFoundException e) {
@@ -452,6 +468,36 @@ public class WorldData {
     }
 
     /**
+     * Store an entity into the world data, allowing it to be regenerated when
+     * coming back.
+     * 
+     * @param pos the position of the entity, in grid coordinates
+     * @param e the entity to be stored
+     */
+    public void storeEntity(Vector2 pos, Entity e) {
+        storedEntities.put(pos, e);
+    }
+
+    /**
+     * Remove an entity from storage, preventing it from being generated again.
+     * 
+     * @param pos the position of the entity to be removed, in grid coordinates
+     */
+    public void removeEntity(Vector2 pos) {
+        storedEntities.remove(pos);
+    }
+
+    /**
+     * Get the stored entities within the world.
+     * 
+     * @return the hashmap containing all stored entities
+     */
+    public HashMap<Vector2, Entity> getStoredEntities() {
+        return storedEntities;
+    }
+
+
+    /**
      * Get the seed of the world.
      *
      * @return the seed of the world
@@ -512,6 +558,12 @@ public class WorldData {
             Item i = storedItems.get(v);
             fileOutput.print("item,");
             fileOutput.println(v.x + "," + v.y + "," + i.toString());
+        }
+        // stored entities
+        for(Vector2 v : storedEntities.keySet()) {
+            Entity e = storedEntities.get(v);
+            fileOutput.print("entity,");
+            fileOutput.println(v.x + "," + v.y + "," + e.toString());
         }
         fileOutput.close();
     }

@@ -1,3 +1,6 @@
+import java.util.HashMap;
+import java.util.function.Supplier;
+
 /**
  * An entity is a {@link Sprack} that can move and interact with the world. It
  * has certain levels of physics baked in, and a plethora of methods to help
@@ -6,7 +9,7 @@
  * @author Andrew Wang
  * @version June 2024
  */
-public class Entity extends Sprack {
+public class Entity extends Sprack { // TODO: entity loading and unloading
     /**
      * The default acceleration due to the entity's internal forces.
      */
@@ -30,6 +33,12 @@ public class Entity extends Sprack {
 
     public final PhysicsController physics;
     private double health;
+
+    public static final HashMap<String, Supplier<Entity>> NAMES = new HashMap<>();
+
+    static {
+        NAMES.put("statue", Statue::new);
+    }
 
     /**
      * Create a new entity with the given sheet name and layer.
@@ -140,6 +149,13 @@ public class Entity extends Sprack {
             );
             getWorld().addWorldObject(particle, getWorldPos().add(offset));
         }
+        getWorld().getWorldData().removeEntity(new Vector2(getWorldPos().x / 20,
+                                                           getWorldPos().z / 20));
         getWorld().removeSprite(this);
+    }
+
+    @Override
+    public String toString() {
+        return getClass().getName().toLowerCase();
     }
 }

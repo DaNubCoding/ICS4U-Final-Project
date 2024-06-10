@@ -48,7 +48,9 @@ public class SprackWorld extends PixelWorld {
             addWorldObject(i, player.getWorldPos());
         }
 
+        addWorldObject(new Statue(), 410, 0, 100);
         addWorldObject(new Statue(), 410, 0, 0);
+        addWorldObject(new Jester(), -400, 0, 0);
 
         render();
     }
@@ -106,12 +108,35 @@ public class SprackWorld extends PixelWorld {
             for (Vector2 coord : worldData.getStoredItems().keySet()) {
                 Item i = worldData.getStoredItems().get(coord);
                 // remove if offscreen
-                if(coord.distanceTo(playerPos) > genRad && items.contains(i)) {
+                if (coord.distanceTo(playerPos) > genRad && items.contains(i)) {
                     removeSprite(i);
                 }
                 // add if onscreen
                 if (coord.distanceTo(playerPos) <= genRad && !items.contains(i)) {
-                    addWorldObject(i, Vector3.fromXZ(coord));
+                    addWorldObject(i, Vector3.fromXZ(coord).multiply(20));
+                }
+            }
+
+            // refresh all enemies
+            List<? extends Sprite> entities = getSprites(Entity.class);
+            // add all entities without repeating
+            for (Vector2 coord : worldData.getStoredEntities().keySet()) {
+                Entity e = worldData.getStoredEntities().get(coord);
+                if(!entities.contains(e))
+                    addWorldObject(e, Vector3.fromXZ(coord).multiply(20));
+            }
+            // store all entities
+            worldData.getStoredEntities().clear();
+            for (Sprite s : entities) {
+                Entity e = (Entity) s;
+                Vector3 v = e.getWorldPos();
+                worldData.storeEntity(new Vector2(v.x / 20, v.z / 20), e);
+            }
+            // unload all entities offscreen
+            for (Vector2 coord : worldData.getStoredEntities().keySet()) {
+                Entity e = worldData.getStoredEntities().get(coord);
+                if (coord.distanceTo(playerPos) > genRad) {
+                    removeSprite(e);
                 }
             }
         }
