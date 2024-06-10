@@ -44,7 +44,6 @@ public class SprackWorld extends PixelWorld {
             }
         }
         for(Item i : worldData.getHotbar()) {
-            System.out.println(i);
             addWorldObject(i, player.getWorldPos());
         }
 

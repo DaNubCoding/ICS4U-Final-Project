@@ -119,9 +119,7 @@ public class Jester extends Enemy {
                 hitBox = 2;
             } else if (attack == 2){
                 double a = (Math.random()*50)-25;
-                System.out.println(dist);
                 physics.applyForce(dist.rotateY(a).scaleToMagnitude(5));
-                System.out.println(dist);
                 playOneTimeAnimation(flippingAnimation);
                 actionCount = 12;
                 physics.turnTowards(playerPos.xz.rotate(a+90));
