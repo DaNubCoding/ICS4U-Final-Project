@@ -23,7 +23,7 @@ public abstract class Projectile extends WorldSprite {
     public Projectile(Entity owner, Vector3 initialVel, Vector3 startPos, int lifespan) {
         this.owner = owner;
 
-        physics.applyImpulse(initialVel);
+        physics.applyForce(initialVel);
         physics.setAffectedByFrictionalForces(false);
         physics.setAffectedByGravity(false);
         setWorldPos(startPos);

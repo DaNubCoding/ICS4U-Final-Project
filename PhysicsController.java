@@ -227,30 +227,6 @@ public class PhysicsController {
     }
 
     /**
-     * Apply a 3D impulse to the client as a {@link Vector3}.
-     * <p>
-     * This is an externally applied force that does not respect the defined
-     * maximum speed.
-     *
-     * @param impulse the impulse vector
-     */
-    public void applyImpulse(Vector3 impulse) {
-        externalVel = externalVel.add(impulse);
-    }
-
-    /**
-     * Apply a 2D impulse to the client as a {@link Vector2} on the XZ plane.
-     * <p>
-     * This is an externally applied force that does not respect the defined
-     * maximum speed.
-     *
-     * @param impulse the impulse vector
-     */
-    public void applyImpulse(Vector2 impulse) {
-        applyImpulse(Vector3.fromXZ(impulse));
-    }
-
-    /**
      * Apply a force to the client as a {@link Vector3}.
      * <p>
      * This is an externally applied force that does not respect the defined

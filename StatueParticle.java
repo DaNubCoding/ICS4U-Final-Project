@@ -8,7 +8,7 @@ public class StatueParticle extends Particle {
     public StatueParticle() {
         super(getRandomImage(), (int) (Math.random() * 40 + 20));
         physics.setAffectedByFrictionalForces(false);
-        physics.applyImpulse(new Vector3(0, Math.random() * 0.4 + 0.3, 0));
+        physics.applyForce(new Vector3(0, Math.random() * 0.4 + 0.3, 0));
     }
 
     private static String getRandomImage() {

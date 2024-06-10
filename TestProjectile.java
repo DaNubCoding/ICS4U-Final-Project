@@ -30,7 +30,7 @@ public class TestProjectile extends Projectile {
         // get impulse before losing momentum
         Vector3 impulse = physics.getVelocity().rotateY(rand.nextInt(360));
         physics.reduceMomentum(1.0); // lose all momentum
-        physics.applyImpulse(impulse);
+        physics.applyForce(impulse);
 
         // create damage
         Damage dmg = new Damage(getOwner(), this, 10, getWorldPos(), 10);
