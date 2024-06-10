@@ -50,6 +50,7 @@ public class StatuePearl extends Projectile {
             if(s instanceof Entity) {
                 impulse = impulse.setY(3);
                 ((Entity)s).physics.applyForce(impulse);
+                ((Entity)s).damage(dmg);
             }
         }
 
