@@ -39,14 +39,7 @@ public class Statue extends Enemy {
     }
 
     @Override
-    public void idle(Player player) {
-        /*if (moveTimer.ended()) {
-        final double distance = Math.random() * 40 + 30;
-        final Vector2 offset = new Vector2(Math.random() * 360).multiply(distance);
-        physics.moveToTarget(getWorldPos().xz.add(offset));
-        moveTimer.restart((int) (Math.random() * 300 + 150));
-        }*/
-    } // Does nothing
+    public void idle(Player player) {} // Does nothing
 
     @Override
     public void notice(Player player) {
