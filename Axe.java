@@ -6,7 +6,7 @@
  */
 public class Axe extends MeleeWeapon {
     public Axe() {
-        super("axe.png", 0, 50, 40, 15, 70, 9, 18);
+        super("axe.png", 0, 50, 40, 20, 120, 6, 30);
         setCenterOfRotation(new Vector2(0, 7));
     }
 }
