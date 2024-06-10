@@ -38,7 +38,7 @@ public class StatuePearl extends Projectile {
         Vector3 impulse = physics.getVelocity();
         owner.setWorldRotation(impulse.xz.angle());
         physics.reduceMomentum(1.0); // lose all momentum
-        physics.applyImpulse(impulse);
+        physics.applyForce(impulse);
 
         // create damage and knockback
         Damage dmg = new Damage(owner, owner, 20, getWorldPos(), 15);

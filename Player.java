@@ -62,7 +62,7 @@ public class Player extends Entity {
 
         // Dashing
         if (Greenfoot.isKeyDown("space") && dashTimer.ended()) {
-            physics.applyImpulse(new Vector2(getWorldRotation()).multiply(6));
+            physics.applyForce(new Vector2(getWorldRotation()).multiply(6));
             playOneTimeAnimation(dashAnimation);
             dashTimer.restart();
         }
@@ -93,7 +93,7 @@ public class Player extends Entity {
         if (Greenfoot.isKeyDown("e") && getWorldY() == 0) {
             physics.reduceMomentum(0.9);
             Vector2 horImpulse = new Vector2(getWorldRotation()).multiply(5);
-            physics.applyImpulse(Vector3.fromXZ(horImpulse).add(new Vector3(0, 6, 0)));
+            physics.applyForce(Vector3.fromXZ(horImpulse).add(new Vector3(0, 6, 0)));
         }
 
         // Update physics

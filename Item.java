@@ -5,7 +5,7 @@ import greenfoot.GreenfootImage;
 /**
  * Items are world sprites that can be held in the player inventory, used, and
  * dropped into the world.
- * 
+ *
  * @author Lucas Fu
  * @version June 2024
  */
@@ -69,7 +69,7 @@ public class Item extends WorldSprite {
 
     /**
      * Whether the item is on the ground.
-     * 
+     *
      * @return whether this item is on the ground
      */
     public boolean isOnGround() {
@@ -86,7 +86,7 @@ public class Item extends WorldSprite {
     /**
      * Wait for a player to pick this item up.
      * <p>
-     * Magnetizes to a player within 45 pixels, and 
+     * Magnetizes to a player within 45 pixels, and
      * gets picked up by a player within 15 pixels
      */
     private void awaitPickup() {
@@ -115,7 +115,7 @@ public class Item extends WorldSprite {
      * A timer of 100 frames is applied to prevent re-pickup.
      */
     public void drop() {
-        physics.applyImpulse(new Vector3(3, 3, 0).rotateY(getPlayer().getWorldRotation()));
+        physics.applyForce(new Vector3(3, 3, 0).rotateY(getPlayer().getWorldRotation()));
         isOnGround = true;
         pickupTimer.restart(100);
     }

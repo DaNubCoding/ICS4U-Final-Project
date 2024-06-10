@@ -10,6 +10,7 @@
  */
 public enum Layer {
     SPRACK_DEFAULT,
+    HEALTH_BAR,
     SPRACK_CANOPY,
     UI;
 }

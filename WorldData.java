@@ -76,7 +76,6 @@ public class WorldData {
             st.nextToken(); // remove hotbar token
             while(st.hasMoreTokens()) {
                 playerHotbar.add(Item.NAMES.get(st.nextToken()).get());
-                System.out.println(playerHotbar.get(0));
             }
 
             // get the list of modified features
@@ -431,7 +430,7 @@ public class WorldData {
 
     /**
      * Get the player hotbar.
-     * 
+     *
      * @return the hotbar stored inside world data
      */
     public ArrayList<Item> getHotbar() {
@@ -441,7 +440,7 @@ public class WorldData {
     /**
      * Store an item into the world data, allowing it to be regenerated when
      * coming back.
-     * 
+     *
      * @param pos the position of the item, in grid coordinates
      * @param i the item to be stored
      */
@@ -451,7 +450,7 @@ public class WorldData {
 
     /**
      * Remove an item from storage, preventing it from being generated again.
-     * 
+     *
      * @param pos the position of the item to be removed, in grid coordinates
      */
     public void removeItem(Vector2 pos) {
@@ -460,7 +459,7 @@ public class WorldData {
 
     /**
      * Get the stored items within the world.
-     * 
+     *
      * @return the hashmap containing all stored items
      */
     public HashMap<Vector2, Item> getStoredItems() {
@@ -470,7 +469,7 @@ public class WorldData {
     /**
      * Store an entity into the world data, allowing it to be regenerated when
      * coming back.
-     * 
+     *
      * @param pos the position of the entity, in grid coordinates
      * @param e the entity to be stored
      */
@@ -480,7 +479,7 @@ public class WorldData {
 
     /**
      * Remove an entity from storage, preventing it from being generated again.
-     * 
+     *
      * @param pos the position of the entity to be removed, in grid coordinates
      */
     public void removeEntity(Vector2 pos) {
@@ -489,7 +488,7 @@ public class WorldData {
 
     /**
      * Get the stored entities within the world.
-     * 
+     *
      * @return the hashmap containing all stored entities
      */
     public HashMap<Vector2, Entity> getStoredEntities() {
@@ -508,7 +507,7 @@ public class WorldData {
 
     /**
      * Get the player location.
-     * 
+     *
      * @return the player location, in grid coordinates
      */
     public Vector2 getPlayerLocation() {

@@ -7,9 +7,6 @@
 public class Jester extends Enemy {
     int MAX_HP = 300;
 
-    //private static final Animation idleAnimation = new Animation(-1, "jester_idle");
-    //private static final Animation guardAnimation = new Animation(-1, "jester_guard");
-
     private static final Animation walkingAnimation = new Animation(12,
             "jester_walk1",
             "jester_idle",
@@ -48,6 +45,12 @@ public class Jester extends Enemy {
     }
 
     @Override
+    public void addedToWorld(PixelWorld world) {
+        super.addedToWorld(world);
+        getWorld().addCollisionController(new CollisionController(this, 8, 0.1, 0.0));
+    }
+
+    @Override
     public void idle(Player player) {
         if (moveTimer.ended()) {
             final double distance = Math.random() * 40 + 30;
@@ -55,9 +58,10 @@ public class Jester extends Enemy {
             physics.moveToTarget(getWorldPos().xz.add(offset));
             moveTimer.restart((int) (Math.random() * 300 + 150));
         }
-        if (physics.isMoving())
-        {
+        if (physics.isMoving()) {
             setLoopingAnimation(walkingAnimation);
+        } else {
+            setLoopingAnimation(staticAnimations[0]);
         }
     } // Does nothing
 
@@ -115,9 +119,7 @@ public class Jester extends Enemy {
                 hitBox = 2;
             } else if (attack == 2){
                 double a = (Math.random()*50)-25;
-                System.out.println(dist);
                 physics.applyForce(dist.rotateY(a).scaleToMagnitude(5));
-                System.out.println(dist);
                 playOneTimeAnimation(flippingAnimation);
                 actionCount = 12;
                 physics.turnTowards(playerPos.xz.rotate(a+90));

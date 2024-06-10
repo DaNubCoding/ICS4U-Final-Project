@@ -9,7 +9,7 @@ import greenfoot.*;
 public class DamageParticle extends Particle {
     public DamageParticle() {
         super(getBloodImage(), (int) (Math.random() * 40 + 20));
-        physics.applyImpulse(new Vector2(Math.random() * 360).multiply(Math.random() * 0.7 + 0.5));
+        physics.applyForce(new Vector2(Math.random() * 360).multiply(Math.random() * 0.7 + 0.5));
         physics.setAffectedByGravity(true);
     }
 
