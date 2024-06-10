@@ -75,7 +75,10 @@ public abstract class MeleeWeapon extends Weapon {
         double targetAngle = mousePos.subtract(playerPos).angle();
         damage.setAngularRange(targetAngle, sweepAngle);
 
-        getWorld().getDamages().add(damage);
+        try {
+            getWorld().getDamages().add(damage);
+        } 
+        catch (NullPointerException e) {} // if the weapon got switched out before doing damage
 
         unswingTimer1 = new Timer(unswingDuration / 2);
     }
