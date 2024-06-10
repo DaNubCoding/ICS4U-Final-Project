@@ -8,6 +8,7 @@ public abstract class Enemy extends Entity {
     private int noticeRange;
     private int forgetRange;
     private boolean noticed;
+    private HealthBar healthBar;
 
     /**
      * Create a new enemy with the given Sprack sheet name.
@@ -16,6 +17,23 @@ public abstract class Enemy extends Entity {
      */
     public Enemy(String sheetName) {
         super(sheetName);
+        healthBar = new HealthBar(this);
+    }
+
+    @Override
+    public void setHealth(double health) {
+        super.setHealth(health);
+        healthBar.setHealth(health);
+    }
+
+    @Override
+    public void addedToWorld(PixelWorld world) {
+        ((SprackWorld) world).addWorldObject(healthBar, 0, 0, 0);
+    }
+
+    @Override
+    public void removedFromWorld(PixelWorld world) {
+        world.removeSprite(healthBar);
     }
 
     @Override

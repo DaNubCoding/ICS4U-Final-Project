@@ -123,7 +123,7 @@ public class Entity extends Sprack { // TODO: entity loading and unloading
      * @param damage the amount of damage
      */
     public void damage(Damage damage) {
-        health -= damage.getDamage();
+        setHealth(health - damage.getDamage());
         if (health <= 0) {
             die();
             return;

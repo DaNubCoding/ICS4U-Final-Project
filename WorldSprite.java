@@ -11,7 +11,11 @@ public class WorldSprite extends TransformableSprite implements WorldObject {
     private double worldRotation;
 
     public WorldSprite() {
-        super(Layer.SPRACK_DEFAULT);
+        this(Layer.SPRACK_DEFAULT);
+    }
+
+    public WorldSprite(Layer layer) {
+        super(layer);
         worldPos = new Vector3();
     }
 
