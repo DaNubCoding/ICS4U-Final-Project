@@ -22,6 +22,9 @@ public class Item extends WorldSprite {
         NAMES.put("pistol", Pistol::new);
         NAMES.put("sword", Sword::new);
         NAMES.put("enderpearlgun", EnderPearlGun::new);
+        NAMES.put("axe", Axe::new);
+        NAMES.put("bat", Bat::new);
+        NAMES.put("pitchfork", Pitchfork::new);
     }
 
     /**
@@ -42,7 +45,6 @@ public class Item extends WorldSprite {
                 updatedFlag = true;
                 Vector3 pos = getWorldPos();
                 getWorld().getWorldData().storeItem(new Vector2(pos.x / 20, pos.z / 20), this);
-                System.out.println(pos);
             }
             awaitPickup();
             return;

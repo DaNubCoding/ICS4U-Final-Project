@@ -3,6 +3,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
 import java.util.Scanner;
@@ -30,6 +31,7 @@ public class WorldData {
     private HashMap<Long, FeatureData> modifiedFeatures;
     private HashMap<Vector2, Feature> surroundings;
     private HashMap<Vector2, Item> storedItems;
+    private ArrayList<Item> playerHotbar; // TODO: have the player update the hotbar
 
     /**
      * Create a new WorldData object with default settings.
@@ -41,6 +43,7 @@ public class WorldData {
         surroundings = new HashMap<Vector2, Feature>();
         modifiedFeatures = new HashMap<Long, FeatureData>();
         storedItems = new HashMap<Vector2, Item>();
+        playerHotbar = new ArrayList<Item>();
     }
 
     /**
@@ -65,6 +68,14 @@ public class WorldData {
             long x = Integer.valueOf(st.nextToken());
             long y = Integer.valueOf(st.nextToken());
             playerLocation = new Vector2(x, y);
+
+            // get the player inventory
+            st = new StringTokenizer(scf.nextLine(), ",");
+            st.nextToken(); // remove hotbar token
+            while(st.hasMoreTokens()) {
+                playerHotbar.add(Item.NAMES.get(st.nextToken()).get());
+                System.out.println(playerHotbar.get(0));
+            }
 
             // get the list of modified features
             while (scf.hasNextLine()) {
@@ -403,6 +414,15 @@ public class WorldData {
     }
 
     /**
+     * Get the player hotbar.
+     * 
+     * @return the hotbar stored inside world data
+     */
+    public ArrayList<Item> getHotbar() {
+        return playerHotbar;
+    }
+
+    /**
      * Store an item into the world data, allowing it to be regenerated when
      * coming back.
      * 
@@ -453,6 +473,10 @@ public class WorldData {
         return generationRadius;
     }
 
+    public void setHotbar(ArrayList<Item> hotbar) {
+        playerHotbar = hotbar;
+    }
+
     /**
      * Save the data to a csv file called save_{seed}.
      * <p>
@@ -470,6 +494,14 @@ public class WorldData {
         fileOutput.println(seed);
         // player location
         fileOutput.println((int) (playerLocation.x) + "," + (int) playerLocation.y);
+        // player hotbar
+        StringBuilder sb = new StringBuilder();
+        sb.append("hotbar,");
+        for(Item i : playerHotbar) {
+            sb.append(i + ",");
+        }
+        sb.deleteCharAt(sb.length() - 1);
+        fileOutput.println(sb);
         // modified features
         for (FeatureData featureData : modifiedFeatures.values()) {
             fileOutput.print("feature,");
@@ -479,7 +511,7 @@ public class WorldData {
         for (Vector2 v : storedItems.keySet()) {
             Item i = storedItems.get(v);
             fileOutput.print("item,");
-            fileOutput.println(v.x + ',' + v.y + ',' + i.toString());
+            fileOutput.println(v.x + "," + v.y + "," + i.toString());
         }
         fileOutput.close();
     }

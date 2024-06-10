@@ -22,6 +22,8 @@ public class WorldMap extends PixelWorld {
     public WorldMap(SprackWorld oldWorld, WorldData worldData) {
         super(oldWorld.getWidth(), oldWorld.getHeight());
 
+        worldData.saveData();
+
         // define variables
         int genRad = worldData.getGenerationRadius();
         Vector2 playerPos = worldData.getPlayerLocation();

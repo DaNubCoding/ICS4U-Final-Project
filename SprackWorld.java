@@ -43,6 +43,10 @@ public class SprackWorld extends PixelWorld {
                 addWorldObject(worldData.getSurroundings().get(coord), x, 0, z);
             }
         }
+        for(Item i : worldData.getHotbar()) {
+            System.out.println(i);
+            addWorldObject(i, player.getWorldPos());
+        }
 
         addWorldObject(new Statue(), 410, 0, 0);
 
