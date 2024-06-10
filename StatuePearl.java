@@ -60,6 +60,7 @@ public class StatuePearl extends Projectile {
         try {
             ((Statue)owner).triggerAttack();
         } catch (ClassCastException e) {} // do nothing if not shot by a statue
+        catch (NullPointerException e) {} // do nothing if the statue is dead
 
         disappear();
     }
