@@ -24,7 +24,7 @@ public class SprackView {
      * The number of different rotation angles, evenly spaced, to make available
      * in the cache.
      */
-    private static final int IMAGE_CACHE_ANGLE_COUNT = 180;
+    private static final int IMAGE_CACHE_ANGLE_COUNT = 120;
 
     /**
      * The scale factor of the images within a SprackView object's cache.
