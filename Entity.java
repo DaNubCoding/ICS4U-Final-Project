@@ -153,6 +153,8 @@ public class Entity extends Sprack { // TODO: entity loading and unloading
         getWorld().getWorldData().removeEntity(new Vector2(getWorldPos().x / 20,
                                                            getWorldPos().z / 20));
         getWorld().removeSprite(this);
+        getWorld().getWorldData().removeEntity(new Vector2(getWorldPos().x / 20,
+                                                           getWorldPos().z / 20));
     }
 
     @Override
