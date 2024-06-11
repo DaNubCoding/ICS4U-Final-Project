@@ -18,7 +18,6 @@ public class PerishableCanopy extends Sprack {
     public void update() {
         if (knockbackTimer.ended()) {
             for (Entity e : getWorld().getEntitiesInRange(getWorldPos(), 30)) {
-                if (e instanceof Player) continue;
                 e.physics.applyForce(e.getWorldPos()
                                       .subtract(getWorldPos())
                                       .normalize()
