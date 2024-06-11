@@ -11,7 +11,7 @@ public class Crate extends Feature {
     private Weapon[] contents = new Weapon[] {
         new Pistol(),
         new Sword(),
-        new EnderPearlGun(),
+        new PearlGun(),
         new Pitchfork(),
         new Axe(),
         new Bat(),

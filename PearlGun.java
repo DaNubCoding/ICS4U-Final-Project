@@ -4,8 +4,8 @@
  * @author Lucas Fu
  * @version June 2024
  */
-public class EnderPearlGun extends RangedWeapon {
-    public EnderPearlGun() {
+public class PearlGun extends RangedWeapon {
+    public PearlGun() {
         super("pistol.png", 0, 2, 1, 0, 100, StatuePearl::new);
         setCenterOfRotation(new Vector2(3, 7));
     }
