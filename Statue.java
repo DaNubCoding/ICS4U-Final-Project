@@ -64,6 +64,8 @@ public class Statue extends Enemy {
                     playerPos.subtract(enemyPos).scaleToMagnitude(3),
                     enemyPos
                 );
+            double scalar = 1 - getHealth() / MAX_HP;
+            sPearl.physics.applyForce(new Vector2(sPearl.getWorldRotation()).multiply(scalar));
             getWorld().addSprite(sPearl, 0, 0);
             attackTimer.restart((int) (Math.random() * 65 + super.getHealth()*100/MAX_HP) + 60);
         }
