@@ -8,11 +8,14 @@ import java.util.List;
  * @version June 2024
  */
 public class StatuePearl extends Projectile {
+    private Entity owner;
+
     public StatuePearl(Entity owner, Vector3 initialVel, Vector3 startpos) {
         super(owner, initialVel, startpos, 200);
         setOriginalImage(new GreenfootImage("statue_projectile.png"));
         physics.setAffectedByGravity(false);
         setWorldRotation(initialVel.xz.angle());
+        this.owner = owner;
     }
 
     @Override
@@ -27,6 +30,7 @@ public class StatuePearl extends Projectile {
         List<Sprack> l = getWorld().getSpracksInRange(getWorldPos(), 15);
         for (Sprack s:l) {
             if(s instanceof Statue) return false;
+            if(s==owner) return false;
         }
         return l.size() > 0;
     }
