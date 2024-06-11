@@ -87,11 +87,11 @@ public class Jester extends Enemy {
 
         if (actionCount > 0) {
             if (hitBox == 1) {
-                meleePlayer(20, 18);
+                meleePlayer(12, 18);
                 if (distance < 18) hitBox = 0;
             }
             if (hitBox == 2) {
-                meleePlayer(15, 18);
+                meleePlayer(8, 18);
                 if (distance < 18) hitBox = 3;
             }
             if (hitBox > 1) {
@@ -132,7 +132,7 @@ public class Jester extends Enemy {
             } else {
                 physics.applyForce(dist.scaleToMagnitude(-4));
                 playOneTimeAnimation(staticAnimations[2]);
-                meleePlayer(25, 18);
+                meleePlayer(16, 18);
                 physics.turnTowards(playerPos.xz);
                 actionCount = 12;
             }
