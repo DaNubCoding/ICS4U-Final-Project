@@ -47,9 +47,7 @@ public class SprackWorld extends PixelWorld {
             addWorldObject(i, player.getWorldPos());
         }
 
-        // addWorldObject(new Statue(), 410, 0, 100);
-        // addWorldObject(new Statue(), 410, 0, 0);
-        addWorldObject(new Jester(), -400, 0, 0);
+        addWorldObject(new Jester(), -100, 0, 0);
 
         render();
     }
@@ -127,8 +125,11 @@ public class SprackWorld extends PixelWorld {
                     addWorldObject(e, Vector3.fromXZ(pos).multiply(20));
                 }
             }
+            // force addition
+            applyAdditions();
             // store all entities
             worldData.getStoredEntities().clear();
+            entities = getSprites(Entity.class);
             for (Sprite s : entities) {
                 Entity e = (Entity) s;
                 Vector3 v = e.getWorldPos();
@@ -138,10 +139,11 @@ public class SprackWorld extends PixelWorld {
             for (long id : worldData.getStoredEntities().keySet()) {
                 Entity e = worldData.getStoredEntities().get(id).entity;
                 Vector2 pos = worldData.getStoredEntities().get(id).pos;
-                if (pos.distanceTo(playerPos) > genRad) {
+                if (pos.distanceTo(worldData.getPlayerLocation()) > genRad) {
                     removeSprite(e);
                 }
             }
+            applyRemovals();
         }
     }
 

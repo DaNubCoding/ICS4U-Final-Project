@@ -118,6 +118,14 @@ public abstract class PixelWorld extends World {
             }
         }
 
+        applyAdditions();
+        applyRemovals();
+    }
+
+    /**
+     * Apply all queued additions added by {@link #addSprite}.
+     */
+    public void applyAdditions() {
         // Add all queued sprites to the world
         while (!queuedAdditions.isEmpty()) {
             Sprite sprite = queuedAdditions.remove(queuedAdditions.size() - 1);
@@ -134,8 +142,13 @@ public abstract class PixelWorld extends World {
 
             sprite.setWorld(this);
             sprite.addedToWorld(this);
-        }
+        }   
+    }
 
+    /**
+     * Apply all queued removals added by {@link #removeSprite}.
+     */
+    public void applyRemovals() {
         // Remove all queued sprites from the world
         while (!queuedRemovals.isEmpty()) {
             Sprite sprite = queuedRemovals.remove(queuedRemovals.size() - 1);

@@ -98,50 +98,52 @@ public class WorldData {
                 playerHotbar.add(Item.NAMES.get(st.nextToken()).get());
             }
 
-            // get the list of modified features
             while (scf.hasNextLine()) {
                 String check = scf.nextLine();
-                if(!check.contains("feature")) break;
 
-                st = new StringTokenizer(check, ",");
-                st.nextToken(); // remove feature token
-                long id = Long.valueOf(st.nextToken());
-                FeatureData featureData = new FeatureData(id);
-                while (st.hasMoreTokens()) {
-                    String key = st.nextToken();
-                    String value = st.nextToken();
-                    featureData.put(key, value);
+                // get the modified features
+                if (check.contains("feature")) {
+
+                    st = new StringTokenizer(check, ",");
+                    st.nextToken(); // remove feature token
+                    long id = Long.valueOf(st.nextToken());
+                    FeatureData featureData = new FeatureData(id);
+                    while (st.hasMoreTokens()) {
+                        String key = st.nextToken();
+                        String value = st.nextToken();
+                        featureData.put(key, value);
+                    }
+                    modifiedFeatures.put(id, featureData);
+                    continue;
                 }
-                modifiedFeatures.put(id, featureData);
-            }
 
-            // get the list of stored items
-            while (scf.hasNextLine()) {
-                String check = scf.nextLine();
-                if(!check.contains("item")) break;
+                // get the stored items
+                if (check.contains("item")) {
 
-                st = new StringTokenizer(check, ",");
-                st.nextToken(); // remove item token
-                int itemX = (int)(double) Double.valueOf(st.nextToken());
-                int itemY = (int)(double) Double.valueOf(st.nextToken());
-                String itemType = st.nextToken();
-                Item item = Item.NAMES.get(itemType).get();
-                storedItems.put(item.id, new ItemPosPair(item, new Vector2(itemX, itemY)));
-            }
+                    st = new StringTokenizer(check, ",");
+                    st.nextToken(); // remove item token
+                    int itemX = Integer.valueOf(st.nextToken());
+                    int itemY = Integer.valueOf(st.nextToken());
+                    String itemType = st.nextToken();
+                    Item item = Item.NAMES.get(itemType).get();
+                    storedItems.put(item.id, new ItemPosPair(item, new Vector2(itemX, itemY)));
+                    continue;
+                }
 
-            // get the list of stored entities
-            while (scf.hasNextLine()) {
-                String check = scf.nextLine();
-                if(!check.contains("entity")) break;
+                // get the stored entities
+                if (check.contains("entity")) {
 
-                st = new StringTokenizer(check, ",");
-                st.nextToken(); // remove entity token
-                int entityX = (int)(double) Double.valueOf(st.nextToken());
-                int entityY = (int)(double) Double.valueOf(st.nextToken());
-                String entityType = st.nextToken();
-                if(entityType.equals("player")) continue;
-                Entity entity = Entity.NAMES.get(entityType).get();
-                storedEntities.put(entity.id, new EntityPosPair(entity, new Vector2(entityX, entityY)));
+                    st = new StringTokenizer(check, ",");
+                    st.nextToken(); // remove entity token
+                    int entityX = Integer.valueOf(st.nextToken());
+                    int entityY = Integer.valueOf(st.nextToken());
+                    String entityType = st.nextToken();
+                    if(entityType.equals("player")) continue;
+                    Entity entity = Entity.NAMES.get(entityType).get();
+                    storedEntities.put(entity.id, new EntityPosPair(entity, new Vector2(entityX, entityY)));
+                    System.out.println(entityType + "Spawned");
+                    continue;
+                }
             }
 
         } catch(FileNotFoundException e) {
@@ -391,6 +393,19 @@ public class WorldData {
         Feature feature = generateFeature(data, localID, coord, featureData);
         if (feature != null) {
             surroundings.put(coord, feature);
+
+            // if it's an enemy spawner
+            if (feature instanceof EnemySpawner && !featureData.containsKey("spawnedEnemies")) {
+                EnemySpawner es = (EnemySpawner) feature;
+                feature.modify("spawnedEnemies", null);
+                data.addModified(featureData);
+                int spawnNum = es.getSpawnCount();
+                for (int i = 0; i < spawnNum; i++) {
+                    Entity e = es.getSpawner().get();
+                    e.setWorldRotation(i * 360 / spawnNum);
+                    data.storeEntity(coord.add(new Vector2(i * 360 / spawnNum).multiply(2)), e);
+                }
+            }
         }
     }
 
@@ -579,14 +594,14 @@ public class WorldData {
             Item i = storedItems.get(id).item;
             Vector2 pos = storedItems.get(id).pos;
             fileOutput.print("item,");
-            fileOutput.println(pos.x + "," + pos.y + "," + i.toString());
+            fileOutput.println((int)pos.x + "," + (int)pos.y + "," + i.toString());
         }
         // stored entities
         for(Long id : storedEntities.keySet()) {
             Entity e = storedEntities.get(id).entity;
             Vector2 pos = storedEntities.get(id).pos;
             fileOutput.print("entity,");
-            fileOutput.println(pos.x + "," + pos.y + "," + e.toString());
+            fileOutput.println((int)pos.x + "," + (int)pos.y + "," + e.toString());
         }
         fileOutput.close();
     }
