@@ -31,4 +31,13 @@ public class Particle extends WorldSprite {
             getWorld().removeSprite(this);
         }
     }
+
+    /**
+     * Get the {@link Timer} that controls the lifetime of this particle.
+     *
+     * @return the life timer
+     */
+    public Timer getLifeTimer() {
+        return lifeTimer;
+    }
 }

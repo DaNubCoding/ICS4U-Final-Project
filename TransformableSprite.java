@@ -33,6 +33,8 @@ public abstract class TransformableSprite extends Sprite {
     private boolean mirrorY;
     // The scale of the image
     private double scale;
+    // The transparency of the sprite
+    private int transparency;
 
     /**
      * Create a new TransformableSprite on the given {@link Layer}.
@@ -45,6 +47,7 @@ public abstract class TransformableSprite extends Sprite {
         screenRotation = 0;
         mirrorX = mirrorY = false;
         scale = 1;
+        transparency = 255;
     }
 
     /**
@@ -59,6 +62,7 @@ public abstract class TransformableSprite extends Sprite {
         Vector2 center = getImageOffsetGlobalPosition(new Vector2(originalWidth / 2, originalHeight / 2));
         Vector2 imagePos = center.subtract(new Vector2(finalWidth / 2, finalHeight / 2));
         GreenfootImage scaledImage = new GreenfootImage(transformedImage);
+        scaledImage.setTransparency(transparency);
         scaledImage.scale((int) finalWidth, (int) finalHeight);
         canvas.drawImage(scaledImage, (int) Math.ceil(imagePos.x), (int) Math.ceil(imagePos.y));
         if (DEBUG_SHOW_IMAGE_BOUNDS) {
@@ -279,5 +283,15 @@ public abstract class TransformableSprite extends Sprite {
      */
     public void updateImage() {
         setImage(transformedImage);
+    }
+
+    /**
+     * Set the transparency of the Sprite.
+     *
+     * @param transparency the transparency of the Sprite, from 0 (invisible) to
+     *                     255 (opaque)
+     */
+    public void setTransparency(int transparency) {
+        this.transparency = transparency;
     }
 }

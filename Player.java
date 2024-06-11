@@ -23,10 +23,12 @@ public class Player extends Entity {
 
     private double cameraTargetRotation;
     private Timer dashTimer;
+    private Timer footstepTimer;
+    private Vector3 footstepOffset;
 
     private ArrayList<Item> hotbar;
     private int heldIndex;
-    
+
     private static final double maxArmor = 100;
     private double armor = 100;
     private Timer armorTimer = new Timer(0);
@@ -47,6 +49,8 @@ public class Player extends Entity {
         armorBar.setHaveColor(Color.LIGHT_GRAY);
         armorBar.setHealth(armor);
         setHealth(200);
+        footstepTimer = new Timer(8);
+        footstepOffset = new Vector3(0, 0, 4);
     }
 
     @Override
@@ -125,6 +129,13 @@ public class Player extends Entity {
         // Set the animation based on whether the player is moving
         if (physics.isMoving()) {
             setLoopingAnimation(walkingAnimation);
+            if (footstepTimer.ended() && getWorldY() == 0) {
+                footstepOffset = footstepOffset.setZ(footstepOffset.z < 0 ? 4 : -4);
+                Vector3 rotated = footstepOffset.rotateY(getWorldRotation());
+                Vector3 footstepPos = getWorldPos().add(rotated);
+                getWorld().addWorldObject(new FootstepParticle(), footstepPos);
+                footstepTimer.restart();
+            }
         } else {
             setLoopingAnimation(standingAnimation);
         }
@@ -238,10 +249,10 @@ public class Player extends Entity {
         armorBar.setHealth(armor);
 
         if(armor <= 0) {
-            super.damage(new Damage(damage.getOwner(), 
-                                    damage.getSource(), 
-                                    -armor, 
-                                    damage.getCenter(), 
+            super.damage(new Damage(damage.getOwner(),
+                                    damage.getSource(),
+                                    -armor,
+                                    damage.getCenter(),
                                     damage.getRadius()));
             System.out.println("Player took " + armor + " points of damage and has " + getHealth() + " health left");
             armor = 0;
