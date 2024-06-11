@@ -28,7 +28,8 @@ public abstract class Enemy extends Entity {
 
     @Override
     public void addedToWorld(PixelWorld world) {
-        ((SprackWorld) world).addWorldObject(healthBar, 0, 0, 0);
+        ((SprackWorld) world).addWorldObject(healthBar, 
+                    ((SprackWorld) world).getPlayer().getWorldPos().add(new Vector3(0, 300, 0)));
     }
 
     @Override

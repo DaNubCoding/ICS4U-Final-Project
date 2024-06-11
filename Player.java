@@ -91,7 +91,7 @@ public class Player extends Entity {
             if (hotbar.size() > 1) {
                 getWorld().removeSprite(hotbar.get(heldIndex));
                 heldIndex = (heldIndex + 1) % hotbar.size();
-                getWorld().addWorldObject(hotbar.get(heldIndex), HAND_LOCATION.rotateY(getWorldRotation()));
+                getWorld().addWorldObject(hotbar.get(heldIndex), getWorldPos().add(HAND_LOCATION.rotateY(getWorldRotation())));
             }
             tabFlag = true;
         } else if (tabFlag && !Greenfoot.isKeyDown("tab")) {
@@ -254,7 +254,7 @@ public class Player extends Entity {
                                     -armor,
                                     damage.getCenter(),
                                     damage.getRadius()));
-            System.out.println("Player took " + armor + " points of damage and has " + getHealth() + " health left");
+            System.out.println("Player took " + -armor + " points of damage and has " + getHealth() + " health left");
             armor = 0;
         }
     }
