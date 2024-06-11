@@ -9,12 +9,12 @@ import java.util.Random;
  */
 public class Crate extends Feature {
     private Weapon[] contents = new Weapon[] {
-        // new Pistol(),
-        // new Sword(),
-        // new EnderPearlGun(),
-        // new Pitchfork(),
-        // new Axe(),
-        // new Bat(),
+        new Pistol(),
+        new Sword(),
+        new EnderPearlGun(),
+        new Pitchfork(),
+        new Axe(),
+        new Bat(),
         new JesterSword()
     };
     Random rand = new Random();
