@@ -43,7 +43,7 @@ public class StatuePearl extends Projectile {
         // create damage and knockback
         Damage dmg = new Damage(owner, owner, 20, getWorldPos(), 15);
         getWorld().getDamages().add(dmg);
-        List<Sprack> l = getWorld().getSpracksInRange(getWorldPos(), 10);
+        List<Sprack> l = getWorld().getSpracksInRange(getWorldPos(), 15);
         for (Sprack s:l) {
             if(s instanceof Statue) continue;
             if(s instanceof Feature) ((Feature)s).removeFromWorld();
