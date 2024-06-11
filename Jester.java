@@ -28,7 +28,7 @@ public class Jester extends Enemy {
         };
 
     private Timer moveTimer = new Timer(150);
-    private Timer attackTimer = new Timer(150);
+    private Timer attackTimer = new Timer(120);
     private Timer guardTimer = new Timer(0);
     private Timer strafeTimer = new Timer(50);
     private double strafeAngle = 0;
@@ -82,17 +82,17 @@ public class Jester extends Enemy {
         int rage = 3-(int)(super.getHealth()/(MAX_HP/3));
 
         if (rage == 3) {
-            physics.setMaxSpeed(4);
+            physics.setMaxSpeed(3.2);
         }
 
         if (actionCount > 0) {
             if (hitBox == 1) {
-                meleePlayer(20, 15);
-                if (distance < 15) hitBox = 0;
+                meleePlayer(20, 18);
+                if (distance < 18) hitBox = 0;
             }
             if (hitBox == 2) {
-                meleePlayer(15, 15);
-                if (distance < 15) hitBox = 3;
+                meleePlayer(15, 18);
+                if (distance < 18) hitBox = 3;
             }
             if (hitBox > 1) {
                 physics.setWorldRotation(getWorldRotation()-20);
@@ -106,20 +106,24 @@ public class Jester extends Enemy {
             int attack = 2;
             hitBox = 0;
             if (distance < 100) {
-                attack = (int)(Math.random()*4);
+                attack = (int)(Math.random()*6);
             }
-            if (attack == 0) {
-                physics.applyForce(dist.scaleToMagnitude(6));
+            if (attack < 3) {
+                if (dist.magnitude() < 80) {
+                    physics.applyForce(dist.scaleToMagnitude(6));
+                } else {
+                    physics.applyForce(dist.scaleToMagnitude(8));
+                }
                 physics.turnTowards(playerPos.xz);
                 playOneTimeAnimation(staticAnimations[2]);
                 actionCount = 15;
                 hitBox = 1;
-            } else if (attack == 1) {
+            } else if (attack == 3) {
                 physics.applyForce(dist.rotateY((Math.random()*40)-20).scaleToMagnitude(4.5));
                 playOneTimeAnimation(staticAnimations[3]);
                 actionCount = 18;
                 hitBox = 2;
-            } else if (attack == 2){
+            } else if (attack == 4){
                 double a = (Math.random()*50)-25;
                 physics.applyForce(dist.rotateY(a).scaleToMagnitude(5));
                 playOneTimeAnimation(flippingAnimation);
@@ -128,17 +132,17 @@ public class Jester extends Enemy {
             } else {
                 physics.applyForce(dist.scaleToMagnitude(-4));
                 playOneTimeAnimation(staticAnimations[2]);
-                meleePlayer(25, 15);
+                meleePlayer(25, 18);
                 physics.turnTowards(playerPos.xz);
                 actionCount = 12;
             }
 
             if (attackString < 1) {
                 attackString = rage;
-                attackTimer.restart(130+(int)Math.random() * 50);
+                attackTimer.restart(110+(int)Math.random() * 50);
             }
             else {
-                attackTimer.restart(55+(int)Math.random() * 25);
+                attackTimer.restart(40+(int)Math.random() * 25);
             }
         } else if (Math.random() * 500 < rage) {
             guardTimer.restart(45+(int)Math.random() * 65);
@@ -166,7 +170,7 @@ public class Jester extends Enemy {
         // immune to projectile damage
         if (!guardTimer.ended()) {
             hitBox = 0;
-            attackTimer.restart(50+(int)Math.random() * 25);
+            attackTimer.restart(35+(int)Math.random() * 25);
             playOneTimeAnimation(staticAnimations[4]);
             physics.turnTowards(damage.getCenter().xz);
             physics.applyForce(getWorldPos().subtract(damage.getCenter()).scaleToMagnitude(-3));
