@@ -46,7 +46,7 @@ public class Player extends Entity {
         healthBar = new HealthBar(this);
         armorBar = new HealthBar(this);
         armorBar.setLostColor(new Color(0, 0, 0, 0));
-        armorBar.setHaveColor(Color.LIGHT_GRAY);
+        armorBar.setHaveColor(new Color(192, 192, 192, 200));
         armorBar.setHealth(armor);
         setHealth(200);
         footstepTimer = new Timer(8);
