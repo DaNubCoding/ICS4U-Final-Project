@@ -215,6 +215,9 @@ public class Sprack extends Sprite implements WorldObject {
             }
         }
 
+        if (currentAnimation.getCurrentName() == null) {
+            return;
+        }
         SprackView view = SprackView.getView(currentAnimation.getCurrentName());
         if (view == null) {
             return;
