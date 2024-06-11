@@ -19,7 +19,7 @@ public abstract class RangedWeapon extends Weapon {
 
     /**
      * Create a new ranged weapon with all specifications.
-     * 
+     *
      * @param image the file name of the image
      * @param inaccuracy the spread angle of the weapon
      * @param speed the projectile speed of projectiles shot
@@ -69,7 +69,7 @@ public abstract class RangedWeapon extends Weapon {
 
     /**
      * Modifies the initial velocity using inaccuracy.
-     * 
+     *
      * @param initialVel the velocity before modifications
      * @param inaccuracy the inaccuracy modifier
      * @return the new modified velocity

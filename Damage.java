@@ -160,6 +160,17 @@ public class Damage {
     }
 
     /**
+     * Returns a new damage source that is a copy of this damage source but with
+     * the damage multiplied by a scalar.
+     *
+     * @param scalar the scalar to multiply the damage by
+     * @return a new damage source with the damage multiplied by the scalar
+     */
+    public Damage multiply(double scalar) {
+        return new Damage(owner, source, damage * scalar, center, radius);
+    }
+
+    /**
      * Check if the damage has been removed from the world.
      * <p>
      * This is only used by the world to determine if the damage should be

@@ -83,7 +83,12 @@ public class Statue extends Enemy {
     @Override
     public void damage(Damage damage) {
         // immune to projectile damage
-        if (damage.getSource() instanceof Projectile) return;
+        if (damage.getSource() instanceof Projectile) {
+            if (damage.getSource() instanceof RPGProjectile) {
+                super.damage(damage.multiply(0.2));
+            }
+            return;
+        }
         super.damage(damage);
     }
 
