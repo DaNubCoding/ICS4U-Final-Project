@@ -47,8 +47,8 @@ public class SprackWorld extends PixelWorld {
             addWorldObject(i, player.getWorldPos());
         }
 
-        addWorldObject(new Statue(), 410, 0, 100);
-        addWorldObject(new Statue(), 410, 0, 0);
+        // addWorldObject(new Statue(), 410, 0, 100);
+        // addWorldObject(new Statue(), 410, 0, 0);
         addWorldObject(new Jester(), -400, 0, 0);
 
         render();
@@ -104,25 +104,28 @@ public class SprackWorld extends PixelWorld {
             }
             // remove offscreen items and add onscreen items
             List<? extends Sprite> items = getSprites(Item.class);
-            for (Vector2 coord : worldData.getStoredItems().keySet()) {
-                Item i = worldData.getStoredItems().get(coord);
+            for (long id : worldData.getStoredItems().keySet()) {
+                Item i = worldData.getStoredItems().get(id).item;
+                Vector2 pos = worldData.getStoredItems().get(id).pos;
                 // remove if offscreen
-                if (coord.distanceTo(playerPos) > genRad && items.contains(i)) {
+                if (pos.distanceTo(playerPos) > genRad && items.contains(i)) {
                     removeSprite(i);
                 }
                 // add if onscreen
-                if (coord.distanceTo(playerPos) <= genRad && !items.contains(i)) {
-                    addWorldObject(i, Vector3.fromXZ(coord).multiply(20));
+                if (pos.distanceTo(playerPos) <= genRad && !items.contains(i)) {
+                    addWorldObject(i, Vector3.fromXZ(pos).multiply(20));
                 }
             }
 
-            // refresh all enemies
+            // refresh all entities
             List<? extends Sprite> entities = getSprites(Entity.class);
             // add all entities without repeating
-            for (Vector2 coord : worldData.getStoredEntities().keySet()) {
-                Entity e = worldData.getStoredEntities().get(coord);
-                if(!entities.contains(e))
-                    addWorldObject(e, Vector3.fromXZ(coord).multiply(20));
+            for (long id : worldData.getStoredEntities().keySet()) {
+                Entity e = worldData.getStoredEntities().get(id).entity;
+                Vector2 pos = worldData.getStoredEntities().get(id).pos;
+                if(!entities.contains(e)) {
+                    addWorldObject(e, Vector3.fromXZ(pos).multiply(20));
+                }
             }
             // store all entities
             worldData.getStoredEntities().clear();
@@ -132,9 +135,10 @@ public class SprackWorld extends PixelWorld {
                 worldData.storeEntity(new Vector2(v.x / 20, v.z / 20), e);
             }
             // unload all entities offscreen
-            for (Vector2 coord : worldData.getStoredEntities().keySet()) {
-                Entity e = worldData.getStoredEntities().get(coord);
-                if (coord.distanceTo(playerPos) > genRad) {
+            for (long id : worldData.getStoredEntities().keySet()) {
+                Entity e = worldData.getStoredEntities().get(id).entity;
+                Vector2 pos = worldData.getStoredEntities().get(id).pos;
+                if (pos.distanceTo(playerPos) > genRad) {
                     removeSprite(e);
                 }
             }

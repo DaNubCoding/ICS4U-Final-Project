@@ -28,7 +28,7 @@ public class WorldMap extends PixelWorld {
         int genRad = worldData.getGenerationRadius();
         Vector2 playerPos = worldData.getPlayerLocation();
         HashMap<Vector2, Feature> surroundings = worldData.getSurroundings();
-        HashMap<Vector2, Item> items = worldData.getStoredItems();
+        HashMap<Long, WorldData.ItemPosPair> items = worldData.getStoredItems();
 
         // update instance variables
         initialWorld = oldWorld;
@@ -47,7 +47,8 @@ public class WorldMap extends PixelWorld {
         }
 
         // put items
-        for (Vector2 v : items.keySet()) {
+        for (long id : items.keySet()) {
+            Vector2 v = items.get(id).pos;
             v = v.subtract(playerPos);
             v = v.add(new Vector2(genRad, genRad));
             if (v.y > -1 && v.y < itemMap.length && v.x > -1 && v.x < itemMap[0].length)

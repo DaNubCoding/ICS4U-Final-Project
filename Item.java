@@ -10,6 +10,7 @@ import greenfoot.GreenfootImage;
  * @version June 2024
  */
 public class Item extends WorldSprite {
+    public final long id = Math.round(Math.random() * (Long.MAX_VALUE - 1));
     private Player player;
     private boolean isOnGround;
     public final PhysicsController physics = new PhysicsController(this);
@@ -95,16 +96,14 @@ public class Item extends WorldSprite {
         if(getWorldPos().distanceTo(playerPos) < 30 && pickupTimer.ended()
         && player.getHotbarSize() < Player.MAX_ITEM_NUM) {
             physics.accelTowards(playerPos);
-            Vector3 pos = getWorldPos();
-            getWorld().getWorldData().removeItem(new Vector2(pos.x / 20, pos.z / 20));
+            getWorld().getWorldData().removeItem(id);
         }
         if(getWorldPos().distanceTo(playerPos) < 15 && pickupTimer.ended()) {
             if(player.getHotbarSize() < Player.MAX_ITEM_NUM) {
                 isOnGround = false;
                 player.pickupItem(this);
                 updatedFlag = false;
-                Vector3 pos = getWorldPos();
-                getWorld().getWorldData().removeItem(new Vector2(pos.x / 20, pos.z / 20));
+                getWorld().getWorldData().removeItem(id);
             }
         }
     }

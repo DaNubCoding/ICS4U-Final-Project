@@ -31,6 +31,7 @@ public class Entity extends Sprack { // TODO: entity loading and unloading
      */
     public static final double MAX_SPEED = 2.0;
 
+    public final long id = Math.round(Math.random() * (Long.MAX_VALUE - 1));
     public final PhysicsController physics;
     private double health;
 
@@ -150,11 +151,9 @@ public class Entity extends Sprack { // TODO: entity loading and unloading
             );
             getWorld().addWorldObject(particle, getWorldPos().add(offset));
         }
-        getWorld().getWorldData().removeEntity(new Vector2(getWorldPos().x / 20,
-                                                           getWorldPos().z / 20));
+        getWorld().getWorldData().removeEntity(id);
         getWorld().removeSprite(this);
-        getWorld().getWorldData().removeEntity(new Vector2(getWorldPos().x / 20,
-                                                           getWorldPos().z / 20));
+        getWorld().getWorldData().removeEntity(id);
     }
 
     @Override

@@ -18,6 +18,26 @@ import java.util.List;
  * @version May 2024
  */
 public class WorldData {
+    public static class ItemPosPair {
+        public final Item item;
+        public final Vector2 pos;
+
+        public ItemPosPair(Item item, Vector2 pos) {
+            this.item = item;
+            this.pos = pos;
+        }
+    }
+
+    public static class EntityPosPair {
+        public final Entity entity;
+        public final Vector2 pos;
+
+        public EntityPosPair(Entity entity, Vector2 pos) {
+            this.entity = entity;
+            this.pos = pos;
+        }
+    }
+
     private Random worldRand;
     private static Random rand;
 
@@ -30,8 +50,8 @@ public class WorldData {
     private Vector2 playerLocation;
     private HashMap<Long, FeatureData> modifiedFeatures;
     private HashMap<Vector2, Feature> surroundings;
-    private HashMap<Vector2, Item> storedItems;
-    private HashMap<Vector2, Entity> storedEntities;
+    private HashMap<Long, ItemPosPair> storedItems;
+    private HashMap<Long, EntityPosPair> storedEntities;
     private ArrayList<Item> playerHotbar;
 
     /**
@@ -43,8 +63,8 @@ public class WorldData {
         playerLocation = new Vector2(0, 0);
         surroundings = new HashMap<Vector2, Feature>();
         modifiedFeatures = new HashMap<Long, FeatureData>();
-        storedItems = new HashMap<Vector2, Item>();
-        storedEntities = new HashMap<Vector2, Entity>();
+        storedItems = new HashMap<Long, ItemPosPair>();
+        storedEntities = new HashMap<Long, EntityPosPair>();
         playerHotbar = new ArrayList<Item>();
     }
 
@@ -105,7 +125,8 @@ public class WorldData {
                 int itemX = (int)(double) Double.valueOf(st.nextToken());
                 int itemY = (int)(double) Double.valueOf(st.nextToken());
                 String itemType = st.nextToken();
-                storedItems.put(new Vector2(itemX, itemY), Item.NAMES.get(itemType).get());
+                Item item = Item.NAMES.get(itemType).get();
+                storedItems.put(item.id, new ItemPosPair(item, new Vector2(itemX, itemY)));
             }
 
             // get the list of stored entities
@@ -119,7 +140,8 @@ public class WorldData {
                 int entityY = (int)(double) Double.valueOf(st.nextToken());
                 String entityType = st.nextToken();
                 if(entityType.equals("player")) continue;
-                storedEntities.put(new Vector2(entityX, entityY), Entity.NAMES.get(entityType).get());
+                Entity entity = Entity.NAMES.get(entityType).get();
+                storedEntities.put(entity.id, new EntityPosPair(entity, new Vector2(entityX, entityY)));
             }
 
         } catch(FileNotFoundException e) {
@@ -445,16 +467,16 @@ public class WorldData {
      * @param i the item to be stored
      */
     public void storeItem(Vector2 pos, Item i) {
-        storedItems.put(pos, i);
+        storedItems.put(i.id, new ItemPosPair(i, pos));
     }
 
     /**
      * Remove an item from storage, preventing it from being generated again.
      *
-     * @param pos the position of the item to be removed, in grid coordinates
+     * @param id the uuid of the item to be removed
      */
-    public void removeItem(Vector2 pos) {
-        storedItems.remove(pos);
+    public void removeItem(long id) {
+        storedItems.remove(id);
     }
 
     /**
@@ -462,7 +484,7 @@ public class WorldData {
      *
      * @return the hashmap containing all stored items
      */
-    public HashMap<Vector2, Item> getStoredItems() {
+    public HashMap<Long, ItemPosPair> getStoredItems() {
         return storedItems;
     }
 
@@ -474,16 +496,16 @@ public class WorldData {
      * @param e the entity to be stored
      */
     public void storeEntity(Vector2 pos, Entity e) {
-        storedEntities.put(pos, e);
+        storedEntities.put(e.id, new EntityPosPair(e, pos));
     }
 
     /**
      * Remove an entity from storage, preventing it from being generated again.
      *
-     * @param pos the position of the entity to be removed, in grid coordinates
+     * @param id the uuid of the entity to be removed
      */
-    public void removeEntity(Vector2 pos) {
-        storedEntities.remove(pos);
+    public void removeEntity(long id) {
+        storedEntities.remove(id);
     }
 
     /**
@@ -491,7 +513,7 @@ public class WorldData {
      *
      * @return the hashmap containing all stored entities
      */
-    public HashMap<Vector2, Entity> getStoredEntities() {
+    public HashMap<Long, EntityPosPair> getStoredEntities() {
         return storedEntities;
     }
 
@@ -553,16 +575,18 @@ public class WorldData {
             fileOutput.println(featureData.toString());
         }
         // stored items
-        for (Vector2 v : storedItems.keySet()) {
-            Item i = storedItems.get(v);
+        for (Long id : storedItems.keySet()) {
+            Item i = storedItems.get(id).item;
+            Vector2 pos = storedItems.get(id).pos;
             fileOutput.print("item,");
-            fileOutput.println(v.x + "," + v.y + "," + i.toString());
+            fileOutput.println(pos.x + "," + pos.y + "," + i.toString());
         }
         // stored entities
-        for(Vector2 v : storedEntities.keySet()) {
-            Entity e = storedEntities.get(v);
+        for(Long id : storedEntities.keySet()) {
+            Entity e = storedEntities.get(id).entity;
+            Vector2 pos = storedEntities.get(id).pos;
             fileOutput.print("entity,");
-            fileOutput.println(v.x + "," + v.y + "," + e.toString());
+            fileOutput.println(pos.x + "," + pos.y + "," + e.toString());
         }
         fileOutput.close();
     }
