@@ -263,7 +263,7 @@ public class SprackView {
      * @return the width of the image that would be used if the same parameters
      *         were passed to {@link #getTransformedImage}
      */
-    public int getTransformedWidth(double rotation, double scale) {
+    public int getTransformedImageWidth(double rotation, double scale) {
         return (int) (rotCache[getCacheIndex(rotation)].image.getWidth() / IMAGE_CACHE_SCALE * scale);
     }
 
@@ -280,8 +280,42 @@ public class SprackView {
      * @return the height of the image that would be used if the same parameters
      *         were passed to {@link #getTransformedImage}
      */
-    public int getTransformedHeight(double rotation, double scale) {
+    public int getTransformedImageHeight(double rotation, double scale) {
         return (int) (rotCache[getCacheIndex(rotation)].image.getHeight() / IMAGE_CACHE_SCALE * scale);
+    }
+
+    /**
+     * Return the screen width of a single layer's image from the sprite stack
+     * of this SprackView rotated and scaled by the specified amounts.
+     * <p>
+     * Note that this can be a different width than the actual width of the
+     * transformed SprackView image, where this layer width more accurately
+     * represents the visual width of the model.
+     *
+     * @param rotation the rotation angle of the sprite stack, in degrees
+     * @param scale the scale factor of the sprite stack
+     * @return the width of a single transformed layer's image
+     */
+    public int getTransformedLayerWidth(double rotation, double scale) {
+        double imageRad = Math.toRadians(rotation);
+        double width = layerWidth * scale;
+        double height = layerHeight * scale;
+        return (int) (Math.abs(width * Math.cos(imageRad)) + Math.abs(height * Math.sin(imageRad)));
+    }
+
+    /**
+     * Return the screen height of a single layer's image from the sprite stack
+     * of this SprackView rotated and scaled by the specified amounts.
+     *
+     * @param rotation the rotation angle of the sprite stack, in degrees
+     * @param scale the scale factor of the sprite stack
+     * @return the height of a single transformed layer's image
+     */
+    public int getTransformedLayerHeight(double rotation, double scale) {
+        double imageRad = Math.toRadians(rotation);
+        double width = layerWidth * scale;
+        double height = layerHeight * scale;
+        return (int) (Math.abs(width * Math.sin(imageRad)) + Math.abs(height * Math.cos(imageRad)));
     }
 
     /**

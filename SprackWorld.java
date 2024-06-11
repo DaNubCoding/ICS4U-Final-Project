@@ -57,9 +57,9 @@ public class SprackWorld extends PixelWorld {
     @Override
     public void update() {
         List<? extends Sprite> spracks = getSpritesByLayer(Layer.SPRACK_DEFAULT);
-        spracks.sort(Comparator.comparing(Sprite::getScreenY));
+        spracks.sort(Comparator.comparing(Sprite::getSortValue));
         spracks = getSpritesByLayer(Layer.SPRACK_CANOPY);
-        spracks.sort(Comparator.comparing(Sprite::getScreenY));
+        spracks.sort(Comparator.comparing(Sprite::getSortValue));
 
         updateDamages();
 

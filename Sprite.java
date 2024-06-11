@@ -106,6 +106,15 @@ public abstract class Sprite {
     }
 
     /**
+     * Get the value of this sprite to consider when sorting for rendering.
+     *
+     * @return a double value for the ordering of this sprite
+     */
+    public double getSortValue() {
+        return screenPos.y;
+    }
+
+    /**
      * Render this sprite to the given canvas.
      * <p>
      * The canvas is almost always the canvas of the {@link PixelWorld} that

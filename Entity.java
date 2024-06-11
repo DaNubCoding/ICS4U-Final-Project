@@ -54,6 +54,7 @@ public class Entity extends Sprack { // TODO: entity loading and unloading
     public Entity(String sheetName, Layer layer) {
         super(sheetName, layer);
         physics = new PhysicsController(this);
+        showShadow();
     }
 
     /**
@@ -71,6 +72,7 @@ public class Entity extends Sprack { // TODO: entity loading and unloading
     public Entity(Animation sheetAnimation, Layer layer) {
         super(sheetAnimation, layer);
         physics = new PhysicsController(this);
+        showShadow();
     }
 
     /**
@@ -84,6 +86,7 @@ public class Entity extends Sprack { // TODO: entity loading and unloading
     public Entity(String sheetName) {
         super(sheetName);
         physics = new PhysicsController(this);
+        showShadow();
     }
 
     /**
@@ -99,6 +102,7 @@ public class Entity extends Sprack { // TODO: entity loading and unloading
     public Entity(Animation sheetAnimation) {
         super(sheetAnimation);
         physics = new PhysicsController(this);
+        showShadow();
     }
 
     /**

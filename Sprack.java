@@ -14,6 +14,9 @@ import greenfoot.*;
  * animation. A looping animation or one-time animation may be replaced
  * immediately at any time by using the {@link #setLoopingAnimation()} and
  * {@link #playOneTimeAnimation()} methods.
+ * <p>
+ * Spracks by default have no shadow drawn under them, but the shadow can be
+ * enabled by calling the {@link #showShadow()} method.
  *
  * @author Martin Baldwin
  * @version June 2024
@@ -29,6 +32,7 @@ public class Sprack extends Sprite implements WorldObject {
     private Vector3 worldPos;
     private double rotation;
     private int transparency;
+    private boolean showShadow;
 
     /**
      * Create a new Sprack with the given fixed sheet name.
@@ -83,6 +87,7 @@ public class Sprack extends Sprite implements WorldObject {
         oneTimeAnimation = null;
         worldPos = new Vector3();
         transparency = 255;
+        showShadow = false;
     }
 
     /**
@@ -133,6 +138,20 @@ public class Sprack extends Sprite implements WorldObject {
     @Override
     public void setWorldPos(Vector3 position) {
         worldPos = position;
+    }
+
+    /**
+     * Start drawing a shadow under this Sprack.
+     */
+    public void showShadow() {
+        showShadow = true;
+    }
+
+    /**
+     * Stop drawing a shadow under this Sprack.
+     */
+    public void hideShadow() {
+        showShadow = false;
     }
 
     /**
@@ -214,17 +233,29 @@ public class Sprack extends Sprite implements WorldObject {
 
         // Don't render if offscreen
         double imageRotation = rotation - Camera.getRotation();
+        int imageWidth = view.getTransformedImageWidth(imageRotation, scale);
+        int imageHeight = view.getTransformedImageHeight(imageRotation, scale);
         int centerX = view.getCenterX(imageRotation, scale);
         int centerY = view.getCenterY(imageRotation, scale);
         if (screenX + centerX < 0
             || screenX - centerX >= getWorld().getWidth()
-            || screenY + (view.getTransformedHeight(imageRotation, scale) - centerY) < 0
+            || screenY + (imageHeight - centerY) < 0
             || screenY - centerY >= getWorld().getHeight()) {
             return;
         }
 
+        // Draw shadow if shown
+        if (showShadow) {
+            canvas.setColor(new Color(0, 0, 0, 64));
+            int shadowWidth = view.getTransformedLayerWidth(imageRotation, scale);
+            int shadowHeight = view.getTransformedLayerHeight(imageRotation, scale);
+            int shadowX = (int) screenX - centerX + (imageWidth - shadowWidth) / 2;
+            int shadowY = (int) (screenY + worldPos.y * scale) - shadowHeight / 2;
+            canvas.fillOval(shadowX, shadowY, shadowWidth, shadowHeight);
+        }
+
         // Draw image, screen position at center of bottom layer
-        GreenfootImage image = view.getTransformedImage(imageRotation, Camera.getZoom());
+        GreenfootImage image = view.getTransformedImage(imageRotation, scale);
         if (image == null) {
             return;
         }
@@ -280,6 +311,16 @@ public class Sprack extends Sprite implements WorldObject {
      */
     public double getVisualRotation() {
         return Vector2.normalizeAngle(rotation - Camera.getRotation());
+    }
+
+    @Override
+    public double getSortValue() {
+        double scale = Camera.getZoom();
+        double offsetX = (worldPos.x - Camera.getX()) * scale;
+        double offsetZ = (worldPos.z - Camera.getZ()) * scale;
+        double screenRad = Math.toRadians(-Camera.getRotation());
+        double screenY = getWorld().getHeight() / 2 + offsetX * Math.sin(screenRad) + offsetZ * Math.cos(screenRad);
+        return screenY;
     }
 
     /**
