@@ -166,4 +166,17 @@ public class Jester extends Enemy {
         }
         super.damage(damage);
     }
+
+    @Override
+    public void die() {
+        super.die();
+
+        JesterSword item = new JesterSword();
+        getWorld().addWorldObject(item, getWorldPos());
+        item.physics.applyForce(new Vector3(
+            Math.random() * 6 - 3,
+            3,
+            Math.random() * 6 - 3
+        ));
+    }
 }

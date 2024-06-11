@@ -96,4 +96,17 @@ public class Statue extends Enemy {
             getWorld().addWorldObject(new StatueParticle(), getWorldPos().add(offset));
         }
     }
+
+    @Override
+    public void die() {
+        super.die();
+
+        PearlGun item = new PearlGun();
+        getWorld().addWorldObject(item, getWorldPos());
+        item.physics.applyForce(new Vector3(
+            Math.random() * 6 - 3,
+            3,
+            Math.random() * 6 - 3
+        ));
+    }
 }

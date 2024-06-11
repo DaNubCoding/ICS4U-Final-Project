@@ -12,7 +12,7 @@ import greenfoot.GreenfootImage;
 public class Item extends WorldSprite {
     private Player player;
     private boolean isOnGround;
-    private PhysicsController physics = new PhysicsController(this);
+    public final PhysicsController physics = new PhysicsController(this);
     private Timer pickupTimer = new Timer(0);
     private boolean updatedFlag = false;
 
