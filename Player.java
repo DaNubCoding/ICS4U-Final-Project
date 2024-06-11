@@ -232,7 +232,7 @@ public class Player extends Entity {
     public void damage(Damage damage) {
         double dmg = damage.getDamage();
 
-        armorTimer.restart(420);
+        armorTimer.restart(480);
         if(armor > 0) {
             for (int i = 0; i < damage.getDamage() + 4; i++) {
                 ArmorParticle particle = new ArmorParticle();
