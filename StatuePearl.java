@@ -24,7 +24,7 @@ public class StatuePearl extends Projectile {
 
     @Override
     public boolean hitCondition() {
-        List<Sprack> l = getWorld().getSpracksInRange(getWorldPos(), 10);
+        List<Sprack> l = getWorld().getSpracksInRange(getWorldPos(), 15);
         for (Sprack s:l) {
             if(s instanceof Statue) return false;
         }
