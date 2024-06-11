@@ -222,18 +222,20 @@ public class Player extends Entity {
         double dmg = damage.getDamage();
 
         armorTimer.restart(600);
+        if(armor > 0) {
+            for (int i = 0; i < damage.getDamage() + 4; i++) {
+                ArmorParticle particle = new ArmorParticle();
+                Vector3 offset = new Vector3(
+                    Math.random() * 20 - 10,
+                    Math.random() * getHeight(),
+                    Math.random() * 20 - 10
+                );
+                getWorld().addWorldObject(particle, getWorldPos().add(offset));
+            }
+        }
         armor -= dmg;
         System.out.printf("Player took %3f damage to armor and has %3f armor left.\n", dmg, armor);
         armorBar.setHealth(armor);
-        for (int i = 0; i < damage.getDamage() + 4; i++) {
-            ArmorParticle particle = new ArmorParticle();
-            Vector3 offset = new Vector3(
-                Math.random() * 20 - 10,
-                Math.random() * getHeight(),
-                Math.random() * 20 - 10
-            );
-            getWorld().addWorldObject(particle, getWorldPos().add(offset));
-        }
 
         if(armor <= 0) {
             super.damage(new Damage(damage.getOwner(), 
