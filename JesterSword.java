@@ -53,7 +53,7 @@ public class JesterSword extends MeleeWeapon {
             catch (NullPointerException e) {} // if the weapon got switched out before doing damage
         }
 
-        physics.applyForce(playerFacingVector.multiply(150));
+        playerPhysics.applyForce(playerFacingVector.multiply(150));
         teleports = 0;
         initialPos = null;
     }
