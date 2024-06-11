@@ -30,7 +30,7 @@ public class Player extends Entity {
     private int heldIndex;
 
     private static final double maxArmor = 100;
-    private double armor = 100;
+    private double armor = 60;
     private Timer armorTimer = new Timer(0);
     private HealthBar armorBar;
     private HealthBar healthBar;
@@ -141,8 +141,8 @@ public class Player extends Entity {
         }
 
         // update armor if out of combat for long enough
-        if (armorTimer.ended() && armor < maxArmor) {
-            armor++;
+        if (armorTimer.ended()) {
+            armor = Math.min(armor + 0.2, maxArmor);
             armorBar.setHealth(armor);
         }
 
@@ -232,7 +232,7 @@ public class Player extends Entity {
     public void damage(Damage damage) {
         double dmg = damage.getDamage();
 
-        armorTimer.restart(600);
+        armorTimer.restart(420);
         if(armor > 0) {
             for (int i = 0; i < damage.getDamage() + 4; i++) {
                 ArmorParticle particle = new ArmorParticle();
