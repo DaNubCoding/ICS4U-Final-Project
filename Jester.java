@@ -30,6 +30,8 @@ public class Jester extends Enemy {
     private Timer moveTimer = new Timer(150);
     private Timer attackTimer = new Timer(150);
     private Timer guardTimer = new Timer(0);
+    private Timer strafeTimer = new Timer(50);
+    private double strafeAngle = 0;
     private int attackString = 1;
     private int actionCount = 0;
     private int hitBox = 0;
@@ -66,14 +68,10 @@ public class Jester extends Enemy {
     } // Does nothing
 
     @Override
-    public void notice(Player player) {
-        //playOneTimeAnimation();
-    }
+    public void notice(Player player) {}
 
     @Override
-    public void forget(Player player) {
-        //setLoopingAnimation(dormantAnimation);
-    }
+    public void forget(Player player) {}
 
     @Override
     public void engage(Player player) {
@@ -82,6 +80,10 @@ public class Jester extends Enemy {
         final double distance = enemyPos.distanceTo(playerPos);
         final Vector3 dist = playerPos.subtract(enemyPos);
         int rage = 3-(int)(super.getHealth()/(MAX_HP/3));
+
+        if (rage == 3) {
+            physics.setMaxSpeed(4);
+        }
 
         if (actionCount > 0) {
             if (hitBox == 1) {
@@ -142,6 +144,13 @@ public class Jester extends Enemy {
             guardTimer.restart(45+(int)Math.random() * 65);
         } else {
             physics.moveToNearPlayer(70);
+            if (!strafeTimer.ended() && getWorldPos().distanceTo(playerPos) < 90) {
+                physics.accelerate(new Vector2(0.5, 0).rotate(strafeAngle));
+            }
+            if (Math.random() < 0.03) {
+                strafeAngle = getWorldRotation() + (Math.random() < 0.5 ? 90 : -90);
+                strafeTimer.restart(40);
+            }
             if (physics.isMoving())
             {
                 setLoopingAnimation(walkingAnimation);
