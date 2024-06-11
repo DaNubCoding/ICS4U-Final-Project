@@ -26,6 +26,12 @@ public class Player extends Entity {
 
     private ArrayList<Item> hotbar;
     private int heldIndex;
+    
+    private static final double maxArmor = 100;
+    private double armor = 100;
+    private Timer armorTimer = new Timer(0);
+    private HealthBar armorBar;
+    private HealthBar healthBar;
 
     private boolean tabFlag = false;
     private boolean qFlag = false;
@@ -34,14 +40,20 @@ public class Player extends Entity {
         super(standingAnimation);
         hotbar = new ArrayList<Item>();
         dashTimer = new Timer(90);
-        setHealth(200);
         heldIndex = 0;
+        healthBar = new HealthBar(this);
+        armorBar = new HealthBar(this);
+        armorBar.setLostColor(new Color(0, 0, 0, 0));
+        armorBar.setHaveColor(Color.LIGHT_GRAY);
+        armorBar.setHealth(armor);
+        setHealth(200);
     }
 
     @Override
     public void addedToWorld(PixelWorld world) {
         getWorld().addCollisionController(new CollisionController(this, 8, 0.1, 0.0));
-        getWorld().addWorldObject(new Sword(), getWorldPos());
+        ((SprackWorld) world).addWorldObject(armorBar, 0, 0, 0);
+        ((SprackWorld) world).addWorldObject(healthBar, 0, 0, 0);
     }
 
     @Override
@@ -115,6 +127,12 @@ public class Player extends Entity {
             setLoopingAnimation(walkingAnimation);
         } else {
             setLoopingAnimation(standingAnimation);
+        }
+
+        // update armor if out of combat for long enough
+        if (armorTimer.ended() && armor < maxArmor) {
+            armor++;
+            armorBar.setHealth(armor);
         }
 
         // Update camera
@@ -194,9 +212,38 @@ public class Player extends Entity {
     }
 
     @Override
+    public void setHealth(double health) {
+        super.setHealth(health);
+        healthBar.setHealth(health);
+    }
+
+    @Override
     public void damage(Damage damage) {
-        super.damage(damage);
-        System.out.println("Player took " + damage.getDamage() + " points of damage and has " + getHealth() + " health left");
+        double dmg = damage.getDamage();
+
+        armorTimer.restart(600);
+        armor -= dmg;
+        System.out.printf("Player took %3f damage to armor and has %3f armor left.\n", dmg, armor);
+        armorBar.setHealth(armor);
+        for (int i = 0; i < damage.getDamage() + 4; i++) {
+            ArmorParticle particle = new ArmorParticle();
+            Vector3 offset = new Vector3(
+                Math.random() * 20 - 10,
+                Math.random() * getHeight(),
+                Math.random() * 20 - 10
+            );
+            getWorld().addWorldObject(particle, getWorldPos().add(offset));
+        }
+
+        if(armor <= 0) {
+            super.damage(new Damage(damage.getOwner(), 
+                                    damage.getSource(), 
+                                    -armor, 
+                                    damage.getCenter(), 
+                                    damage.getRadius()));
+            System.out.println("Player took " + armor + " points of damage and has " + getHealth() + " health left");
+            armor = 0;
+        }
     }
 
 }
