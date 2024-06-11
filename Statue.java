@@ -8,6 +8,7 @@ public class Statue extends Enemy {
     int MAX_HP = 300;
 
     private static final Animation dormantAnimation = new Animation(-1, "statue_dormant");
+    private static final Animation activeAnimation = new Animation(-1, "statue_active");
     private static final Animation activatingAnimation = new Animation(12,
             "statue_activating1",
             "statue_activating2"
@@ -44,6 +45,7 @@ public class Statue extends Enemy {
     @Override
     public void notice(Player player) {
         playOneTimeAnimation(activatingAnimation);
+        setLoopingAnimation(activeAnimation);
     }
 
     @Override
