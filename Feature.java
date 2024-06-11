@@ -43,6 +43,7 @@ public class Feature extends Sprack {
         WILLOW_TREE(WillowTree.class, WillowTree::new, 3),
         CRATE(Crate.class, Crate::new, 20),
         TOMBSTONE(Tombstone.class, Tombstone::new, 10),
+        STATUE_CAMPFIRE(StatueCampfire.class, StatueCampfire::new, 1);
         ;
 
         private static int[] spawnRates = new int[Type.length()];
@@ -120,7 +121,8 @@ public class Feature extends Sprack {
      */
     public void modify(String key, Object value) {
         data.put(key, value);
-        getWorld().getWorldData().addModified(data);
+        if(getWorld() != null)
+            getWorld().getWorldData().addModified(data);
     }
 
     /**

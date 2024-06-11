@@ -141,7 +141,6 @@ public class WorldData {
                     if(entityType.equals("player")) continue;
                     Entity entity = Entity.NAMES.get(entityType).get();
                     storedEntities.put(entity.id, new EntityPosPair(entity, new Vector2(entityX, entityY)));
-                    System.out.println(entityType + "Spawned");
                     continue;
                 }
             }
