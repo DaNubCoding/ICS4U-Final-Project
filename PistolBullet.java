@@ -8,10 +8,10 @@ import greenfoot.GreenfootImage;
  * @author Lucas Fu
  * @version June 2024
  */
-public class TestProjectile extends Projectile {
+public class PistolBullet extends Projectile {
     Random rand;
 
-    public TestProjectile(Entity owner, Vector3 direction, Vector3 startpos) {
+    public PistolBullet(Entity owner, Vector3 direction, Vector3 startpos) {
         super(owner, direction, startpos, 100);
         setOriginalImage(new GreenfootImage("pistol.png"));
         rand = new Random();
@@ -33,7 +33,7 @@ public class TestProjectile extends Projectile {
         physics.applyForce(impulse);
 
         // create damage
-        Damage dmg = new Damage(getOwner(), this, 10, getWorldPos(), 10);
+        Damage dmg = new Damage(getOwner(), this, 1, getWorldPos(), 10);
         getWorld().getDamages().add(dmg);
     }
 }
