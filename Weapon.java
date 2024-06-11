@@ -8,10 +8,10 @@ import greenfoot.*;
  * @version May 2024
  */
 public abstract class Weapon extends Item {
-    private int castTime;
+    private int windupTime;
     private int recastTime;
     private boolean casting;
-    private Timer castTimer;
+    private Timer windupTimer;
     private Timer recastTimer;
 
     /**
@@ -24,9 +24,9 @@ public abstract class Weapon extends Item {
     public Weapon(String image, int windup, int cooldown) {
         super(image);
         casting = false;
-        castTime = windup;
+        windupTime = windup;
         recastTime = cooldown;
-        castTimer = new Timer(0);
+        windupTimer = new Timer(0);
         recastTimer = new Timer(0);
     }
 
@@ -42,12 +42,12 @@ public abstract class Weapon extends Item {
          && Greenfoot.getMouseInfo().getButton() == 1
          && !casting && recastTimer.ended()) {
             casting = true;
-            castTimer.restart(castTime);
+            windupTimer.restart(windupTime);
         }
         if (casting) {
             windup();
         }
-        if (casting && castTimer.ended()) {
+        if (casting && windupTimer.ended()) {
             attack();
             casting = false;
             recastTimer.restart(recastTime);
@@ -63,4 +63,22 @@ public abstract class Weapon extends Item {
      * Perform windup actions. Overriding this is optional.
      */
     public void windup() {};
+
+    /**
+     * Get the windup time of the weapon.
+     *
+     * @return the windup time
+     */
+    public int getWindup() {
+        return windupTime;
+    }
+
+    /**
+     * Get the progress of the windup as a percentage.
+     *
+     * @return the windup progress percentage
+     */
+    public double getWindupProgress() {
+        return windupTimer.progress();
+    }
 }

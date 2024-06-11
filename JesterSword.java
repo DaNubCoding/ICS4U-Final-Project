@@ -13,7 +13,7 @@ public class JesterSword extends MeleeWeapon {
     private int teleports;
 
     public JesterSword() {
-        super("sword.png", 100, 0, 20, 25, 10, 5, 5);
+        super("sword.png", 100, 0, 20, 25, 10, 5);
         teleports = 0;
     }
 

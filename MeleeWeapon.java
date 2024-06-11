@@ -12,9 +12,7 @@ public abstract class MeleeWeapon extends Weapon {
     private double swingAngle;
     private Timer swingTimer;
     private int swingDuration;
-    private Timer unswingTimer1;
-    private Timer unswingTimer2;
-    private int unswingDuration;
+    private Timer unswingTimer;
 
     /**
      * Create a new melee weapon.
@@ -27,39 +25,37 @@ public abstract class MeleeWeapon extends Weapon {
      * @param damage
      * @param sweepAngle
      * @param swingDuration
-     * @param unswingDuration
      */
     public MeleeWeapon(String image, int windup, int cooldown,
                        int range, double damage, int sweepAngle,
-                       int swingDuration, int unswingDuration) {
+                       int swingDuration) {
         super(image, windup, cooldown);
         this.range = range;
         this.damage = damage;
         this.sweepAngle = sweepAngle;
         this.swingDuration = swingDuration;
-        this.unswingDuration = unswingDuration;
+    }
+
+    @Override
+    public void windup() {
+        swingAngle = Math.sin(getWindupProgress() * Math.PI / 2) * sweepAngle / 2;
+        setWorldRotation(getPlayer().getWorldRotation() + swingAngle);
     }
 
     @Override
     public void lockToPlayer() {
         super.lockToPlayer();
 
-        if (unswingTimer1 != null) {
-            swingAngle = Math.sin(unswingTimer1.progress() * Math.PI / 2) * sweepAngle / 2;
-            if (unswingTimer1.ended()) {
-                unswingTimer1 = null;
-                swingTimer = new Timer(swingDuration);
-            }
-        } else if (swingTimer != null) {
+        if (swingTimer != null) {
             swingAngle = Math.cos(swingTimer.progress() * Math.PI) * sweepAngle / 2;
             if (swingTimer.ended()) {
                 swingTimer = null;
-                unswingTimer2 = new Timer(unswingDuration / 2);
+                unswingTimer = new Timer(getWindup());
             }
-        } else if (unswingTimer2 != null) {
-            swingAngle = -Math.cos(unswingTimer2.progress() * Math.PI / 2) * sweepAngle / 2;
-            if (unswingTimer2.ended()){
-                unswingTimer2 = null;
+        } else if (unswingTimer != null) {
+            swingAngle = -Math.cos(unswingTimer.progress() * Math.PI / 2) * sweepAngle / 2;
+            if (unswingTimer.ended()){
+                unswingTimer = null;
             }
         }
         setWorldRotation(getPlayer().getWorldRotation() + swingAngle);
@@ -77,14 +73,10 @@ public abstract class MeleeWeapon extends Weapon {
 
         try {
             getWorld().getDamages().add(damage);
-        } 
+        }
         catch (NullPointerException e) {} // if the weapon got switched out before doing damage
 
-        if (unswingDuration != 0) {
-            unswingTimer1 = new Timer(unswingDuration / 2);
-        } else {
-            swingTimer = new Timer(swingDuration);
-        }
+        swingTimer = new Timer(swingDuration);
     }
 
     public Timer getSwingTimer(){

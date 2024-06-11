@@ -10,7 +10,7 @@ public class Pitchfork extends MeleeWeapon {
     private Vector3 weaponOffset;
 
     public Pitchfork() {
-        super("pitchfork.png", 0, 20, 100, 10, 20, 18, 0);
+        super("pitchfork.png", 0, 20, 100, 10, 20, 18);
         setCenterOfRotation(new Vector2(0, 7));
         stabDistance = 20;
         weaponOffset = new Vector3();

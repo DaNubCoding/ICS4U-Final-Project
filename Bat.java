@@ -6,7 +6,7 @@
  */
 public class Bat extends MeleeWeapon {
     public Bat() {
-        super("bat.png", 0, 20, 60, 5, 80, 7, 7);
+        super("bat.png", 5, 20, 60, 5, 80, 7);
         setCenterOfRotation(new Vector2(0, 2));
     }
 }
