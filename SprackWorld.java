@@ -32,6 +32,7 @@ public class SprackWorld extends PixelWorld {
         Vector2 playerPos = worldData.getPlayerLocation();
         player = new Player();
         addWorldObject(player, playerPos.x * 20, 0, playerPos.y * 20);
+        applyAdditions();
 
         Camera.resetTo(playerPos.x * 20, 0, playerPos.y * 20, 0, 1);
         Camera.setCloseness(0.3);
