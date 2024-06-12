@@ -52,6 +52,7 @@ public class SprackWorld extends PixelWorld {
         }
 
         addWorldObject(new Jester(), -100, 0, 0);
+        addSprite(new HotBar(), 0, 0);
 
         render();
     }

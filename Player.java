@@ -7,6 +7,7 @@ import greenfoot.*;
  *
  * @author Martin Baldwin
  * @author Andrew Wang
+ * @author Matthew Li
  * @version May 2024
  */
 public class Player extends Entity {
