@@ -1,4 +1,3 @@
-import greenfoot.GreenfootImage;
 import java.util.Random;
 /**
  * A canopy bomb that falls from the sky, dealing damage and creating a canopy
@@ -10,11 +9,14 @@ import java.util.Random;
 public class CanopyBomb extends Magic {
     private PhysicsController physics = new PhysicsController(this);
     private static final String[] treeList = {"oak", "willow"};
-    private Random rand;
+    private Random rand = new Random();
+    private String treeType;
 
     public CanopyBomb(Vector3 startpos, int inaccuracy) {
         super(startpos.add(new Vector3(0, 300, 0)), inaccuracy, 1, 10000, 10, 100);
-        setOriginalImage(new GreenfootImage("pistol.png"));
+        treeType = treeList[rand.nextInt(treeList.length)];
+        setOriginalImage(SprackView.getView("tree_" + treeType + "_canopy")
+            .getTransformedImage(Camera.getRotation(), Camera.getZoom()));
         physics.setAffectedByGravity(true);
         rand = new Random();
     }
@@ -26,7 +28,7 @@ public class CanopyBomb extends Magic {
 
     @Override
     public void disappear() {
-        PerishableCanopy canopy = new PerishableCanopy("tree_" + treeList[rand.nextInt(treeList.length)] + "_canopy");
+        PerishableCanopy canopy = new PerishableCanopy("tree_" + treeType + "_canopy");
         getWorld().addWorldObject(canopy, getWorldPos());
         Damage dmg = new Damage(getWorld().getPlayer(), this, 5, getWorldPos(), 30);
         dmg.setInterval(50);

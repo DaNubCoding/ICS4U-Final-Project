@@ -13,7 +13,7 @@ public class PistolBullet extends Projectile {
 
     public PistolBullet(Entity owner, Vector3 direction, Vector3 startpos) {
         super(owner, direction, startpos, 100);
-        setOriginalImage(new GreenfootImage("pistol.png"));
+        setOriginalImage(new GreenfootImage("pistol_bullet.png"));
         rand = new Random();
     }
 

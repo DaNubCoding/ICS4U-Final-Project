@@ -1,9 +1,9 @@
 /**
  * A purely cosmetic Sprack created by CanopyBomb that resembles a canopy, but
  * perishes after a while.
- * 
+ *
  * @author Lucas Fu
- * @version June 2024 
+ * @version June 2024
  */
 public class PerishableCanopy extends Sprack {
     private Timer disappearTimer;
@@ -17,7 +17,7 @@ public class PerishableCanopy extends Sprack {
     @Override
     public void update() {
         if (knockbackTimer.ended()) {
-            for (Entity e : getWorld().getEntitiesInRange(getWorldPos(), 30)) {
+            for (Entity e : getWorld().getEntitiesInRange(getWorldPos(), 80)) {
                 e.physics.applyForce(e.getWorldPos()
                                       .subtract(getWorldPos())
                                       .normalize()

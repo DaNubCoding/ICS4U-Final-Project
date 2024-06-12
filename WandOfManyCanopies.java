@@ -6,7 +6,7 @@
  */
 public class WandOfManyCanopies extends MagicWeapon {
     public WandOfManyCanopies() {
-        super("pistol.png", 50, 3, 0, 700, CanopyBomb::new);
+        super("wand_of_many_canopies.png", 50, 3, 0, 700, CanopyBomb::new);
         setCenterOfRotation(new Vector2(3, 7));
     }
 }
