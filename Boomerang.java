@@ -2,7 +2,7 @@ import greenfoot.GreenfootImage;
 
 /**
  * A projectile that travels like a boomerang.
- * 
+ *
  * @author Lucas Fu
  * @version June 2024
  */
@@ -23,11 +23,11 @@ public class Boomerang extends Projectile {
 
     @Override
     public void hit() {
-        Damage dmg = new Damage(getOwner(), getOwner(), 20, getWorldPos(), 15);
+        Damage dmg = new Damage(getOwner(), getOwner(), 5, getWorldPos(), 15);
         getWorld().getDamages().add(dmg);
         for (Entity e : getWorld().getEntitiesInRange(getWorldPos(), 15)) {
-                e.physics.applyForce(new Vector2(getWorldRotation()));
-                e.damage(dmg);
+            e.physics.applyForce(new Vector2(getWorldRotation()).multiply(2.5));
+            e.damage(dmg);
         }
     }
 }
