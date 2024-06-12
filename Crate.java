@@ -18,8 +18,7 @@ public class Crate extends Feature {
         new Hammer(),
         new Repeater(),
         new RPG(),
-        new FlowerBoomerang(),
-        new WandOfRickAstley()
+        new FlowerBoomerang()
     };
     Random rand = new Random();
 
