@@ -128,6 +128,15 @@ public abstract class TransformableSprite extends Sprite {
     }
 
     /**
+     * Get the original image of the sprite.
+     *
+     * @return the original image
+     */
+    public GreenfootImage getOriginalImage() {
+        return originalImage;
+    }
+
+    /**
      * Set the point from which the image is rotated (center of rotation)
      * relative to the top-left corner of the original image.
      *

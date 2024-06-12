@@ -196,6 +196,24 @@ public class Player extends Entity {
     }
 
     /**
+     * Get the list of hotbar items.
+     *
+     * @return the hotbar
+     */
+    public ArrayList<Item> getHotbar() {
+        return hotbar;
+    }
+
+    /**
+     * Get the index in the hotbar of the item current being held.
+     *
+     * @return the index of the held item
+     */
+    public int getHeldIndex() {
+        return heldIndex;
+    }
+
+    /**
      * Add an Item to the hotbar.
      *
      * @param i the item to be added
