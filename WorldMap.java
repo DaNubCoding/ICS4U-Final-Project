@@ -57,7 +57,7 @@ public class WorldMap extends PixelWorld {
         }
 
         // put entities
-        for (Entity e: initialWorld.getEntitiesInRange(Vector3.fromXZ(playerPos.multiply(20)), genRad * 20)) {
+        for (Entity e: initialWorld.getEntitiesInRange(Vector3.fromXZ(playerPos.multiply(20)), genRad * 20 * 1.5)) {
             if(e instanceof Player) continue;
             Vector2 v = new Vector2(e.getWorldPos().x, e.getWorldPos().z);
             v = v.divide(20);

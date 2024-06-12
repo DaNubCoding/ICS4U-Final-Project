@@ -22,7 +22,7 @@ public class Item extends WorldSprite {
     static {
         NAMES.put("pistol", Pistol::new);
         NAMES.put("sword", Sword::new);
-        NAMES.put("enderpearlgun", PearlGun::new);
+        NAMES.put("pearlgun", PearlGun::new);
         NAMES.put("axe", Axe::new);
         NAMES.put("bat", Bat::new);
         NAMES.put("pitchfork", Pitchfork::new);

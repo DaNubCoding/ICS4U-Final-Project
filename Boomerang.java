@@ -10,7 +10,7 @@ public class Boomerang extends Projectile {
     private Timer hitCooldown = new Timer(0);
 
     public Boomerang(Entity owner, Vector3 initialVel, Vector3 startPos) {
-        super(owner, initialVel, startPos, 200);
+        super(owner, initialVel, startPos, 300);
         setOriginalImage(new GreenfootImage("statue_projectile.png"));
         physics.setAffectedByFrictionalForces(true);
         physics.setWorldRotation(owner.getWorldRotation());

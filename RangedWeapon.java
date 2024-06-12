@@ -38,11 +38,6 @@ public abstract class RangedWeapon extends Weapon {
         this.shotCount = shotCount;
     }
 
-    @Override
-    public void update() {
-        super.update();
-    }
-
     /**
      * Get the player's shooting direction.
      *

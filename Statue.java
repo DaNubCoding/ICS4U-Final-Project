@@ -54,6 +54,12 @@ public class Statue extends Enemy {
     }
 
     @Override
+    public void update() {
+        super.update();
+        physics.reduceMomentum(0.2);
+    }
+
+    @Override
     public void engage(Player player) {
         Vector3 playerPos = player.getWorldPos();
         Vector3 enemyPos = getWorldPos();
