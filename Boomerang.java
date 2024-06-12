@@ -27,11 +27,10 @@ public class Boomerang extends Projectile {
     public void hit() {
         if (!hitCooldown.ended()) return;
 
-        Damage dmg = new Damage(getOwner(), getOwner(), 20, getWorldPos(), 15);
+        Damage dmg = new Damage(getOwner(), getOwner(), 25, getWorldPos(), 15);
         getWorld().getDamages().add(dmg);
         for (Entity e : getWorld().getEntitiesInRange(getWorldPos(), 15)) {
             e.physics.applyForce(new Vector2(getWorldRotation()).multiply(5.0));
-            e.damage(dmg);
         }
         hitCooldown.restart(15);
     }
