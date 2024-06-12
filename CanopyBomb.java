@@ -28,9 +28,10 @@ public class CanopyBomb extends Magic {
     public void disappear() {
         PerishableCanopy canopy = new PerishableCanopy("tree_" + treeList[rand.nextInt(treeList.length)] + "_canopy");
         getWorld().addWorldObject(canopy, getWorldPos());
-        Damage dmg = new Damage(null, this, 5, getWorldPos(), 30);
+        Damage dmg = new Damage(getWorld().getPlayer(), this, 5, getWorldPos(), 30);
         dmg.setInterval(50);
         dmg.setLifetime(600);
+        dmg.setDamageOwner(true);
         getWorld().getDamages().add(dmg);
         super.disappear();
     }

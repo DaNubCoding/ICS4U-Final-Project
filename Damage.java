@@ -16,7 +16,7 @@ public class Damage {
     private double maxAngle;
     private int lifetime;
     private int interval;
-
+    private boolean damageOwner;
     private boolean removed;
     private Timer lifeTimer;
     private Timer damageTimer;
@@ -40,6 +40,7 @@ public class Damage {
 
         lifeTimer = new Timer(0);
         damageTimer = new Timer(0);
+        damageOwner = false;
     }
 
     /**
@@ -136,7 +137,7 @@ public class Damage {
                 return;
             }
             for (Entity entity : world.getEntitiesInRange(center, radius)) {
-                if (entity == owner) continue;
+                if (entity == owner && !damageOwner) continue;
                 if (target != null && entity != target) continue;
                 if (minAngle == 0 && maxAngle == 0) {
                     entity.damage(this);
@@ -295,5 +296,9 @@ public class Damage {
      */
     public int getInterval() {
         return interval;
+    }
+
+    public void setDamageOwner(boolean damageOwner) {
+        this.damageOwner = damageOwner;
     }
 }
