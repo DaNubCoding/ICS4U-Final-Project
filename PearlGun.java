@@ -1,5 +1,5 @@
 /**
- * A gun that shoots Ender Pearls.
+ * A gun that shoots Statue Pearls.
  *
  * @author Lucas Fu
  * @version June 2024
