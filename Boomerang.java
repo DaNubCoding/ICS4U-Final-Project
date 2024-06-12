@@ -7,6 +7,8 @@ import greenfoot.GreenfootImage;
  * @version June 2024
  */
 public class Boomerang extends Projectile {
+    private Timer hitCooldown = new Timer(0);
+
     public Boomerang(Entity owner, Vector3 initialVel, Vector3 startPos) {
         super(owner, initialVel, startPos, 200);
         setOriginalImage(new GreenfootImage("statue_projectile.png"));
@@ -23,11 +25,14 @@ public class Boomerang extends Projectile {
 
     @Override
     public void hit() {
-        Damage dmg = new Damage(getOwner(), getOwner(), 5, getWorldPos(), 15);
+        if (!hitCooldown.ended()) return;
+
+        Damage dmg = new Damage(getOwner(), getOwner(), 20, getWorldPos(), 15);
         getWorld().getDamages().add(dmg);
         for (Entity e : getWorld().getEntitiesInRange(getWorldPos(), 15)) {
-            e.physics.applyForce(new Vector2(getWorldRotation()).multiply(2.5));
+            e.physics.applyForce(new Vector2(getWorldRotation()).multiply(5.0));
             e.damage(dmg);
         }
+        hitCooldown.restart(15);
     }
 }
