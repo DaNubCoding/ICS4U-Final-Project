@@ -20,7 +20,7 @@ public class JesterParticle extends Particle {
     }
 
     private static GreenfootImage getRandomImage() {
-        final int size = (int) (Math.random() * 3 + 2);
+        final int size = (int) (Math.random() * 2 + 1);
         GreenfootImage image = new GreenfootImage(size, size);
         image.setColor(colors[(int) (Math.random() * colors.length)]);
         image.fill();

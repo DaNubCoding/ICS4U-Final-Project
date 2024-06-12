@@ -31,6 +31,8 @@ public class Jester extends Enemy {
     private Timer attackTimer = new Timer(120);
     private Timer guardTimer = new Timer(0);
     private Timer strafeTimer = new Timer(50);
+    private Timer preDashTimer;
+    private int particleAngle = 0;
     private double strafeAngle = 0;
     private int attackString = 1;
     private int actionCount = 0;
@@ -109,15 +111,8 @@ public class Jester extends Enemy {
                 attack = (int)(Math.random()*6);
             }
             if (attack < 3) {
-                if (dist.magnitude() < 80) {
-                    physics.applyForce(dist.scaleToMagnitude(6));
-                } else {
-                    physics.applyForce(dist.scaleToMagnitude(8));
-                }
                 physics.turnTowards(playerPos.xz);
-                playOneTimeAnimation(staticAnimations[2]);
-                actionCount = 15;
-                hitBox = 1;
+                preDashTimer = new Timer(30);
             } else if (attack == 3) {
                 physics.applyForce(dist.rotateY((Math.random()*40)-20).scaleToMagnitude(4.5));
                 playOneTimeAnimation(staticAnimations[3]);
@@ -161,6 +156,26 @@ public class Jester extends Enemy {
             } else
             {
                 setLoopingAnimation(staticAnimations[0]);
+            }
+        }
+
+        if (preDashTimer != null) {
+            if (preDashTimer.ended()) {
+                if (dist.magnitude() < 80) {
+                    physics.applyForce(dist.scaleToMagnitude(6));
+                } else {
+                    physics.applyForce(dist.scaleToMagnitude(9));
+                }
+                playOneTimeAnimation(staticAnimations[2]);
+                actionCount = 15;
+                hitBox = 1;
+                preDashTimer = null;
+            } else {
+                Vector3 offset = new Vector3(10, getHeight(), 0).rotateY(particleAngle);
+                Vector3 pos = getWorldPos().add(offset);
+                getWorld().addWorldObject(new JesterParticle(), pos);
+                particleAngle = (particleAngle + 24) % 360;
+                physics.reduceMomentum(0.08);
             }
         }
     }
