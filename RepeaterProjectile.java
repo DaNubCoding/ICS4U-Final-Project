@@ -32,5 +32,4 @@ public class RepeaterProjectile extends Projectile {
         getWorld().getDamages().add(dmg);
         disappear();
     }
-
 }

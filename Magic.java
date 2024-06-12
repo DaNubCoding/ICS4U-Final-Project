@@ -34,8 +34,11 @@ public abstract class Magic extends WorldSprite {
         double xAdj = rand.nextDouble() * 2 * inaccuracy - inaccuracy;
         double yAdj = rand.nextDouble() * 2 * inaccuracy - inaccuracy;
         Vector2 adj2 = new Vector2(xAdj, yAdj);
+
         // normalize diagonal adjustment
-        adj2 = adj2.normalize().multiply(adj2.magnitude());
+        if (inaccuracy != 0)
+            adj2 = adj2.normalize().multiply(adj2.magnitude());
+            
         Vector3 posAdjust = new Vector3(adj2.x, 0, adj2.y);
         this.startPos = startPos.add(posAdjust);
 
