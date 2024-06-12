@@ -46,6 +46,9 @@ public class SprackWorld extends PixelWorld {
         }
         for(Item i : worldData.getHotbar()) {
             addWorldObject(i, player.getWorldPos());
+            i.setPlayer(player);
+            i.takeOffGround();
+            player.pickupItem(i);
         }
 
         addWorldObject(new Jester(), -100, 0, 0);
