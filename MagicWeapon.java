@@ -40,10 +40,20 @@ public abstract class MagicWeapon extends Weapon {
         super.update();
     }
 
-    @Override
-    public void attack() {
+    /**
+     * Find the target location the player is aiming at.
+     * 
+     * @return the location that is targeted
+     */
+    public Vector3 findTargetLocation() {
         Vector2 mousePos = MouseManager.getMouseWorldPos();
         Vector3 targetLocation = new Vector3(mousePos.x, 0, mousePos.y);
+        return targetLocation;
+    }
+
+    @Override
+    public void attack() {
+        Vector3 targetLocation = findTargetLocation();
         for(int i = 0; i < castCount; i++) {
             Magic magic = magicFactory.create(targetLocation, inaccuracy);
             getPlayer().getWorld().addSprite(magic, 0, 0);
