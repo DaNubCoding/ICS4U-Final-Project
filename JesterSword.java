@@ -18,7 +18,8 @@ public class JesterSword extends MeleeWeapon {
     private int dashes;
 
     public JesterSword() {
-        super("sword.png", 100, 0, 20, 25, 10, 5);
+        super("jester_sword.png", 100, 0, 20, 25, 10, 5);
+        setCenterOfRotation(new Vector2(2, 7));
         dashes = 0;
         physics.setMaxSpeed(10);
     }

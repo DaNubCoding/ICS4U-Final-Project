@@ -11,7 +11,7 @@ public class Boomerang extends Projectile {
 
     public Boomerang(Entity owner, Vector3 initialVel, Vector3 startPos) {
         super(owner, initialVel, startPos, 300);
-        setOriginalImage(new GreenfootImage("statue_projectile.png"));
+        setOriginalImage(new GreenfootImage("flower_projectile.png"));
         physics.setAffectedByFrictionalForces(true);
         physics.setWorldRotation(owner.getWorldRotation());
     }
