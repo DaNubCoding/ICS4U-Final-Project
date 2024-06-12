@@ -19,7 +19,7 @@ public abstract class RangedWeapon extends Weapon {
 
     /**
      * Create a new ranged weapon with all specifications.
-     *
+     * 
      * @param image the file name of the image
      * @param inaccuracy the spread angle of the weapon
      * @param speed the projectile speed of projectiles shot
@@ -44,16 +44,12 @@ public abstract class RangedWeapon extends Weapon {
     }
 
     /**
-     * Get the player's shooting direction from the mouse
+     * Get the player's shooting direction.
      *
-     * @return the direction of the mouse as a 3d vector with no vertical component
+     * @return the player's facing direction as a 3d vector with no y-componentS
      */
     private Vector3 getProjectileDirection() {
-        Vector2 targetPos = MouseManager.getMouseWorldPos();
-        Vector3 gunPos = getWorldPos();
-        Vector3 targetPos3 = new Vector3(targetPos.x, 0, targetPos.y);
-        Vector3 direction3 = (targetPos3.subtract(gunPos)).normalize();
-        return direction3;
+        return Vector3.fromXZ(new Vector2(getPlayer().getWorldRotation()));
     }
 
     @Override
@@ -69,7 +65,7 @@ public abstract class RangedWeapon extends Weapon {
 
     /**
      * Modifies the initial velocity using inaccuracy.
-     *
+     * 
      * @param initialVel the velocity before modifications
      * @param inaccuracy the inaccuracy modifier
      * @return the new modified velocity
