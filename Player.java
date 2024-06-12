@@ -18,7 +18,7 @@ public class Player extends Entity {
     );
     private static final Animation standingAnimation = new Animation(-1, "knight_standing");
     private static final Animation dashAnimation = new Animation(25, "knight_dash");
-    public static final int MAX_ITEM_NUM = 2;
+    public static final int MAX_ITEM_NUM = 5;
     public static final Vector3 HAND_LOCATION = new Vector3(5, 8, -5);
 
     private double cameraTargetRotation;
