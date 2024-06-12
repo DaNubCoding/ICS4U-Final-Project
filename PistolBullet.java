@@ -33,7 +33,7 @@ public class PistolBullet extends Projectile {
         physics.applyForce(impulse);
 
         // create damage
-        Damage dmg = new Damage(getOwner(), this, 1, getWorldPos(), 10);
+        Damage dmg = new Damage(getOwner(), this, 2, getWorldPos(), 10);
         getWorld().getDamages().add(dmg);
     }
 }

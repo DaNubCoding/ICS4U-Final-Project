@@ -69,6 +69,6 @@ public abstract class RangedWeapon extends Weapon {
         double dAngle = Math.random() * inaccuracy - inaccuracy / 2.0;
         double adjustedAngle = initialVel.xz.angle() + dAngle;
         Vector2 adjVector = new Vector2(adjustedAngle);
-        return initialVel.add(Vector3.fromXZ(adjVector));
+        return Vector3.fromXZ(adjVector).multiply(initialVel.magnitude());
     }
 }

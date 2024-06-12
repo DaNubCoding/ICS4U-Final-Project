@@ -15,7 +15,7 @@ public class RepeaterProjectile extends Projectile {
 
     @Override
     public boolean hitCondition() {
-        List<Sprack> l = getWorld().getSpracksInRange(getWorldPos(), 10);
+        List<Sprack> l = getWorld().getSpracksInRange(getWorldPos(), 15);
         if(l.size() > 0 && l.contains(getOwner())) return false;
         return l.size() > 0;
     }
@@ -28,7 +28,7 @@ public class RepeaterProjectile extends Projectile {
     @Override
     public void hit() {
         // create damage
-        Damage dmg = new Damage(getOwner(), this, 35, getWorldPos(), 10);
+        Damage dmg = new Damage(getOwner(), this, 35, getWorldPos(), 15);
         getWorld().getDamages().add(dmg);
         disappear();
     }
