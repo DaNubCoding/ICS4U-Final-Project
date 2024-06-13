@@ -1,4 +1,6 @@
 import greenfoot.GreenfootImage;
+import java.util.List;
+
 /**
  * A great source of fibre!
  *
@@ -16,5 +18,14 @@ public class Grass extends WorldSprite
 
     public void update(){
         setWorldRotation(Camera.getRotation());
+
+        List<? extends Sprite> ponds = getWorld().getSprites(Pond.class);
+        for (Sprite s : ponds){
+            Pond pond = (Pond) s;
+            if (pond.getWorldPos().distanceTo(getWorldPos()) < pond.getSize() / 2){
+                getWorld().removeSprite(this);
+                break;
+            }
+        }
     }
 }

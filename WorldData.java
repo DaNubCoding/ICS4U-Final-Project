@@ -42,7 +42,7 @@ public class WorldData {
     private static Random rand;
 
     // settings
-    private static final int generationRadius = 15;
+    private static final int generationRadius = 20;
     private static final int emptyFeatureChance = 2000;
 
     // storage variables

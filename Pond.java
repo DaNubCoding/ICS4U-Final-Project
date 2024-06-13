@@ -18,4 +18,14 @@ public class Pond extends WorldSprite
         setOriginalImage(POND_VARIATIONS[pondType]);
         setWorldRotation(rotation);
     }
+
+    /**
+     * Get the approximate size of the pond by taking the average of the width
+     * and height of the image.
+     *
+     * @return the approximate size of the pond
+     */
+    public int getSize() {
+        return (getOriginalImage().getWidth() + getOriginalImage().getHeight()) / 2;
+    }
 }
