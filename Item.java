@@ -139,6 +139,24 @@ public class Item extends WorldSprite {
     }
 
     /**
+     * Get the proper name of the item, with spaces between capitalized words.
+     *
+     * @return the proper name of the item
+     */
+    public String getProperName() {
+        String name = getClass().getName();
+        StringBuilder result = new StringBuilder();
+        for (int i = 0; i < name.length(); i++) {
+            char c = name.charAt(i);
+            if (Character.isUpperCase(c) && i != 0) {
+                result.append(' ');
+            }
+            result.append(c);
+        }
+        return result.toString();
+    }
+
+    /**
      * Disable the item from being picked up.
      */
     public void disablePickup() {
