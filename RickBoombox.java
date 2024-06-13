@@ -3,9 +3,9 @@ import greenfoot.GreenfootImage;
 /**
  * Rick's boombox is a Magic created by the Wand of Rick Astley!
  * <p>
- * This creates a shockwave every 32 frames approximately, just like the beats 
+ * This creates a shockwave every 32 frames approximately, just like the beats
  * in Never Gonna Give You Up.
- * 
+ *
  * @author Lucas Fu
  * @version June 2024
  */
@@ -13,8 +13,8 @@ public class RickBoombox extends Magic {
     private Timer shockwaveTimer;
 
     public RickBoombox(Vector3 startpos, int inaccuracy) {
-        super(startpos.add(new Vector3(0, 5, 0)), inaccuracy, -1, 600, 0);
-        setOriginalImage(new GreenfootImage("rpg_explosion.png"));
+        super(startpos.add(new Vector3(0, 5, 0)), inaccuracy, -1, 480, 0);
+        setOriginalImage(new GreenfootImage("megaphone.png"));
         shockwaveTimer = new Timer(32);
     }
 
@@ -35,7 +35,7 @@ public class RickBoombox extends Magic {
                     double x = Math.cos(Math.toRadians(theta)) * i;
                     double y = Math.sin(Math.toRadians(theta)) * i;
                     Vector3 particleLocation = getWorldPos().add(Vector3.fromXZ(new Vector2(x, y)));
-                    getWorld().addWorldObject(new ArmorParticle(), particleLocation);
+                    getWorld().addWorldObject(new RickParticle(), particleLocation);
                 }
             }
         }

@@ -137,4 +137,11 @@ public class Item extends WorldSprite {
     public String toString() {
         return getClass().getName().toLowerCase();
     }
+
+    /**
+     * Disable the item from being picked up.
+     */
+    public void disablePickup() {
+        pickupTimer.restart(Integer.MAX_VALUE);
+    }
 }

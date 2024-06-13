@@ -1,4 +1,3 @@
-import java.util.Random;
 import java.util.List;
 import java.util.ArrayList;
 
@@ -21,7 +20,7 @@ public class JesterSword extends MeleeWeapon {
         super("jester_sword.png", 100, 0, 20, 25, 10, 5);
         setCenterOfRotation(new Vector2(2, 7));
         dashes = 0;
-        physics.setMaxSpeed(10);
+        physics.setMaxSpeed(20);
     }
 
     @Override
@@ -30,6 +29,7 @@ public class JesterSword extends MeleeWeapon {
 
         if (getWorld() == null) return;
 
+        int distSum = 0;
         List<? extends Sprite> swords = getWorld().getSprites(JesterSword.class);
         List<JesterSword> inRange = new ArrayList<>();
         for (Sprite sprite : swords) {
@@ -38,6 +38,7 @@ public class JesterSword extends MeleeWeapon {
             Vector3 delta = sword.getWorldPos().subtract(getWorldPos());
             double dist = delta.magnitude();
             if (dist < 60 && sword.isOnGround()) inRange.add(sword);
+            distSum += dist;
             for (double i = 0; i < dist; i += 5) {
                 if (Math.random() < 0.99) continue;
                 JesterParticle particle = new JesterParticle();
@@ -52,13 +53,26 @@ public class JesterSword extends MeleeWeapon {
                 averagePos = averagePos.add(sword.getWorldPos());
             }
             averagePos = averagePos.divide(inRange.size());
+            for (JesterSword sword : inRange) {
+                Vector3 delta = averagePos.subtract(sword.getWorldPos());
+                sword.physics.applyForce(delta.scaleToMagnitude(8));
+                sword.physics.setWorldPos(averagePos.add(delta.scaleToMagnitude(-3)));
+            }
+            Vector3 delta = averagePos.subtract(getWorldPos());
+            physics.applyForce(delta.scaleToMagnitude(8));
+            physics.setWorldPos(averagePos.add(delta.scaleToMagnitude(-3)));
             merging = true;
         }
 
         if (merging) {
+            disablePickup();
             Vector3 delta = averagePos.subtract(getWorldPos());
-            physics.accelerate(delta.normalize().multiply(0.23));
+            physics.accelerate(delta.scaleToMagnitude(0.3));
             if (delta.magnitude() < 3) {
+                physics.setWorldPos(averagePos);
+                physics.reduceMomentum(1.0);
+            }
+            if (distSum < 10) {
                 merging = false;
 
                 SprackWorld world = getWorld();
