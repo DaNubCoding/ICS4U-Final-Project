@@ -222,6 +222,7 @@ public class Player extends Entity {
     public void pickupItem(Item i) {
         hotbar.add(i);
         getWorld().getWorldData().setHotbar(hotbar);
+        getWorld().getWorldData().tryAddNewWeapon(i);
         if(hotbar.size() > 1)
             getWorld().removeSprite(i);
     }
@@ -250,6 +251,7 @@ public class Player extends Entity {
     @Override
     public void damage(Damage damage) {
         double dmg = damage.getDamage();
+        getWorld().getWorldData().addPlayerDamageTaken(damage.getDamage());
 
         armorTimer.restart(480);
         if(armor > 0) {
@@ -276,6 +278,12 @@ public class Player extends Entity {
             System.out.println("Player took " + -armor + " points of damage and has " + getHealth() + " health left");
             armor = 0;
         }
+    }
+
+    @Override
+    public void die() {
+        getWorld().getWorldData().saveData();
+        Greenfoot.setWorld(new DeathScreen(getWorld().getWorldData()));
     }
 
 }

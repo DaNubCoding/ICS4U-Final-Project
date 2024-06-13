@@ -54,6 +54,13 @@ public class WorldData {
     private HashMap<Long, EntityPosPair> storedEntities;
     private ArrayList<Item> playerHotbar;
 
+    // world stats
+    private double playerDmgDone;
+    private double playerDmgTaken;
+    private int enemiesKilled;
+    private long timePlayedActs;
+    private ArrayList<Class <? extends Item>> weaponsDiscovered;
+
     /**
      * Create a new WorldData object with default settings.
      */
@@ -66,6 +73,11 @@ public class WorldData {
         storedItems = new HashMap<Long, ItemPosPair>();
         storedEntities = new HashMap<Long, EntityPosPair>();
         playerHotbar = new ArrayList<Item>();
+        playerDmgDone = 0;
+        playerDmgTaken = 0;
+        enemiesKilled = 0;
+        timePlayedActs = 0;
+        weaponsDiscovered = new ArrayList<Class <? extends Item>>();
     }
 
     /**
@@ -91,11 +103,21 @@ public class WorldData {
             int y = (int)(double) Double.valueOf(st.nextToken());
             playerLocation = new Vector2(x, y);
 
-            // get the player inventory
+            // get the player hotbar
             st = new StringTokenizer(scf.nextLine(), ",");
             st.nextToken(); // remove hotbar token
             while(st.hasMoreTokens()) {
                 playerHotbar.add(Item.NAMES.get(st.nextToken()).get());
+            }
+
+            // get the player's stats
+            playerDmgDone = Double.valueOf(scf.nextLine());
+            playerDmgTaken = Double.valueOf(scf.nextLine());
+            enemiesKilled = Integer.valueOf(scf.nextLine());
+            timePlayedActs = Long.valueOf(scf.nextLine());
+            st = new StringTokenizer(scf.nextLine());
+            while (st.hasMoreTokens()) {
+                weaponsDiscovered.add(Item.NAMES.get(st.nextToken()).get().getClass());
             }
 
             while (scf.hasNextLine()) {
@@ -550,12 +572,110 @@ public class WorldData {
         return playerLocation;
     }
 
+    /**
+     * Get the generation radius.
+     * 
+     * @return the generation radius, in # of grid tiles
+     */
     public int getGenerationRadius() {
         return generationRadius;
     }
 
+    /**
+     * Set the player's hotbar to a list of items
+     * 
+     * @param hotbar the list of item representing the player's hotbar
+     */
     public void setHotbar(ArrayList<Item> hotbar) {
         playerHotbar = hotbar;
+    }
+
+    /**
+     * Add damage to the player's damage done statistic.
+     * 
+     * @param damage the amount of damage done
+     */
+    public void addPlayerDamageDone(double damage) {
+        playerDmgDone += damage;
+    }
+
+    /**
+     * Get the player's damage done statistic.
+     * 
+     * @return the total amount of damage done by the player
+     */
+    public double getPlayerDamageDone() {
+        return playerDmgDone;
+    }
+
+    /**
+     * Add damage to the player's damage taken statistic.
+     * 
+     * @param damage the amount of taken
+     */
+    public void addPlayerDamageTaken(double damage) {
+        playerDmgTaken += damage;
+    }
+
+    /**
+     * Get the total amount of damage taken statistic.
+     * 
+     * @return the total amount of damage taken by the player
+     */
+    public double getPlayerDamageTaken() {
+        return playerDmgTaken;
+    }
+
+    /**
+     * Add 1 to the number of enemies killed statistic.
+     */
+    public void addPlayerEnemiesKilled() {
+        enemiesKilled++;
+    }
+
+    /**
+     * Get the total amount of enemies killed by the player.
+     * 
+     * @return the number of enemies killed by the player
+     */
+    public int getPlayerEnemiesKilled() {
+        return enemiesKilled;
+    }
+
+    /**
+     * Add 1 to the number of acts the player has played.
+     */
+    public void incrementTimePlayed() {
+        timePlayedActs++;
+    }
+
+    /**
+     * Get the total amount of time the player has been playing in this world.
+     * 
+     * @return the amount of time played, in acts
+     */
+    public long getTimePlayed() {
+        return timePlayedActs;
+    }
+
+    /**
+     * Try adding a new weapon to the list of discovered weapons.
+     * 
+     * @param w the weapon that is trying to be added
+     */
+    public void tryAddNewWeapon(Item w) {
+        if (!weaponsDiscovered.contains(w.getClass())) {
+            weaponsDiscovered.add(w.getClass());
+        }
+    }
+
+    /**
+     * Get the number of discovered weapons.
+     * 
+     * @return the number of discovered weapons.
+     */
+    public int getNumDicoveredWeapons() {
+        return weaponsDiscovered.size();
     }
 
     /**
@@ -578,8 +698,19 @@ public class WorldData {
         // player hotbar
         StringBuilder sb = new StringBuilder();
         sb.append("hotbar,");
-        for(Item i : playerHotbar) {
+        for (Item i : playerHotbar) {
             sb.append(i + ",");
+        }
+        sb.deleteCharAt(sb.length() - 1);
+        fileOutput.println(sb);
+        // player stats
+        fileOutput.println(playerDmgDone);
+        fileOutput.println(playerDmgTaken);
+        fileOutput.println(enemiesKilled);
+        fileOutput.println(timePlayedActs);
+        sb = new StringBuilder();
+        for (Class<? extends Item> c : weaponsDiscovered) {
+            sb.append(c.getName().toLowerCase() + ",");
         }
         sb.deleteCharAt(sb.length() - 1);
         fileOutput.println(sb);

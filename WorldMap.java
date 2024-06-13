@@ -83,6 +83,10 @@ public class WorldMap extends PixelWorld {
         applyAdditions();
         render();
         updateImage();
+        
+        // show seed
+        String seed = "Seed: " + worldData.getSeed();
+        addSprite(new Text(seed, Text.AnchorX.CENTER, Text.AnchorY.CENTER,new Color(180, 180, 180)), 100, 10);
     }
 
     @Override
@@ -98,7 +102,7 @@ public class WorldMap extends PixelWorld {
         // the map
         GreenfootImage background = getCanvas();
         int widAdj = (initialWorld.getWidth() - CELL_SIZE * map.length) - 10;
-        int heiAdj = (initialWorld.getHeight() - CELL_SIZE * map.length) / 2;
+        int heiAdj = (initialWorld.getHeight() - CELL_SIZE * map.length) / 2 + 10;
         background.setColor(new Color(56, 56, 56));
         background.fill();
         // feature map

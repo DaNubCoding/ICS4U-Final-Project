@@ -113,6 +113,8 @@ public abstract class Enemy extends Entity {
     @Override
     public void damage(Damage damage) {
         super.damage(damage);
+        if (damage.getOwner() instanceof Player)
+            getWorld().getWorldData().addPlayerDamageDone(damage.getDamage());
     }
 
     /**

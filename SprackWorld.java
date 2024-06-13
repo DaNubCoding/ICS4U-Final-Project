@@ -6,7 +6,6 @@ import java.util.stream.Stream;
 import java.util.stream.Collectors;
 
 public class SprackWorld extends PixelWorld {
-    // private static final int OBJECT_SPAWN_RANGE = 2000;
     private WorldData worldData;
     private Player player;
     private List<Damage> damages;
@@ -91,6 +90,7 @@ public class SprackWorld extends PixelWorld {
         }
 
         Timer.incrementAct();
+        worldData.incrementTimePlayed();
     }
 
     private void updateSurroundings() {

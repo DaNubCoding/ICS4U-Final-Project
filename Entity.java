@@ -131,6 +131,9 @@ public class Entity extends Sprack { // TODO: entity loading and unloading
     public void damage(Damage damage) {
         setHealth(health - damage.getDamage());
         if (health <= 0) {
+            if (damage.getOwner() instanceof Player)
+                getWorld().getWorldData().addPlayerEnemiesKilled();
+            health = 10000;
             die();
             return;
         }
