@@ -5,7 +5,7 @@ import greenfoot.*;
  * representing footsteps.
  *
  * @author Andrew Wang
- * @version June 2021
+ * @version June 2024
  */
 public class FootstepParticle extends Particle {
     public static final GreenfootImage image;

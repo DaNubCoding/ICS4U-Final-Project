@@ -4,7 +4,7 @@ import greenfoot.*;
  * A particle used by the {@link JesterSword}.
  *
  * @author Andrew Wang
- * @version June 2021
+ * @version June 2024
  */
 public class JesterParticle extends Particle {
     private static final Color[] colors = {

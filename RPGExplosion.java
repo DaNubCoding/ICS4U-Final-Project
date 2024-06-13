@@ -4,7 +4,7 @@ import greenfoot.*;
  * Explosion created by RPGProjectile.
  *
  * @author Andrew Wang
- * @version June 2021
+ * @version June 2024
  */
 public class RPGExplosion extends Particle {
     public RPGExplosion() {
