@@ -41,6 +41,10 @@ public class WorldSelection extends PixelWorld {
         addSprite(new Button("Generate Random World", WorldSelection::makeRandomWorld), 100, 135);
         addSprite(new Button("scroll up", WorldSelection::scrollUp), 200, 50);
         addSprite(new Button("scroll down", WorldSelection::scrollDown), 200, 80);
+
+        applyAdditions();
+        render();
+        updateImage();
     }
 
     private static void openWorld(boolean seeded, long seed) {

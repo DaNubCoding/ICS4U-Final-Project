@@ -22,7 +22,7 @@ public class SprackWorld extends PixelWorld {
 
     /**
      * Create a new SprackWorld.
-     * 
+     *
      * @param seeded whether to generate a random seed
      * @param seed the seed that is to be used, if any
      */
@@ -63,7 +63,9 @@ public class SprackWorld extends PixelWorld {
         addWorldObject(new Jester(), -100, 0, 0);
         addSprite(new HotBar(), 0, 0);
 
+        applyAdditions();
         render();
+        updateImage();
     }
 
     @Override

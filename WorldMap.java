@@ -79,6 +79,10 @@ public class WorldMap extends PixelWorld {
                            Text.AnchorY.CENTER,
                            new Color(180, 180, 180)),
                          50, 50);
+
+        applyAdditions();
+        render();
+        updateImage();
     }
 
     @Override
