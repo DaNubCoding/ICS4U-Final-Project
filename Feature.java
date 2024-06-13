@@ -44,7 +44,7 @@ public class Feature extends Sprack {
         CRATE(Crate.class, Crate::new, 20),
         TOMBSTONE(Tombstone.class, Tombstone::new, 10),
         STATUE_CAMPFIRE(StatueCampfire.class, StatueCampfire::new, 1),
-        JESTER_SPAWNER(JesterSpawner.class, JesterSpawner::new, 2);
+        JESTER_SPAWNER(JesterSpawner.class, JesterSpawner::new, 1);
         ;
 
         private static int[] spawnRates = new int[Type.length()];
