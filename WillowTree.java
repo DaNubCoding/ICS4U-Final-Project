@@ -1,3 +1,5 @@
+import java.util.List;
+
 import greenfoot.*;
 
 /**
@@ -24,6 +26,19 @@ public class WillowTree extends Feature {
         getWorld().addWorldObject(canopy, getWorldX(), getWorldY() + 29, getWorldZ());
         canopy.setWorldRotation(Greenfoot.getRandomNumber(360));
         getWorld().addCollisionController(new CollisionController(this, 3, 1.0, 1.0));
+    }
+
+    @Override
+    public void update() {
+        super.update();
+        List<? extends Sprite> ponds = getWorld().getSprites(Pond.class);
+        for (Sprite s : ponds){
+            Pond pond = (Pond) s;
+            if (pond.getWorldPos().distanceTo(getWorldPos()) < pond.getSize() / 2){
+                removeFromWorld();
+                break;
+            }
+        }
     }
 
     @Override
