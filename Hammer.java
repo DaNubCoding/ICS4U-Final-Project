@@ -6,7 +6,7 @@
  */
 public class Hammer extends MeleeWeapon {
     public Hammer() {
-        super("hammer.png", 20, 80, 55, 25, 150, 12);
+        super("hammer.png", 20, 80, 55, 50, 150, 12);
         setCenterOfRotation(new Vector2(0, 6));
     }
 }
