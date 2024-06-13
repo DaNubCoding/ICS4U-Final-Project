@@ -75,10 +75,10 @@ public class WorldMap extends PixelWorld {
         // show coordinates
         String coords = "Coordinates:\n(" + (int) playerPos.x + ", " + (int) playerPos.y + ")";
         addSprite(new Text(coords,
-                           Text.AnchorX.CENTER,
+                           Text.AnchorX.LEFT,
                            Text.AnchorY.CENTER,
-                           new Color(180, 180, 180)),
-                         50, 50);
+                           new Color(180, 180, 180, 200)),
+                           2, 50);
 
         applyAdditions();
         render();
@@ -86,7 +86,11 @@ public class WorldMap extends PixelWorld {
         
         // show seed
         String seed = "Seed: " + worldData.getSeed();
-        addSprite(new Text(seed, Text.AnchorX.CENTER, Text.AnchorY.CENTER,new Color(180, 180, 180)), 100, 10);
+        addSprite(new Text(seed, 
+                           Text.AnchorX.LEFT, 
+                           Text.AnchorY.CENTER,
+                           new Color(180, 180, 180, 200)),
+                           2, 10);
     }
 
     @Override
@@ -101,8 +105,8 @@ public class WorldMap extends PixelWorld {
     public void render() {
         // the map
         GreenfootImage background = getCanvas();
-        int widAdj = (initialWorld.getWidth() - CELL_SIZE * map.length) - 10;
-        int heiAdj = (initialWorld.getHeight() - CELL_SIZE * map.length) / 2 + 10;
+        int widAdj = (initialWorld.getWidth() - CELL_SIZE * map.length) - 5;
+        int heiAdj = (initialWorld.getHeight() - CELL_SIZE * map.length) / 2 + 5;
         background.setColor(new Color(56, 56, 56));
         background.fill();
         // feature map
