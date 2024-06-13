@@ -20,14 +20,23 @@ public class SprackWorld extends PixelWorld {
         SprackView.loadAll();
     }
 
-    public SprackWorld() {
+    /**
+     * Create a new SprackWorld.
+     * 
+     * @param seeded whether to generate a random seed
+     * @param seed the seed that is to be used, if any
+     */
+    public SprackWorld(boolean seeded, long seed) {
         super(WORLD_WIDTH, WORLD_HEIGHT);
 
         damages = new ArrayList<>();
         collisionControllers = new ArrayList<>();
 
         Cluster.clearClusters();
-        worldData = new WorldData(1);
+        if (seeded)
+            worldData = new WorldData();
+        else
+            worldData = new WorldData(seed);
 
         Vector2 playerPos = worldData.getPlayerLocation();
         player = new Player();
