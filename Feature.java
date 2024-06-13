@@ -45,7 +45,7 @@ public class Feature extends Sprack {
         TOMBSTONE(Tombstone.class, Tombstone::new, 10),
         STATUE_CAMPFIRE(StatueCampfire.class, StatueCampfire::new, 1),
         JESTER_SPAWNER(JesterSpawner.class, JesterSpawner::new, 2),
-        // GRASS_SPAWNER(GrassSpawner.class, GrassSpawner::new, 50),
+        GRASS_SPAWNER(GrassSpawner.class, GrassSpawner::new, 50),
         BOULDER(Boulder.class, Boulder::new, 5),
         ROCK(Rock.class, Rock::new, 10),
         POND_SPAWNER(PondSpawner.class, PondSpawner::new, 2),
