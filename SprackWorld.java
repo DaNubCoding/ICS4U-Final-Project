@@ -60,7 +60,6 @@ public class SprackWorld extends PixelWorld {
             player.pickupItem(i);
         }
 
-        addWorldObject(new Jester(), -100, 0, 0);
         addSprite(new HotBar(), 0, 0);
 
         applyAdditions();
