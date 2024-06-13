@@ -16,15 +16,14 @@ public abstract class MeleeWeapon extends Weapon {
 
     /**
      * Create a new melee weapon.
-     * TODO: add documentation here when weapons are finalized
      *
-     * @param image
-     * @param windup
-     * @param cooldown
-     * @param range
-     * @param damage
-     * @param sweepAngle
-     * @param swingDuration
+     * @param image the image file of this melee weapon
+     * @param windup the time spent before attacking
+     * @param cooldown the time needed before the next attack
+     * @param range the range of this melee weapon
+     * @param damage the amount if damage dealt
+     * @param sweepAngle the angle of the weapon swing
+     * @param swingDuration the time it takes to complete a swing
      */
     public MeleeWeapon(String image, int windup, int cooldown,
                        int range, double damage, int sweepAngle,
