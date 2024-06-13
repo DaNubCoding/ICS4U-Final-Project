@@ -26,6 +26,8 @@ public class HotBar extends Sprite {
             width += item.getOriginalImage().getWidth() + MARGIN * 2;
         }
 
+        if (width == 0) return;
+
         GreenfootImage hotbar = new GreenfootImage(width, HOTBAR_HEIGHT);
         hotbar.setColor(new Color(192, 192, 192, 128));
         hotbar.fill();
