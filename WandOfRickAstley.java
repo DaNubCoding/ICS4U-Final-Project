@@ -1,8 +1,18 @@
 public class WandOfRickAstley extends MagicWeapon {
+    private static SoundEffect[] sounds = {
+        new SoundEffect("never_gonna_give_you_up1.wav"),
+        new SoundEffect("never_gonna_give_you_up2.wav"),
+    };
     private Vector3 customLocation;
 
+    static {
+        for (SoundEffect sound : sounds) {
+            sound.setVolume(25);
+        }
+    }
+
     public WandOfRickAstley() {
-        super("wand_of_rick_astley.png", 0, 1, 0, 600, RickBoombox::new);
+        super("wand_of_rick_astley.png", 0, 1, 0, 480, RickBoombox::new);
         setCenterOfRotation(new Vector2(1, 6));
     }
 
@@ -20,5 +30,6 @@ public class WandOfRickAstley extends MagicWeapon {
             customLocation = targetLocation.addXZ(new Vector2(i * 360 / 3 + angleAdj).multiply(30));
             super.attack();
         }
+        sounds[(int) (Math.random() * sounds.length)].play();
     }
 }

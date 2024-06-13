@@ -13,7 +13,7 @@ public class RickBoombox extends Magic {
     private Timer shockwaveTimer;
 
     public RickBoombox(Vector3 startpos, int inaccuracy) {
-        super(startpos.add(new Vector3(0, 5, 0)), inaccuracy, -1, 600, 0);
+        super(startpos.add(new Vector3(0, 5, 0)), inaccuracy, -1, 480, 0);
         setOriginalImage(new GreenfootImage("megaphone.png"));
         shockwaveTimer = new Timer(32);
     }
