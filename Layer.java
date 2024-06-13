@@ -10,6 +10,7 @@
  */
 public enum Layer {
     GROUND,
+    TOPGROUND,
     SPRACK_DEFAULT,
     HEALTH_BAR,
     SPRACK_CANOPY,

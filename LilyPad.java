@@ -11,6 +11,7 @@ public class LilyPad extends WorldSprite {
         new GreenfootImage("lily_pad4.png")};
 
     public LilyPad(int lilyPadType) {
+        super(Layer.TOPGROUND);
         setOriginalImage(LILY_PAD_VARIATIONS[lilyPadType]);
     }
 }
