@@ -47,26 +47,22 @@ public class WorldSelection extends PixelWorld {
         updateImage();
     }
 
-    private static void openWorld(boolean seeded, long seed) {
-        Greenfoot.setWorld(new LoadingWorld(new SprackWorld(seeded, seed)));
-    }
-
     private static void openWorld1() {
-        openWorld(false, worldSeeds[topIndex]);
+        Greenfoot.setWorld(new SprackWorld(false, worldSeeds[topIndex]));
     }
 
     private static void openWorld2() {
         int index = (topIndex + 1) % worldSeeds.length;
-        openWorld(false, worldSeeds[index]);
+        Greenfoot.setWorld(new SprackWorld(false, worldSeeds[index]));
     }
 
     private static void openWorld3() {
         int index = (topIndex + 2) % worldSeeds.length;
-        openWorld(false, worldSeeds[index]);
+        Greenfoot.setWorld(new SprackWorld(false, worldSeeds[index]));
     }
 
     private static void makeRandomWorld() {
-        openWorld(true, 0);
+        Greenfoot.setWorld(new SprackWorld(true, 0));
     }
 
     private static void scrollUp() {
