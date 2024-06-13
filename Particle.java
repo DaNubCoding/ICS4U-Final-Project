@@ -10,14 +10,23 @@ public class Particle extends WorldSprite {
     private Timer lifeTimer;
     public final PhysicsController physics = new PhysicsController(this);
 
-    public Particle(GreenfootImage image, int lifetime) {
+    public Particle(GreenfootImage image, int lifetime, Layer layer) {
+        super(layer);
         lifeTimer = new Timer(lifetime);
         setOriginalImage(image);
         physics.setAffectedByGravity(false);
     }
 
+    public Particle(GreenfootImage image, int lifetime) {
+        this(image, lifetime, Layer.SPRACK_DEFAULT);
+    }
+
     public Particle(String imagePath, int lifetime) {
         this(new GreenfootImage(imagePath), lifetime);
+    }
+
+    public Particle(String imagePath, int lifetime, Layer layer) {
+        this(new GreenfootImage(imagePath), lifetime, layer);
     }
 
     public void updateMovement() {}

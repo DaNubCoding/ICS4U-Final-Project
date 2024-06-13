@@ -17,7 +17,7 @@ public class FootstepParticle extends Particle {
     }
 
     public FootstepParticle() {
-        super(image, 160);
+        super(image, 160, Layer.GROUND);
     }
 
     @Override
