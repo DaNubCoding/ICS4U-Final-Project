@@ -10,18 +10,24 @@ import greenfoot.GreenfootImage;
  * @version June 2024
  */
 public class RickBoombox extends Magic {
-    private Timer shockwaveTimer;
+    private long startTime = System.currentTimeMillis();
+    private int count;
 
     public RickBoombox(Vector3 startpos, int inaccuracy) {
-        super(startpos.add(new Vector3(0, 5, 0)), inaccuracy, -1, 480, 0);
+        super(startpos.add(new Vector3(0, 5, 0)), inaccuracy, -1, 100000, 0);
         setOriginalImage(new GreenfootImage("megaphone.png"));
-        shockwaveTimer = new Timer(32);
     }
 
     @Override
     public void actionUpdate() {
-        if (shockwaveTimer.ended()) {
-            shockwaveTimer.restart();
+        if (System.currentTimeMillis() - startTime > 520) {
+            startTime = System.currentTimeMillis();
+            count++;
+            if (count > 16) {
+                disappear();
+                return;
+            }
+
             Damage dmg = new Damage(getWorld().getPlayer(), this, 10, getWorldPos(), 60);
             dmg.setDamageOwner(true);
             getWorld().getDamages().add(dmg);
