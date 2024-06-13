@@ -1,4 +1,6 @@
 import greenfoot.*;
+import java.util.Random;
+
 /**
  * Spawns dirt
  *
@@ -7,10 +9,13 @@ import greenfoot.*;
  */
 public class DirtSpawner extends Feature
 {
+    private Random random;
     private Dirt dirt;
+
     public DirtSpawner(FeatureData data) {
         super(null, data);
-        dirt = new Dirt(Greenfoot.getRandomNumber(5));
+        random = new Random(data.id);
+        dirt = new Dirt(random.nextInt(5), random.nextInt(360));
     }
 
     @Override

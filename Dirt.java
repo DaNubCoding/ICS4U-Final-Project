@@ -13,9 +13,9 @@ public class Dirt extends WorldSprite
     /**
      * Makes a dirt
      */
-    public Dirt(int dirtType){
+    public Dirt(int dirtType, int rotation){
         super(Layer.GROUND);
         setOriginalImage(DIRT_VARIATIONS[dirtType]);
-        setWorldRotation(Greenfoot.getRandomNumber(360));
+        setWorldRotation(rotation);
     }
 }

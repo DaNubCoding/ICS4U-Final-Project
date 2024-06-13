@@ -13,9 +13,9 @@ public class Pond extends WorldSprite
     /**
      * Makes a pond
      */
-    public Pond(int pondType){
+    public Pond(int pondType, int rotation){
         super(Layer.GROUND);
         setOriginalImage(POND_VARIATIONS[pondType]);
-        setWorldRotation(Greenfoot.getRandomNumber(360));
+        setWorldRotation(rotation);
     }
 }

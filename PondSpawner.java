@@ -1,4 +1,6 @@
+import java.util.Random;
 import greenfoot.*;
+
 /**
  * Spawns ponds
  *
@@ -7,10 +9,13 @@ import greenfoot.*;
  */
 public class PondSpawner extends Feature
 {
+    private Random random;
     private Pond pond;
+
     public PondSpawner(FeatureData data) {
         super(null, data);
-        pond = new Pond(Greenfoot.getRandomNumber(3));
+        random = new Random(data.id);
+        pond = new Pond(random.nextInt(3), random.nextInt(360));
     }
 
     @Override
