@@ -6,6 +6,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * A container of cached sprite stack images pre-rendered from many angles for
@@ -42,64 +43,68 @@ public class SprackView {
      */
     public static final int LAYERS_PER_PIXEL = 6;
 
+    public static AtomicInteger totalCaches = new AtomicInteger();
+    public static AtomicInteger loadedCaches = new AtomicInteger();
+
     /**
      * Load and cache all SprackView objects to be used in the game.
      */
     public static void loadAll() {
-        new Thread(() -> {
-            Map<String, Integer> sheetInfo = new HashMap<>();sheetInfo.put("crate", 16);
-            sheetInfo.put("tree_oak_trunk", 29);
-            sheetInfo.put("tree_oak_canopy", 21);
-            sheetInfo.put("tree_willow_trunk", 29);
-            sheetInfo.put("tree_willow_canopy", 31);
-            sheetInfo.put("knight_standing", 24);
-            sheetInfo.put("knight_walk1", 24);
-            sheetInfo.put("knight_walk2", 24);
-            sheetInfo.put("knight_walk3", 24);
-            sheetInfo.put("knight_walk4", 24);
-            sheetInfo.put("knight_dash", 21);
-            sheetInfo.put("tombstone", 14);
-            sheetInfo.put("statue_dormant", 27);
-            sheetInfo.put("statue_active", 29);
-            sheetInfo.put("statue_activating1", 29);
-            sheetInfo.put("statue_activating2", 29);
-            sheetInfo.put("statue_attack1", 23);
-            sheetInfo.put("statue_attack2", 29);
-            sheetInfo.put("statue_attack3", 26);
-            sheetInfo.put("statue_attack4", 28);
-            sheetInfo.put("statue_attack5", 28);
-            sheetInfo.put("jester_idle", 32);
-            sheetInfo.put("jester_walk1", 32);
-            sheetInfo.put("jester_walk2", 32);
-            sheetInfo.put("jester_guard", 32);
-            sheetInfo.put("jester_counter", 32);
-            sheetInfo.put("jester_stab", 32);
-            sheetInfo.put("jester_spin", 32);
-            sheetInfo.put("jester_flip1", 31);
-            sheetInfo.put("jester_flip2", 29);
-            sheetInfo.put("jester_flip3", 31);
-            sheetInfo.put("jester_flip4", 28);
-            sheetInfo.put("boulder", 17);
-            sheetInfo.put("rock",5);
+        Map<String, Integer> sheetInfo = new HashMap<>();
+        sheetInfo.put("crate", 16);
+        sheetInfo.put("tree_oak_trunk", 29);
+        sheetInfo.put("tree_oak_canopy", 21);
+        sheetInfo.put("tree_willow_trunk", 29);
+        sheetInfo.put("tree_willow_canopy", 31);
+        sheetInfo.put("knight_standing", 24);
+        sheetInfo.put("knight_walk1", 24);
+        sheetInfo.put("knight_walk2", 24);
+        sheetInfo.put("knight_walk3", 24);
+        sheetInfo.put("knight_walk4", 24);
+        sheetInfo.put("knight_dash", 21);
+        sheetInfo.put("tombstone", 14);
+        sheetInfo.put("statue_dormant", 27);
+        sheetInfo.put("statue_active", 29);
+        sheetInfo.put("statue_activating1", 29);
+        sheetInfo.put("statue_activating2", 29);
+        sheetInfo.put("statue_attack1", 23);
+        sheetInfo.put("statue_attack2", 29);
+        sheetInfo.put("statue_attack3", 26);
+        sheetInfo.put("statue_attack4", 28);
+        sheetInfo.put("statue_attack5", 28);
+        sheetInfo.put("jester_idle", 32);
+        sheetInfo.put("jester_walk1", 32);
+        sheetInfo.put("jester_walk2", 32);
+        sheetInfo.put("jester_guard", 32);
+        sheetInfo.put("jester_counter", 32);
+        sheetInfo.put("jester_stab", 32);
+        sheetInfo.put("jester_spin", 32);
+        sheetInfo.put("jester_flip1", 31);
+        sheetInfo.put("jester_flip2", 29);
+        sheetInfo.put("jester_flip3", 31);
+        sheetInfo.put("jester_flip4", 28);
+        sheetInfo.put("boulder", 17);
+        sheetInfo.put("rock", 5);
+        totalCaches.set(sheetInfo.size() * IMAGE_CACHE_ANGLE_COUNT);
 
-            ExecutorService service = Executors.newFixedThreadPool(sheetInfo.size());
-            for (Map.Entry<String, Integer> entry : sheetInfo.entrySet()) {
-                final String name = entry.getKey();
-                final GreenfootImage sheet = new GreenfootImage(name + ".png");
-                final int layerCount = entry.getValue();
-                service.execute(() -> {
-                    System.out.println("start " + name);
-                    viewMap.put(name, new SprackView(sheet, layerCount));
-                    System.out.println("done " + name);
-                });
-            }
-            service.shutdown();
-            try {
-                service.awaitTermination(Long.MAX_VALUE, TimeUnit.SECONDS);
-            } catch (InterruptedException e) {
-                service.shutdownNow();
-            }
-        }).start();
+        ExecutorService service = Executors.newFixedThreadPool(sheetInfo.size());
+        for (Map.Entry<String, Integer> entry : sheetInfo.entrySet()) {
+            final String name = entry.getKey();
+            final GreenfootImage sheet = new GreenfootImage(name + ".png");
+            final int layerCount = entry.getValue();
+            service.execute(() -> {
+                System.out.println("start " + name);
+                viewMap.put(name, new SprackView(sheet, layerCount));
+                System.out.println("done " + name);
+                System.gc();
+            });
+        }
+        service.shutdown();
+        try {
+            service.awaitTermination(Long.MAX_VALUE, TimeUnit.SECONDS);
+        } catch (InterruptedException e) {
+            service.shutdownNow();
+        }
     }
 
     /** The width of an untransformed layer, in pixels. */
@@ -157,6 +162,7 @@ public class SprackView {
             final double rot = 360.0 / IMAGE_CACHE_ANGLE_COUNT * index;
             service.execute(() -> {
                 rotCache[index] = createCacheEntry(rot, layers, layerWidth, layerHeight);
+                loadedCaches.getAndIncrement();
             });
         }
         service.shutdown();
@@ -206,6 +212,27 @@ public class SprackView {
             // image.drawImage(rotLayer, 0, (int) (IMAGE_CACHE_SCALE * (layers.length - 1 - i)));
         }
         return new CacheEntry(image, rotWidth / 2, image.getHeight() - rotHeight / 2);
+    }
+
+    /**
+     * Get the fraction of SprackView caches that have been loaded.
+     *
+     * @return a double from 0.0 to 1.0 representing the fraction of caches that have been created
+     */
+    public static double getLoadProgress() {
+        if (totalCaches.intValue() == 0) {
+            return 0.0;
+        }
+        return loadedCaches.doubleValue() / totalCaches.doubleValue();
+    }
+
+    /**
+     * Test whether or not the SprackView cache has completed loading.
+     *
+     * @return true if all caches have been created, false otherwise
+     */
+    public static boolean loaded() {
+        return totalCaches.intValue() != 0 && loadedCaches.intValue() == totalCaches.intValue();
     }
 
     /**

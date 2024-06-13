@@ -17,6 +17,12 @@ import greenfoot.*;
  * @version April 2024
  */
 public class Button extends Sprite {
+    private static final int PADX = 8;
+    private static final int PADY = 5;
+
+    private int width;
+    private int height;
+
     private GreenfootImage icon;
     private Runnable method;
     private boolean mouseDownOnThis;
@@ -27,22 +33,68 @@ public class Button extends Sprite {
 
     /**
      * Create a button that displays a text and runs a method when clicked.
+     * <p>
+     * The button will be sized to its content with some padding, and will be
+     * automatically resized when the content is changed with either of the
+     * {@link #setText(String)} or {@link #setIcon(GreenfootImage)} methods.
      *
      * @param text The text string to display on the button
      * @param method The method that is ran when the button is clicked
      */
     public Button(String text, Runnable method) {
-        this(Text.createStringImage(text), method);
+        this(text, method, -1, -1);
     }
 
     /**
      * Create a button that displays an image and runs a method when clicked.
+     * <p>
+     * The button will be sized to its icon with some padding, and will be
+     * automatically resized when the content is changed with either of the
+     * {@link #setText(String)} or {@link #setIcon(GreenfootImage)} methods.
      *
      * @param icon The GreenfootImage to display on the button
      * @param method The method that is ran when the button is clicked
      */
     public Button(GreenfootImage icon, Runnable method) {
+        this(icon, method, -1, -1);
+    }
+
+    /**
+     * Create a button of a fixed default size that displays a text and runs a
+     * method when clicked.
+     * <p>
+     * Any dimension given to be -1 will cause the button to be sized to its
+     * content in that dimension with some padding, and be automatically resized
+     * when the content is changed with either of the {@link #setText(String)}
+     * or {@link #setIcon(GreenfootImage)} methods.
+     *
+     * @param text The text string to display on the button
+     * @param method The method that is ran when the button is clicked
+     * @param width The width of the button when idle, or -1 to fit to content
+     * @param height The height of the button when idle, or -1 to fit to content
+     */
+    public Button(String text, Runnable method, int width, int height) {
+        this(Text.createStringImage(text), method, width, height);
+    }
+
+    /**
+     * Create a button of a fixed default size that displays an image and runs a
+     * method when clicked.
+     * <p>
+     * Any dimension given to be -1 will cause the button to be sized to its
+     * content in that dimension with some padding, and be automatically resized
+     * when the content is changed with either of the {@link #setText(String)}
+     * or {@link #setIcon(GreenfootImage)} methods.
+     *
+     * @param icon The GreenfootImage to display on the button
+     * @param method The method that is ran when the button is clicked
+     * @param width The width of the button when idle
+     * @param height The height of the button when idle
+     */
+    public Button(GreenfootImage icon, Runnable method, int width, int height) {
         super(Layer.UI);
+        this.width = width;
+        this.height = height;
         setIcon(icon);
         this.method = method;
     }
@@ -54,6 +106,24 @@ public class Button extends Sprite {
      */
     public void setText(String text) {
         setIcon(Text.createStringImage(text));
+    }
+
+    /**
+     * Get the width of this button when idle.
+     *
+     * @return the width of this button when idle, in pixels
+     */
+    public int getWidth() {
+        return width == -1 ? (icon.getWidth() + PADX * 2) : width;
+    }
+
+    /**
+     * Get the height of this button when idle.
+     *
+     * @return the height of this button when idle, in pixels
+     */
+    public int getHeight() {
+        return height == -1 ? (icon.getHeight() + PADY * 2) : height;
     }
 
     /**
@@ -95,7 +165,7 @@ public class Button extends Sprite {
             } else if (Greenfoot.mouseClicked(null)) { // mouse up
                 if (hovering && mouseDownOnThis) {
                     mouseDownOnThis = false;
-                    setImage(idleImage);
+                    setImage(hovering ? hoverImage : idleImage);
                     method.run();
                 }
                 mouseDownOnThis = false;
@@ -124,8 +194,10 @@ public class Button extends Sprite {
      * @return The image of the button when idle
      */
     private GreenfootImage getIdleImage() {
+        int width = getWidth();
+        int height = getHeight();
         // Create the button image a bit larger than the icon image
-        GreenfootImage image = new GreenfootImage((int) (icon.getWidth() * 1.6), (int) (icon.getHeight() * 1.6));
+        GreenfootImage image = new GreenfootImage(width, height);
 
         // Fill background and draw border
         image.setColor(new Color(228, 228, 228, 200));
@@ -134,7 +206,7 @@ public class Button extends Sprite {
         image.drawRect(0, 0, image.getWidth() - 1, image.getHeight() - 1);
 
         // Draw the icon at the center
-        image.drawImage(icon, (int) (icon.getWidth() * 0.3), (int) (icon.getHeight() * 0.3));
+        image.drawImage(icon, (width - icon.getWidth()) / 2, (height - icon.getHeight()) / 2);
         return image;
     }
 
@@ -144,8 +216,10 @@ public class Button extends Sprite {
      * @return The image of the button when hovering
      */
     private GreenfootImage getHoverImage() {
+        int width = getWidth();
+        int height = getHeight();
         // Create the button image a bit larger than the icon image
-        GreenfootImage image = new GreenfootImage((int) (icon.getWidth() * 1.6 + 2), (int) (icon.getHeight() * 1.6 + 2));
+        GreenfootImage image = new GreenfootImage(width + 2, height + 2);
 
         // Fill background and draw border
         image.setColor(new Color(240, 240, 228, 200));
@@ -154,7 +228,7 @@ public class Button extends Sprite {
         image.drawRect(0, 0, image.getWidth() - 1, image.getHeight() - 1);
 
         // Draw the icon at the center
-        image.drawImage(icon, (int) (icon.getWidth() * 0.3 + 1), (int) (icon.getHeight() * 0.3) + 1);
+        image.drawImage(icon, (width + 2 - icon.getWidth()) / 2, (height + 2 - icon.getHeight()) / 2);
         return image;
     }
 
@@ -164,8 +238,10 @@ public class Button extends Sprite {
      * @return The image of the button when clicked
      */
     private GreenfootImage getClickImage() {
+        int width = getWidth();
+        int height = getHeight();
         // Create the button image a bit larger than the icon image
-        GreenfootImage image = new GreenfootImage((int) (icon.getWidth() * 1.6), (int) (icon.getHeight() * 1.6));
+        GreenfootImage image = new GreenfootImage(width, height);
 
         // Fill background and draw border
         image.setColor(new Color(255, 255, 255, 248));
@@ -174,7 +250,7 @@ public class Button extends Sprite {
         image.drawRect(0, 0, image.getWidth() - 1, image.getHeight() - 1);
 
         // Draw the icon at the center
-        image.drawImage(icon, (int) (icon.getWidth() * 0.3), (int) (icon.getHeight() * 0.3));
+        image.drawImage(icon, (width - icon.getWidth()) / 2, (height - icon.getHeight()) / 2);
         return image;
     }
 }

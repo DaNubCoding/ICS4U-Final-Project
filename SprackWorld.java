@@ -15,10 +15,6 @@ public class SprackWorld extends PixelWorld {
     public static final int WORLD_WIDTH = 256;
     public static final int WORLD_HEIGHT = 196;
 
-    static {
-        SprackView.loadAll();
-    }
-
     /**
      * Create a new SprackWorld.
      *
