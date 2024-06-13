@@ -60,15 +60,26 @@ public abstract class MeleeWeapon extends Weapon {
         setWorldRotation(getPlayer().getWorldRotation() + swingAngle);
     }
 
+    /**
+     * Get the angle with which to perform the attack.
+     * 
+     * @return the angle obtained
+     */
+    public double getTargetAngle() {
+        Vector2 mousePos = MouseManager.getMouseWorldPos();
+        if (mousePos == null) return -1;
+        Vector2 playerPos = getPlayer().getWorldPos().xz;
+        double targetAngle = mousePos.subtract(playerPos).angle();
+        return targetAngle;
+    }
+
     @Override
     public void attack() {
         Player player = getPlayer();
         Damage damage = new Damage(player, this, this.damage, player.getWorldPos(), range);
 
-        Vector2 mousePos = MouseManager.getMouseWorldPos();
-        if (mousePos == null) return;
-        Vector2 playerPos = player.getWorldPos().xz;
-        double targetAngle = mousePos.subtract(playerPos).angle();
+        double targetAngle = getTargetAngle();
+        if (targetAngle == -1) return;
         damage.setAngularRange(targetAngle, sweepAngle);
 
         try {
@@ -79,7 +90,12 @@ public abstract class MeleeWeapon extends Weapon {
         swingTimer = new Timer(swingDuration);
     }
 
-    public Timer getSwingTimer(){
+    /**
+     * Get the swing timer.
+     * 
+     * @return the swing timer
+     */
+    public Timer getSwingTimer() {
         return swingTimer;
     }
 }
