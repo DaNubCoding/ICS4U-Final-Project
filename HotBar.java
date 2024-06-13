@@ -31,7 +31,9 @@ public class HotBar extends Sprite {
         }
 
         if (width == 0) {
-            world.removeSprite(itemText);
+            if (itemText.getWorld() != null) {
+                world.removeSprite(itemText);
+            }
             return;
         }
 
