@@ -10,7 +10,7 @@ import greenfoot.*;
  */
 public class HotBar extends Sprite {
     private static final int HOTBAR_HEIGHT = 30;
-    private static final int MARGIN = 5;
+    private static final int MARGIN = 4;
 
     public HotBar() {
         super(Layer.UI);
@@ -20,10 +20,10 @@ public class HotBar extends Sprite {
     public void render(GreenfootImage canvas) {
         SprackWorld world = (SprackWorld) getWorld();
         ArrayList<Item> playerItems = world.getPlayer().getHotbar();
-        int width = MARGIN;
+        int width = 0;
 
         for (Item item : playerItems) {
-            width += item.getOriginalImage().getWidth() + MARGIN;
+            width += item.getOriginalImage().getWidth() + MARGIN * 2;
         }
 
         GreenfootImage hotbar = new GreenfootImage(width, HOTBAR_HEIGHT);
@@ -35,11 +35,17 @@ public class HotBar extends Sprite {
         int y = world.getHeight() - HOTBAR_HEIGHT;
         canvas.drawImage(hotbar, startX, y);
 
-        int x = startX + MARGIN;
+        int x = startX;
 
         for (Item item : playerItems) {
-            canvas.drawImage(item.getOriginalImage(), x, y + (HOTBAR_HEIGHT - item.getOriginalImage().getHeight()) / 2);
-            x += item.getOriginalImage().getWidth() + MARGIN;
+            x += MARGIN;
+            GreenfootImage image = item.getOriginalImage();
+            canvas.drawImage(image, x, y + (HOTBAR_HEIGHT - image.getHeight()) / 2);
+            if (item.getWorld() != null) {
+                canvas.setColor(Color.WHITE);
+                canvas.drawRect(x - MARGIN, y, image.getWidth() + MARGIN * 2, HOTBAR_HEIGHT - 1);
+            }
+            x += image.getWidth() + MARGIN;
         }
     }
 }
