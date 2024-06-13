@@ -115,7 +115,7 @@ public class WorldData {
             playerDmgTaken = Double.valueOf(scf.nextLine());
             enemiesKilled = Integer.valueOf(scf.nextLine());
             timePlayedActs = Long.valueOf(scf.nextLine());
-            st = new StringTokenizer(scf.nextLine());
+            st = new StringTokenizer(scf.nextLine(), ",");
             while (st.hasMoreTokens()) {
                 weaponsDiscovered.add(Item.NAMES.get(st.nextToken()).get().getClass());
             }
@@ -712,7 +712,8 @@ public class WorldData {
         for (Class<? extends Item> c : weaponsDiscovered) {
             sb.append(c.getName().toLowerCase() + ",");
         }
-        sb.deleteCharAt(sb.length() - 1);
+        if (sb.length() > 0)
+            sb.deleteCharAt(sb.length() - 1);
         fileOutput.println(sb);
         // modified features
         for (FeatureData featureData : modifiedFeatures.values()) {
