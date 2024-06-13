@@ -16,6 +16,7 @@ public class Grass extends WorldSprite
         setOriginalImage(GRASS_VARIATIONS[grassType]);
     }
 
+    @Override
     public void update(){
         setWorldRotation(Camera.getRotation());
 

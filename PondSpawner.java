@@ -15,7 +15,7 @@ public class PondSpawner extends Feature
     public PondSpawner(FeatureData data) {
         super(null, data);
         random = new Random(data.id);
-        pond = new Pond(random.nextInt(3), random.nextInt(360));
+        pond = new Pond(random, random.nextInt(3), random.nextInt(360));
     }
 
     @Override

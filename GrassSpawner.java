@@ -19,7 +19,7 @@ public class GrassSpawner extends Feature
         numGrass = rand.nextInt(1, 10);
         allGrass = new ArrayList<Grass>();
         for(int i=0; i<numGrass; i++){
-            allGrass.add(new Grass(rand.nextInt(3)));
+            allGrass.add(new Grass(rand.nextInt(4)));
         }
     }
 
@@ -27,7 +27,7 @@ public class GrassSpawner extends Feature
     public void addedToWorld(PixelWorld world){
         SprackWorld w = (SprackWorld) world;
         for(Grass grass : allGrass){
-            w.addWorldObject(grass, getWorldX() + rand.nextInt(30), getWorldY(), getWorldZ() + rand.nextInt(30));
+            w.addWorldObject(grass, getWorldX() + rand.nextInt(30) - 15, getWorldY(), getWorldZ() + rand.nextInt(30) - 15);
         }
     }
     @Override
