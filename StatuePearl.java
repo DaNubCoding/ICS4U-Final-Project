@@ -31,6 +31,12 @@ public class StatuePearl extends Projectile {
         for (Sprack s:l) {
             if(s instanceof Statue) return false;
             if(s==owner) return false;
+            if (s instanceof DirtSpawner
+            || s instanceof EnemySpawner
+            || s instanceof GrassSpawner
+            || s instanceof PondSpawner) {
+                return false;
+            }
         }
         return l.size() > 0;
     }
