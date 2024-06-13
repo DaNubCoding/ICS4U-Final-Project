@@ -9,6 +9,7 @@
  * @version May 2024
  */
 public enum Layer {
+    GROUND,
     SPRACK_DEFAULT,
     HEALTH_BAR,
     SPRACK_CANOPY,

@@ -47,8 +47,7 @@ public class SprackView {
      */
     public static void loadAll() {
         new Thread(() -> {
-            Map<String, Integer> sheetInfo = new HashMap<>();
-            sheetInfo.put("crate", 16);
+            Map<String, Integer> sheetInfo = new HashMap<>();sheetInfo.put("crate", 16);
             sheetInfo.put("tree_oak_trunk", 29);
             sheetInfo.put("tree_oak_canopy", 21);
             sheetInfo.put("tree_willow_trunk", 29);
@@ -80,6 +79,8 @@ public class SprackView {
             sheetInfo.put("jester_flip2", 29);
             sheetInfo.put("jester_flip3", 31);
             sheetInfo.put("jester_flip4", 28);
+            sheetInfo.put("boulder", 17);
+            sheetInfo.put("rock",5);
 
             ExecutorService service = Executors.newFixedThreadPool(sheetInfo.size());
             for (Map.Entry<String, Integer> entry : sheetInfo.entrySet()) {
