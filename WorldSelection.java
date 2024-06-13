@@ -77,10 +77,11 @@ public class WorldSelection extends PixelWorld {
         background.setColor(Color.GRAY);
         background.fill();
 
-        button1.setText("World with seed: " + String.valueOf(worldSeeds[topIndex]));
-        button2.setText("World with seed: " + String.valueOf(worldSeeds[(topIndex + 1) % worldSeeds.length]));
-        button3.setText("World with seed: " + String.valueOf(worldSeeds[(topIndex + 2) % worldSeeds.length]));
-
+        if (worldSeeds.length > 0) {
+            button1.setText("World with seed: " + String.valueOf(worldSeeds[topIndex]));
+            button2.setText("World with seed: " + String.valueOf(worldSeeds[(topIndex + 1) % worldSeeds.length]));
+            button3.setText("World with seed: " + String.valueOf(worldSeeds[(topIndex + 2) % worldSeeds.length]));
+        }
         renderSprites();
     }
 }
