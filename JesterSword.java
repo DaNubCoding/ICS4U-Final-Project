@@ -32,6 +32,8 @@ public class JesterSword extends MeleeWeapon {
         int distSum = 0;
         List<? extends Sprite> swords = getWorld().getSprites(JesterSword.class);
         List<JesterSword> inRange = new ArrayList<>();
+
+        // determine if all swords are in range, and create particles
         for (Sprite sprite : swords) {
             JesterSword sword = (JesterSword) sprite;
             if (sword == this) continue;
@@ -47,6 +49,7 @@ public class JesterSword extends MeleeWeapon {
             }
         }
 
+        // if ready to merge, find the average position and start pushing the swords together
         if (inRange.size() >= 4 && isOnGround() && !merging) {
             averagePos = new Vector3(0, 0, 0);
             for (JesterSword sword : inRange) {
@@ -64,6 +67,7 @@ public class JesterSword extends MeleeWeapon {
             merging = true;
         }
 
+        // combine into new weapon
         if (merging) {
             disablePickup();
             Vector3 delta = averagePos.subtract(getWorldPos());
