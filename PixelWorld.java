@@ -113,7 +113,7 @@ public abstract class PixelWorld extends World {
     public void updateSprites() {
         for (List<Sprite> layerSprites : spritesByLayer.values()) {
             for (Sprite sprite : layerSprites) {
-                if (!sprite.isUpdating()) continue;
+                if (!sprite.isUpdating() || sprite.isRemoved()) continue;
                 sprite.update();
             }
         }
@@ -142,7 +142,7 @@ public abstract class PixelWorld extends World {
 
             sprite.setWorld(this);
             sprite.addedToWorld(this);
-        }   
+        }
     }
 
     /**
@@ -175,6 +175,7 @@ public abstract class PixelWorld extends World {
     public void renderSprites() {
         for (List<Sprite> layerSprites : spritesByLayer.values()) {
             for (Sprite sprite : layerSprites) {
+                if (sprite.isRemoved()) continue;
                 sprite.render(canvas);
             }
         }
@@ -190,6 +191,7 @@ public abstract class PixelWorld extends World {
     public void addSprite(Sprite sprite, int x, int y) {
         sprite.setScreenPos(x, y);
         queuedAdditions.add(sprite);
+        sprite.unremove();
     }
 
     /**
@@ -199,6 +201,7 @@ public abstract class PixelWorld extends World {
      */
     public void removeSprite(Sprite sprite) {
         queuedRemovals.add(sprite);
+        sprite.remove();
     }
 
     /**

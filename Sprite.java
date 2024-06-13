@@ -14,6 +14,7 @@ public abstract class Sprite {
     private GreenfootImage image;
     private PixelWorld world;
     private boolean updating = true;
+    private boolean removed = false;
 
     /**
      * Create a new Sprite on the given {@link Layer}.
@@ -209,5 +210,29 @@ public abstract class Sprite {
      */
     public boolean isUpdating() {
         return updating;
+    }
+
+    /**
+     * Set this sprite as removed. This will cause the sprite to no longer
+     * update or render.
+     */
+    public void remove() {
+        removed = true;
+    }
+
+    /**
+     * Set this sprite as not removed.
+     */
+    public void unremove() {
+        removed = false;
+    }
+
+    /**
+     * Check if this sprite is removed.
+     *
+     * @return true if this sprite is removed, false otherwise
+     */
+    public boolean isRemoved() {
+        return removed;
     }
 }
