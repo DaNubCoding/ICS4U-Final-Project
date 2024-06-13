@@ -11,9 +11,4 @@ public class Rock extends Feature
         super("rock", data);
         setWorldRotation(Greenfoot.getRandomNumber(360));
     }
-
-    @Override
-    public void addedToWorld(PixelWorld world) {
-        getWorld().addCollisionController(new CollisionController(this, 5, 0.3, 1.0));
-    }
 }
