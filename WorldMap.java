@@ -18,6 +18,8 @@ public class WorldMap extends PixelWorld {
         colors.put(WillowTree.class, new Color(98, 253, 128));
         colors.put(Tombstone.class, new Color(99, 99, 99));
         colors.put(StatueCampfire.class, new Color(255, 110, 12));
+        colors.put(PondSpawner.class, new Color(28, 163, 236));
+        colors.put(DirtSpawner.class, new Color(88, 57, 39));
     }
 
     public WorldMap(SprackWorld oldWorld, WorldData worldData) {
