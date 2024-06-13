@@ -2,7 +2,8 @@ public class WandOfRickAstley extends MagicWeapon {
     private Vector3 customLocation;
 
     public WandOfRickAstley() {
-        super("repeater_projectile.png", 0, 1, 0, 600, RickBoombox::new);
+        super("wand_of_rick_astley.png", 0, 1, 0, 600, RickBoombox::new);
+        setCenterOfRotation(new Vector2(1, 6));
     }
 
     @Override
