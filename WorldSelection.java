@@ -6,7 +6,7 @@ import greenfoot.GreenfootImage;
 
 /**
  * The screen where all of the saved worlds are displayed.
- * 
+ *
  * @author Lucas Fu
  * @version (a version number or a date)
  */
@@ -16,10 +16,13 @@ public class WorldSelection extends PixelWorld {
     private Button button1;
     private Button button2;
     private Button button3;
-    
+
     public WorldSelection() {
         super(SprackWorld.WORLD_WIDTH, SprackWorld.WORLD_HEIGHT);
         File path = new File("saves");
+        if (!path.exists()) {
+            path.mkdirs();
+        }
         String[] worldNames = path.list();
         worldSeeds = new long[worldNames.length];
         for (int i = 0; i < worldNames.length; i++) {
@@ -40,22 +43,26 @@ public class WorldSelection extends PixelWorld {
         addSprite(new Button("scroll down", WorldSelection::scrollDown), 200, 80);
     }
 
+    private static void openWorld(boolean seeded, long seed) {
+        Greenfoot.setWorld(new LoadingWorld(new SprackWorld(seeded, seed)));
+    }
+
     private static void openWorld1() {
-        Greenfoot.setWorld(new SprackWorld(false, worldSeeds[topIndex]));
+        openWorld(false, worldSeeds[topIndex]);
     }
 
     private static void openWorld2() {
         int index = (topIndex + 1) % worldSeeds.length;
-        Greenfoot.setWorld(new SprackWorld(false, worldSeeds[index]));
+        openWorld(false, worldSeeds[index]);
     }
 
     private static void openWorld3() {
         int index = (topIndex + 2) % worldSeeds.length;
-        Greenfoot.setWorld(new SprackWorld(false, worldSeeds[index]));
+        openWorld(false, worldSeeds[index]);
     }
 
     private static void makeRandomWorld() {
-        Greenfoot.setWorld(new SprackWorld(true, 0));
+        openWorld(true, 0);
     }
 
     private static void scrollUp() {
