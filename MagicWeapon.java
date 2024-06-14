@@ -9,7 +9,7 @@ public abstract class MagicWeapon extends Weapon {
 
     @FunctionalInterface
     public static interface MagicFactory {
-        public Magic create(Vector3 pos, int inaccuracy);
+        public Magic create(int inaccuracy);
     }
 
     private MagicFactory magicFactory;
@@ -55,8 +55,8 @@ public abstract class MagicWeapon extends Weapon {
     public void attack() {
         Vector3 targetLocation = findTargetLocation();
         for(int i = 0; i < castCount; i++) {
-            Magic magic = magicFactory.create(targetLocation, inaccuracy);
-            getPlayer().getWorld().addSprite(magic, 0, 0);
+            Magic magic = magicFactory.create(inaccuracy);
+            getPlayer().getWorld().addWorldObject(magic, targetLocation);
         }
     }
 }

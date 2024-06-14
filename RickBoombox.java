@@ -13,8 +13,8 @@ public class RickBoombox extends Magic {
     private long startTime = System.currentTimeMillis();
     private int count;
 
-    public RickBoombox(Vector3 startpos, int inaccuracy) {
-        super(startpos.add(new Vector3(0, 5, 0)), inaccuracy, -1, 100000, 0);
+    public RickBoombox(int inaccuracy) {
+        super(inaccuracy, -1, 100000, 0);
         setOriginalImage(new GreenfootImage("megaphone.png"));
     }
 

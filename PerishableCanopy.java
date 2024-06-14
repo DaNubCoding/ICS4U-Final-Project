@@ -5,17 +5,15 @@
  * @author Lucas Fu
  * @version June 2024
  */
-public class PerishableCanopy extends Sprack {
-    private Timer disappearTimer;
+public class PerishableCanopy extends Magic {
     private Timer knockbackTimer;
     public PerishableCanopy(String sheetname) {
-        super(sheetname);
-        disappearTimer = new Timer(600);
+        super(0, -1, 600, 0);
         knockbackTimer = new Timer(0);
     }
 
     @Override
-    public void update() {
+    public void actionUpdate() {
         if (knockbackTimer.ended()) {
             for (Entity e : getWorld().getEntitiesInRange(getWorldPos(), 80)) {
                 int forceDivision;
@@ -26,9 +24,6 @@ public class PerishableCanopy extends Sprack {
                                       .normalize()
                                       .divide(forceDivision));
             }
-        }
-        if (disappearTimer.ended()) {
-            getWorld().removeSprite(this);
         }
         setWorldRotation(getWorldRotation() + 5);
     }

@@ -15,14 +15,13 @@ public abstract class Magic extends WorldSprite {
 
     /**
      * Create a new Magic with specified range of delays.
-     * @param startPos the location where the magic will be created
      * @param inaccuracy the maximum radius from the startpos where the magic can be created
      * @param targetYpos the y-position where the magic will disappear
      * @param lifespan the number of acts this magic will last (use for stationary magic)
      * @param minDelay the minimum delay after which the magic will be created
      * @param maxDelay the maximum delay after which the magic will be created
      */
-    public Magic(Vector3 startPos, double inaccuracy, int targetYpos, int lifespan,
+    public Magic(double inaccuracy, int targetYpos, int lifespan,
                  int minDelay, int maxDelay) {
         super();
         this.targetYpos = targetYpos;
@@ -40,7 +39,7 @@ public abstract class Magic extends WorldSprite {
             adj2 = adj2.normalize().multiply(adj2.magnitude());
             
         Vector3 posAdjust = new Vector3(adj2.x, 0, adj2.y);
-        this.startPos = startPos.add(posAdjust);
+        this.startPos = getWorldPos().add(posAdjust);
 
         // make sure this is rendered off screen
         setWorldPos(startPos.add(new Vector3(0, 1000, 0)));
@@ -48,15 +47,14 @@ public abstract class Magic extends WorldSprite {
 
     /**
      * Create a new Magic with specified single delay.
-     * @param startPos the location where the magic will be created
      * @param inaccuracy the maximum radius from the startpos where the magic can be created
      * @param targetYpos the y-position where the magic will disappear
      * @param lifespan the number of acts this magic will last (use for stationary magic)
      * @param delay the delay after which the magic will be created
      */
-    public Magic(Vector3 startPos, double inaccuracy, int targetYpos, int lifespan,
+    public Magic(double inaccuracy, int targetYpos, int lifespan,
                  int delay) {
-        this(startPos, inaccuracy, targetYpos, lifespan, delay, delay);
+        this(inaccuracy, targetYpos, lifespan, delay, delay);
     }
 
     @Override
