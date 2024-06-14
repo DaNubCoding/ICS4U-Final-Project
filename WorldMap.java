@@ -83,11 +83,11 @@ public class WorldMap extends PixelWorld {
         applyAdditions();
         render();
         updateImage();
-        
+
         // show seed
         String seed = "Seed: " + worldData.getSeed();
-        addSprite(new Text(seed, 
-                           Text.AnchorX.LEFT, 
+        addSprite(new Text(seed,
+                           Text.AnchorX.LEFT,
                            Text.AnchorY.CENTER,
                            new Color(180, 180, 180, 200)),
                            2, 10);

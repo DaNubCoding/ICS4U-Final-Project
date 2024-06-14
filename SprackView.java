@@ -78,8 +78,14 @@ public class SprackView {
         sheetInfo.put("jester_flip2", 29);
         sheetInfo.put("jester_flip3", 31);
         sheetInfo.put("jester_flip4", 28);
-        sheetInfo.put("boulder", 17);
-        sheetInfo.put("rock", 5);
+        sheetInfo.put("saint_idle", 29);
+        sheetInfo.put("saint_normal_charge", 29);
+        sheetInfo.put("saint_normal_spell", 29);
+        sheetInfo.put("saint_side_charge", 29);
+        sheetInfo.put("saint_side_spell", 29);
+        sheetInfo.put("saint_front_charge", 29);
+        sheetInfo.put("saint_front_spell", 29);
+        sheetInfo.put("saint_shield", 26);
     }
 
     private static AtomicInteger totalCaches = new AtomicInteger(sheetInfo.size() * IMAGE_CACHE_ANGLE_COUNT);
