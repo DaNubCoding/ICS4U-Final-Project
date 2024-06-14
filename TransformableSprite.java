@@ -187,6 +187,10 @@ public abstract class TransformableSprite extends Sprite {
         double cosAngle = Math.cos(angle);
         transformedWidth = (int) Math.ceil((Math.abs(originalWidth * cosAngle) + Math.abs(originalHeight * sinAngle)));
         transformedHeight = (int) Math.ceil((Math.abs(originalWidth * sinAngle) + Math.abs(originalHeight * cosAngle)));
+        if (transformedWidth <= 0 || transformedHeight <= 0) {
+            transformedImage = null;
+            return;
+        }
 
         GreenfootImage rotatedImage = new GreenfootImage(expandedImage);
         rotatedImage.rotate((int) screenRotation);
