@@ -86,6 +86,12 @@ public class SprackView {
         sheetInfo.put("saint_front_charge", 29);
         sheetInfo.put("saint_front_spell", 29);
         sheetInfo.put("saint_shield", 26);
+        sheetInfo.put("boulder", 17);
+        sheetInfo.put("rock", 5);
+        sheetInfo.put("skeleton_attack", 27);
+        sheetInfo.put("skeleton_idle", 27);
+        sheetInfo.put("skeleton_step1", 27);
+        sheetInfo.put("skeleton_step2", 27);
     }
 
     private static AtomicInteger totalCaches = new AtomicInteger(sheetInfo.size() * IMAGE_CACHE_ANGLE_COUNT);
