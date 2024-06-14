@@ -1,15 +1,19 @@
 /**
  * Saint's barrior
- * 
- * @author Stanley 
+ *
+ * @author Stanley
  * @version June 2024
  */
-public class SaintShield extends Enemy 
+public class SaintShield extends Enemy
 {
     private static final Animation shield = new Animation(-1, "saint_shield");
     private Saint owner;
     private double angle;
-    
+
+    public SaintShield() {
+        super("saint_shield");
+    }
+
     public SaintShield(double direction, Saint owner)
     {
         super("saint_shield");
@@ -28,6 +32,9 @@ public class SaintShield extends Enemy
     public void addedToWorld(PixelWorld world) {
         super.addedToWorld(world);
         getWorld().addCollisionController(new CollisionController(this, 0, 0.8, 0.5));
+        if (owner == null) {
+            world.removeSprite(this);
+        }
     }
 
     @Override
