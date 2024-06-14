@@ -1,21 +1,19 @@
 import greenfoot.GreenfootImage;
 
 /**
- * A standard projectile with a constantly increasing velocity and pierces thrice.
+ * A standard projectile with a constantly increasing velocity and piercing.
  * <p>
  * <i> How do skeletons even toss an accelerating bone? </i>
  * 
  * @author Lucas Fu
- * 
+ * @version June 2024
  */
 public class Bone extends Projectile {
-    private int pierces;
 
     public Bone(Entity owner, Vector3 direction, Vector3 startpos) {
-        super(owner, direction, startpos, 200);
+        super(owner, direction, startpos, 150);
         setOriginalImage(new GreenfootImage("bone.png"));
         physics.setWorldRotation(direction.xz.angle());
-        pierces = 3;
     }
 
     @Override
@@ -30,6 +28,5 @@ public class Bone extends Projectile {
         Damage dmg = new Damage(getOwner(), this, 1, getWorldPos(), 10);
         dmg.setTarget(getWorld().getPlayer());
         getWorld().getDamages().add(dmg);
-        if (pierces-- <= 0) disappear();
     }
 }
