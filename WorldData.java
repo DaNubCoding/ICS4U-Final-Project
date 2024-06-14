@@ -11,7 +11,6 @@ import java.util.Scanner;
 import java.util.StringTokenizer;
 import java.util.function.BiConsumer;
 import java.util.List;
-import java.util.Random;
 
 /**
  * A class that stores and handles all the data to be used inside the world.
@@ -44,7 +43,7 @@ public class WorldData {
 
     // settings
     private static final int generationRadius = 20;
-    private static final int emptyFeatureChance = 2000;
+    private static final int emptyFeatureChance = 10000;
 
     // storage variables
     private long seed;
