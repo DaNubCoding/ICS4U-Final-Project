@@ -6,7 +6,6 @@
  */
 public class SaintShield extends Enemy
 {
-    private static final Animation shield = new Animation(-1, "saint_shield");
     private Saint owner;
     private double angle;
 
@@ -57,7 +56,7 @@ public class SaintShield extends Enemy
     public void damage(Damage damage) {
         //Redirects a portion of all melee damage back
         Entity o = damage.getOwner();
-        if (!(damage.getSource() instanceof Projectile)) {
+        if (!(damage.getSource() instanceof Projectile || damage.getSource() instanceof Magic)) {
             super.damage(damage.multiply(0.6));
             if (!(damage.getSource() instanceof Statue)) {
                 Vector3 ownerPos = o.getWorldPos();
