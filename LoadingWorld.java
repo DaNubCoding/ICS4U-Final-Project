@@ -43,7 +43,6 @@ public class LoadingWorld extends PixelWorld {
             return;
         }
 
-        System.out.println(loadingTimer.progress());
         if (loadingTimer.ended()) {
             loadingString += ".";
             loadingText.setContent(loadingString);

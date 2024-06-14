@@ -97,9 +97,7 @@ public class SprackView {
             final GreenfootImage sheet = new GreenfootImage(name + ".png");
             final int layerCount = entry.getValue();
             service.execute(() -> {
-                System.out.println("start " + name);
                 viewMap.put(name, new SprackView(sheet, layerCount));
-                System.out.println("done " + name);
                 System.gc();
             });
         }

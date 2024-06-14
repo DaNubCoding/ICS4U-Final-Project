@@ -266,7 +266,6 @@ public class Player extends Entity {
             }
         }
         armor -= dmg;
-        System.out.printf("Player took %3f damage to armor and has %3f armor left.\n", dmg, armor);
         armorBar.setHealth(armor);
 
         if(armor <= 0) {
@@ -275,7 +274,6 @@ public class Player extends Entity {
                                     -armor,
                                     damage.getCenter(),
                                     damage.getRadius()));
-            System.out.println("Player took " + -armor + " points of damage and has " + getHealth() + " health left");
             armor = 0;
         }
     }
@@ -285,5 +283,4 @@ public class Player extends Entity {
         getWorld().getWorldData().saveData();
         Greenfoot.setWorld(new DeathScreen(getWorld().getWorldData()));
     }
-
 }
