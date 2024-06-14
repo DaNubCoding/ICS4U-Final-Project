@@ -42,6 +42,7 @@ public class DeathScreen extends PixelWorld {
             return;
         }
         updateSprites();
+        Timer.incrementAct();
     }
 
     @Override
