@@ -1,3 +1,6 @@
+import java.util.LinkedList;
+import java.util.Queue;
+
 import greenfoot.*;
 
 /**
@@ -7,10 +10,14 @@ import greenfoot.*;
  * @version June 2024
  */
 public class DamageParticle extends Particle {
+    private static Queue<DamageParticle> loadedParticles = new LinkedList<DamageParticle>();
+
     public DamageParticle() {
         super(getBloodImage(), (int) (Math.random() * 40 + 20));
         physics.applyForce(new Vector2(Math.random() * 360).multiply(Math.random() * 0.7 + 0.5));
         physics.setAffectedByGravity(true);
+        loadedParticles.offer(this);
+        if (loadedParticles.size() > 50) loadedParticles.poll();
     }
 
     private static GreenfootImage getBloodImage() {
