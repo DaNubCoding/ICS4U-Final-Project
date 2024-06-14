@@ -44,7 +44,11 @@ public abstract class Sprite {
      * @param image the image to set
      */
     public void setImage(GreenfootImage image) {
-        this.image = new GreenfootImage(image);
+        if (image == null) {
+            this.image = null;
+        } else {
+            this.image = new GreenfootImage(image);
+        }
     }
 
     /**
@@ -124,6 +128,9 @@ public abstract class Sprite {
      * @param canvas the canvas to render to
      */
     public void render(GreenfootImage canvas) {
+        if (image == null) {
+            return;
+        }
         int x = (int) screenPos.x - image.getWidth() / 2;
         int y = (int) screenPos.y - image.getHeight() / 2;
         canvas.drawImage(image, x, y);
