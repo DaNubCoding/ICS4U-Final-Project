@@ -574,7 +574,7 @@ public class WorldData {
 
     /**
      * Get the generation radius.
-     * 
+     *
      * @return the generation radius, in # of grid tiles
      */
     public int getGenerationRadius() {
@@ -583,7 +583,7 @@ public class WorldData {
 
     /**
      * Set the player's hotbar to a list of items
-     * 
+     *
      * @param hotbar the list of item representing the player's hotbar
      */
     public void setHotbar(ArrayList<Item> hotbar) {
@@ -592,7 +592,7 @@ public class WorldData {
 
     /**
      * Add damage to the player's damage done statistic.
-     * 
+     *
      * @param damage the amount of damage done
      */
     public void addPlayerDamageDone(double damage) {
@@ -601,7 +601,7 @@ public class WorldData {
 
     /**
      * Get the player's damage done statistic.
-     * 
+     *
      * @return the total amount of damage done by the player
      */
     public double getPlayerDamageDone() {
@@ -610,7 +610,7 @@ public class WorldData {
 
     /**
      * Add damage to the player's damage taken statistic.
-     * 
+     *
      * @param damage the amount of taken
      */
     public void addPlayerDamageTaken(double damage) {
@@ -619,7 +619,7 @@ public class WorldData {
 
     /**
      * Get the total amount of damage taken statistic.
-     * 
+     *
      * @return the total amount of damage taken by the player
      */
     public double getPlayerDamageTaken() {
@@ -635,7 +635,7 @@ public class WorldData {
 
     /**
      * Get the total amount of enemies killed by the player.
-     * 
+     *
      * @return the number of enemies killed by the player
      */
     public int getPlayerEnemiesKilled() {
@@ -651,7 +651,7 @@ public class WorldData {
 
     /**
      * Get the total amount of time the player has been playing in this world.
-     * 
+     *
      * @return the amount of time played, in acts
      */
     public long getTimePlayed() {
@@ -660,7 +660,7 @@ public class WorldData {
 
     /**
      * Try adding a new weapon to the list of discovered weapons.
-     * 
+     *
      * @param w the weapon that is trying to be added
      */
     public void tryAddNewWeapon(Item w) {
@@ -671,7 +671,7 @@ public class WorldData {
 
     /**
      * Get the number of discovered weapons.
-     * 
+     *
      * @return the number of discovered weapons.
      */
     public int getNumDicoveredWeapons() {
