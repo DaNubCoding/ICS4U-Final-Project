@@ -21,11 +21,19 @@ public class Player extends Entity {
     private static final Animation dashAnimation = new Animation(25, "knight_dash");
     public static final int MAX_ITEM_NUM = 5;
     public static final Vector3 HAND_LOCATION = new Vector3(5, 8, -5);
+    private static final SoundEffect[] footstepSounds = {
+        new SoundEffect("grass_step1.wav"),
+        new SoundEffect("grass_step2.wav"),
+        new SoundEffect("grass_step3.wav"),
+        new SoundEffect("grass_step4.wav"),
+        new SoundEffect("grass_step5.wav"),
+    };
 
     private double cameraTargetRotation;
     private Timer dashTimer;
     private Timer footstepTimer;
     private Vector3 footstepOffset;
+    private Timer footstepSoundTimer;
 
     private ArrayList<Item> hotbar;
     private int heldIndex;
@@ -52,6 +60,7 @@ public class Player extends Entity {
         setHealth(200);
         footstepTimer = new Timer(8);
         footstepOffset = new Vector3(0, 0, 4);
+        footstepSoundTimer = new Timer(15);
     }
 
     @Override
@@ -139,6 +148,11 @@ public class Player extends Entity {
             }
         } else {
             setLoopingAnimation(standingAnimation);
+        }
+
+        if (physics.isMoving() && footstepSoundTimer.ended()) {
+            footstepSoundTimer.restart(15);
+            footstepSounds[(int) (Math.random() * footstepSounds.length)].play();
         }
 
         // update armor if out of combat for long enough
