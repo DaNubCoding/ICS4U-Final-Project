@@ -1,15 +1,17 @@
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.nio.ByteBuffer;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Random;
+import java.security.SecureRandom;
 import java.util.Scanner;
 import java.util.StringTokenizer;
 import java.util.function.BiConsumer;
 import java.util.List;
+import java.util.Random;
 
 /**
  * A class that stores and handles all the data to be used inside the world.
@@ -38,7 +40,7 @@ public class WorldData {
         }
     }
 
-    private static Random rand;
+    private static SecureRandom rand;
 
     // settings
     private static final int generationRadius = 20;
@@ -206,7 +208,7 @@ public class WorldData {
     }
 
     private static Feature generateFeature(WorldData data, long id, Vector2 coord, FeatureData featureData) {
-        rand = new Random(id);
+        rand = new SecureRandom(ByteBuffer.allocate(8).putLong(id).array());
 
         // init spawn rates
         int[] spawnRates = new int[Feature.Type.length()];
@@ -250,7 +252,7 @@ public class WorldData {
     }
 
     private static Cluster generateCluster(long id) {
-        rand = new Random(id);
+        rand = new SecureRandom(ByteBuffer.allocate(8).putLong(id).array());
         // clusters currently use a probability system
         int roll = rand.nextInt(5000);
         int sum = 0;
