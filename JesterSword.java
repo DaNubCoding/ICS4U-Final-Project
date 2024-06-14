@@ -126,10 +126,10 @@ public class JesterSword extends MeleeWeapon {
         PhysicsController playerPhysics = getPlayer().physics;
         playerPhysics.setWorldPos(initialPos);
         for (int i = 0; i < 150; i += 30) {
-            Damage damage = new Damage(getPlayer(), this, 40,
+            Damage damage = new Damage(getPlayer(), this, 50,
                                        initialPos.addXZ(playerFacingVector.multiply(i)),
                                        15);
-            for (int j = 0; j < 3; j++)
+            for (int j = 0; j < 4; j++)
                 getWorld().addWorldObject(new JesterParticle(), initialPos.addXZ(playerFacingVector.multiply(i + j * 10)));
             try {
                 getWorld().getDamages().add(damage);
@@ -137,7 +137,7 @@ public class JesterSword extends MeleeWeapon {
             catch (NullPointerException e) {} // if the weapon got switched out before doing damage
         }
 
-        playerPhysics.applyForce(playerFacingVector.multiply(8.2));
+        playerPhysics.applyForce(playerFacingVector.multiply(10.9));
         dashes = 0;
         initialPos = null;
         Camera.shake(4, 24);

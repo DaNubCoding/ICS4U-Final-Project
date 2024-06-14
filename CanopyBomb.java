@@ -13,7 +13,7 @@ public class CanopyBomb extends Magic {
     private String treeType;
 
     public CanopyBomb(Vector3 startpos, int inaccuracy) {
-        super(startpos.add(new Vector3(0, 300, 0)), inaccuracy, 1, 10000, 10, 100);
+        super(startpos.add(new Vector3(0, 250, 0)), inaccuracy, 1, 10000, 0, 60);
         treeType = treeList[rand.nextInt(treeList.length)];
         setOriginalImage(SprackView.getView("tree_" + treeType + "_canopy")
             .getTransformedImage(Camera.getRotation(), Camera.getZoom()));
