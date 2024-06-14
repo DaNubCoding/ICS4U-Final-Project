@@ -5,6 +5,7 @@ import java.util.List;
  * A projectile that teleports the owner on hit.
  *
  * @author Stanley Wang
+ * @author Martin Baldwin
  * @version June 2024
  */
 public class SaintBlast extends Projectile {
@@ -45,8 +46,8 @@ public class SaintBlast extends Projectile {
     @Override
     public boolean hitCondition() {
         List<Sprack> l = getWorld().getSpracksInRange(getWorldPos(), 12);
-        for (Sprack s:l) {
-            if (s instanceof Player || s instanceof Feature) {
+        for (Sprack s : l) {
+            if (s instanceof Player || (s instanceof Feature && Projectile.isSprackSolid(s))) {
                 return true;
             }
         }

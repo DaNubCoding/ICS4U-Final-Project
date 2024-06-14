@@ -4,6 +4,7 @@ import java.util.List;
  * A projectile, shot by a ranged weapon.
  *
  * @author Lucas Fu
+ * @author Martin Baldwin
  * @version June 2024
  */
 public abstract class Projectile extends WorldSprite {
@@ -49,6 +50,19 @@ public abstract class Projectile extends WorldSprite {
     }
 
     /**
+     * Test whether or not the given sprack is a solid sprack. A solid sprack
+     * will be able to be hit by projectiles.
+     *
+     * @return true if the given sprack object is considered solid, false otherwise
+     */
+    public static boolean isSprackSolid(Sprack s) {
+        return !(s instanceof DirtSpawner
+            || s instanceof EnemySpawner
+            || s instanceof GrassSpawner
+            || s instanceof PondSpawner);
+    }
+
+    /**
      * The condition to check if a hit happened.
      * <p>
      * Currently checks whether a direct hit occured (enemy less than range of 10),
@@ -58,8 +72,13 @@ public abstract class Projectile extends WorldSprite {
      */
     public boolean hitCondition() {
         List<Entity> l = getWorld().getEntitiesInRange(getWorldPos(), 10);
-        if(l.size() > 0 && l.contains(owner)) return false;
-        return l.size() > 0;
+        for (Entity e : l) {
+            if (e == owner) {
+                continue;
+            }
+            return true;
+        }
+        return false;
     }
 
     /**

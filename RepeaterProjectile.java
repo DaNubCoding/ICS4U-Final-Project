@@ -5,6 +5,7 @@ import greenfoot.GreenfootImage;
  * Write a description of class RepeaterProjectile here.
  *
  * @author Matthew Li
+ * @author Martin Baldwin
  * @version June 2024
  */
 public class RepeaterProjectile extends Projectile {
@@ -16,8 +17,13 @@ public class RepeaterProjectile extends Projectile {
     @Override
     public boolean hitCondition() {
         List<Sprack> l = getWorld().getSpracksInRange(getWorldPos(), 15);
-        if(l.size() > 0 && l.contains(getOwner())) return false;
-        return l.size() > 0;
+        for (Sprack s : l) {
+            if (s == getOwner() || !Projectile.isSprackSolid(s)) {
+                continue;
+            }
+            return true;
+        }
+        return false;
     }
 
     @Override

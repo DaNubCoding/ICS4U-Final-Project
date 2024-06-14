@@ -5,6 +5,7 @@ import java.util.List;
  * A projectile that teleports the owner on hit.
  *
  * @author Stanley Wang
+ * @author Martin Baldwin
  * @version June 2024
  */
 public class StatuePearl extends Projectile {
@@ -28,17 +29,13 @@ public class StatuePearl extends Projectile {
     @Override
     public boolean hitCondition() {
         List<Sprack> l = getWorld().getSpracksInRange(getWorldPos(), 15);
-        for (Sprack s:l) {
-            if(s instanceof Statue) return false;
-            if(s==owner) return false;
-            if (s instanceof DirtSpawner
-            || s instanceof EnemySpawner
-            || s instanceof GrassSpawner
-            || s instanceof PondSpawner) {
-                return false;
+        for (Sprack s : l) {
+            if (s instanceof Statue || s == owner || !Projectile.isSprackSolid(s)) {
+                continue;
             }
+            return true;
         }
-        return l.size() > 0;
+        return false;
     }
 
     @Override
