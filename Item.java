@@ -147,12 +147,15 @@ public class Item extends WorldSprite {
     public String getProperName() {
         String name = getClass().getName();
         StringBuilder result = new StringBuilder();
+        boolean wasLastUpper = true;
         for (int i = 0; i < name.length(); i++) {
             char c = name.charAt(i);
-            if (Character.isUpperCase(c) && i != 0) {
+            boolean isUpper = Character.isUpperCase(c);
+            if (!wasLastUpper && isUpper) {
                 result.append(' ');
             }
             result.append(c);
+            wasLastUpper = isUpper;
         }
         return result.toString();
     }
