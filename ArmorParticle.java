@@ -17,7 +17,7 @@ public class ArmorParticle extends Particle {
     private static GreenfootImage getMetalImage() {
         final int size = (int) (Math.random() * 5 + 2);
         GreenfootImage image = new GreenfootImage(size, size);
-        image.setColor(new Color(238, 238, 238));
+        image.setColor(new Color(165, 207, 255));
         image.fill();
         return image;
     }
