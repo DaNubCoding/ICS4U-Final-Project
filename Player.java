@@ -26,7 +26,6 @@ public class Player extends Entity {
         new SoundEffect("grass_step2.wav"),
         new SoundEffect("grass_step3.wav"),
         new SoundEffect("grass_step4.wav"),
-        new SoundEffect("grass_step5.wav"),
     };
 
     private double cameraTargetRotation;
