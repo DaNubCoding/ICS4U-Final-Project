@@ -13,7 +13,7 @@ public class TitleWorld extends PixelWorld {
     @Override
     public void update() {
         if (Greenfoot.isKeyDown("space")) {
-            Greenfoot.setWorld(new WorldSelection());
+            Greenfoot.setWorld(new SelectionWorld());
         }
 
         panorama.updateImage();

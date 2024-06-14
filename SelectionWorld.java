@@ -12,14 +12,14 @@ import greenfoot.GreenfootImage;
  * @author Martin Baldwin
  * @version June 2024
  */
-public class WorldSelection extends PixelWorld {
+public class SelectionWorld extends PixelWorld {
     private static final Color WORLD_BOX_COLOR = new Color(112, 112, 112);
 
     private long[] worldSeeds;
     private int topIndex = 0;
     private Button[] buttons;
 
-    public WorldSelection() {
+    public SelectionWorld() {
         super(SprackWorld.WORLD_WIDTH, SprackWorld.WORLD_HEIGHT);
         File path = new File("saves");
         // Create saves directory if it doesn't exist
@@ -44,7 +44,7 @@ public class WorldSelection extends PixelWorld {
         }
         updateButtonText();
 
-        addSprite(new Button("Generate Random World", WorldSelection::openNewRandomWorld), 104, 45);
+        addSprite(new Button("Generate Random World", SelectionWorld::openNewRandomWorld), 104, 45);
         addSprite(new Button("up", this::scrollUp, 40, -1), 222, 101);
         addSprite(new Button("down", this::scrollDown, 40, -1), 222, 129);
 
