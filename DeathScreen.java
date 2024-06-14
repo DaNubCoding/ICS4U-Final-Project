@@ -6,6 +6,7 @@ import greenfoot.GreenfootImage;
 
 public class DeathScreen extends PixelWorld {
     private WorldData data;
+    private Timer delayTimer;
     public DeathScreen(WorldData worldData) {
         super(SprackWorld.WORLD_WIDTH, SprackWorld.WORLD_HEIGHT);
         data = worldData;
@@ -29,13 +30,14 @@ public class DeathScreen extends PixelWorld {
 
         Music.stop();
 
+        delayTimer = new Timer(120);
         // clear previous keys
         Greenfoot.getKey();
     }
 
     @Override
     public void update() {
-        if (Greenfoot.getKey() != null) {
+        if (delayTimer.ended() && (Greenfoot.getKey() != null || Greenfoot.mouseClicked(null))) {
             Greenfoot.setWorld(new TitleWorld());
             return;
         }
