@@ -1,32 +1,44 @@
 import greenfoot.Greenfoot;
-import java.util.Random;
+import java.util.List;
+import java.util.Arrays;
+import java.util.function.Supplier;
 
 /**
- * ?????
+ * A box that holds an item available for the player to collect by walking into it.
  *
  * @author Andrew Wang
- * @version May 2024
+ * @author Martin Baldwin
+ * @version June 2024
  */
 public class Crate extends Feature {
-    private Weapon[] contents = new Weapon[] {
-        new Pistol(),
-        new Sword(),
-        new Pitchfork(),
-        new Axe(),
-        new Bat(),
-        new WandOfManyCanopies(),
-        new Hammer(),
-        new Repeater(),
-        new RPG(),
-        new FlowerBoomerang()
-    };
-    Random rand = new Random();
+    private static final List<Supplier<Item>> itemSuppliers = Arrays.asList(
+        Pistol::new,
+        Sword::new,
+        Pitchfork::new,
+        Axe::new,
+        Bat::new,
+        WandOfManyCanopies::new,
+        Hammer::new,
+        Repeater::new,
+        RPG::new,
+        FlowerBoomerang::new
+    );
+
+    private final Item content;
 
     /**
-     * Create a new Crate with specified id.
+     * Create a new Crate with specified id and random item content.
      */
     public Crate(FeatureData data) {
+        this(data, itemSuppliers.get(Greenfoot.getRandomNumber(itemSuppliers.size())).get());
+    }
+
+    /**
+     * Create a new Crate with specified id and item content.
+     */
+    public Crate(FeatureData data, Item content) {
         super("crate", data);
+        this.content = content;
         setWorldRotation(Greenfoot.getRandomNumber(360));
     }
 
@@ -38,7 +50,7 @@ public class Crate extends Feature {
     @Override
     public void update() {
         if(getWorld().getPlayer().getWorldPos().distanceTo(getWorldPos()) <= 20) {
-            getWorld().addWorldObject(contents[rand.nextInt(contents.length)], getWorldPos());
+            getWorld().addWorldObject(content, getWorldPos());
             removeFromWorld();
         }
     }
