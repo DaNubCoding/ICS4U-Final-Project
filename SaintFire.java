@@ -41,7 +41,7 @@ public class SaintFire extends Projectile {
         getWorld().getDamages().add(dmg);
         List<Sprack> l = getWorld().getSpracksInRange(getWorldPos(), 5);
         for (Sprack s:l) {
-            if(hit.contains(s) || s instanceof Saint || s instanceof SaintShield || s instanceof Feature) continue;
+            if(hit.contains(s) || s instanceof Saint || s instanceof SaintShield || s instanceof Feature || s instanceof PerishableCanopy) continue;
             else {
                 ((Entity)s).damage(dmg);
                 hit.add(s);
