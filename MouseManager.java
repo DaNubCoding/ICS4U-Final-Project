@@ -48,8 +48,8 @@ public class MouseManager {
         Vector2 screenCenter =
             new Vector2(SprackWorld.WORLD_WIDTH * PixelWorld.PIXEL_SCALE / 2,
                         SprackWorld.WORLD_HEIGHT * PixelWorld.PIXEL_SCALE / 2);
-        int x = Greenfoot.getMouseInfo().getX();
-        int y = Greenfoot.getMouseInfo().getY();
+        int x = mouseInfo.getX();
+        int y = mouseInfo.getY();
         Vector2 mousePos = new Vector2(x, y).subtract(screenCenter);
         double screenRot = Camera.getRotation();
         double scale = Camera.getZoom() * PixelWorld.PIXEL_SCALE;
