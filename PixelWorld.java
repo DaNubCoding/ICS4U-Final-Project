@@ -1,4 +1,6 @@
 import greenfoot.*;
+import greenfoot.sound.Sound;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -59,6 +61,24 @@ public abstract class PixelWorld extends World {
 
         queuedRemovals = new ArrayList<Sprite>();
         queuedAdditions = new ArrayList<Sprite>();
+    }
+
+    /**
+     * Pause any background sounds and any currently playing sound effects.
+     */
+    @Override
+    public void started() {
+        Music.play();
+        SoundEffect.resumeAllSounds();
+    }
+
+    /**
+     * Resume any background sounds and any previously paused sound effects.
+     */
+    @Override
+    public void stopped() {
+        Music.pause();
+        SoundEffect.pauseAllSounds();
     }
 
     /**
