@@ -56,7 +56,9 @@ public class SaintShield extends Enemy
     public void damage(Damage damage) {
         //Redirects a portion of all melee damage back
         Entity o = damage.getOwner();
-        if (!(damage.getSource() instanceof Projectile || damage.getSource() instanceof Magic)) {
+        if (!(damage.getSource() instanceof Projectile 
+           || damage.getSource() instanceof Magic
+           || damage.getSource() instanceof Sprack)) {
             super.damage(damage.multiply(0.6));
             if (!(damage.getSource() instanceof Statue)) {
                 Vector3 ownerPos = o.getWorldPos();
