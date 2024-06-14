@@ -252,7 +252,8 @@ public class Player extends Entity {
     public void pickupItem(Item i) {
         hotbar.add(i);
         getWorld().getWorldData().setHotbar(hotbar);
-        getWorld().getWorldData().tryAddNewWeapon(i);
+        if(i instanceof Weapon)
+            getWorld().getWorldData().tryAddNewWeapon((Weapon) i);
         if(hotbar.size() > 1)
             getWorld().removeSprite(i);
     }

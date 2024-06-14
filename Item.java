@@ -34,6 +34,7 @@ public abstract class Item extends WorldSprite {
         NAMES.put("flowerboomerang", FlowerBoomerang::new);
         NAMES.put("wandofrickastley", WandOfRickAstley::new);
         NAMES.put("statuemagicsword", StatueMagicSword::new);
+        NAMES.put("manual", Manual::new);
     }
 
     /**

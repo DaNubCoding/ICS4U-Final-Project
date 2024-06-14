@@ -21,7 +21,7 @@ public class DeathScreen extends PixelWorld {
         addSprite(new Text("Time Played: " + data.getTimePlayed() / 60 + " seconds",
                             Text.AnchorX.CENTER, Text.AnchorY.CENTER),
                             125, 140);
-        addSprite(new Text("Weapons discovered: " + data.getNumDicoveredWeapons() + " / " + Item.NAMES.size(),
+        addSprite(new Text("Weapons discovered: " + data.getNumDicoveredWeapons() + " / " + Weapon.NAMES.size(),
                             Text.AnchorX.CENTER, Text.AnchorY.CENTER),
                             125, 160);
         File file = new File("saves/save_" + data.getSeed() + ".csv");

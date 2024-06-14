@@ -59,7 +59,7 @@ public class WorldData {
     private double playerDmgTaken;
     private int enemiesKilled;
     private long timePlayedActs;
-    private ArrayList<Class <? extends Item>> weaponsDiscovered;
+    private ArrayList<Class <? extends Weapon>> weaponsDiscovered;
 
     /**
      * Create a new WorldData object with default settings.
@@ -73,11 +73,12 @@ public class WorldData {
         storedItems = new HashMap<Long, ItemPosPair>();
         storedEntities = new HashMap<Long, EntityPosPair>();
         playerHotbar = new ArrayList<Item>();
+        playerHotbar.add(new Manual());
         playerDmgDone = 0;
         playerDmgTaken = 0;
         enemiesKilled = 0;
         timePlayedActs = 0;
-        weaponsDiscovered = new ArrayList<Class <? extends Item>>();
+        weaponsDiscovered = new ArrayList<Class <? extends Weapon>>();
     }
 
     /**
@@ -117,7 +118,10 @@ public class WorldData {
             timePlayedActs = Long.valueOf(scf.nextLine());
             st = new StringTokenizer(scf.nextLine(), ",");
             while (st.hasMoreTokens()) {
-                weaponsDiscovered.add(Item.NAMES.get(st.nextToken()).get().getClass());
+                Item item = Item.NAMES.get(st.nextToken()).get();
+                if (item instanceof Weapon) {
+                    weaponsDiscovered.add(((Weapon) item).getClass());
+                }
             }
 
             while (scf.hasNextLine()) {
@@ -663,7 +667,7 @@ public class WorldData {
      *
      * @param w the weapon that is trying to be added
      */
-    public void tryAddNewWeapon(Item w) {
+    public void tryAddNewWeapon(Weapon w) {
         if (!weaponsDiscovered.contains(w.getClass())) {
             weaponsDiscovered.add(w.getClass());
         }
@@ -709,7 +713,7 @@ public class WorldData {
         fileOutput.println(enemiesKilled);
         fileOutput.println(timePlayedActs);
         sb = new StringBuilder();
-        for (Class<? extends Item> c : weaponsDiscovered) {
+        for (Class<? extends Weapon> c : weaponsDiscovered) {
             sb.append(c.getName().toLowerCase() + ",");
         }
         if (sb.length() > 0)
