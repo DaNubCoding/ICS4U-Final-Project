@@ -2,14 +2,13 @@ import greenfoot.GreenfootImage;
 import java.util.List;
 
 /**
- * A projectile that teleports the owner on hit.
+ * A projectile homes in on a target.
  *
  * @author Stanley Wang
  * @author Martin Baldwin
  * @version June 2024
  */
 public class SaintBlast extends Projectile {
-    private Entity owner;
     private Entity target;
     private int homing = 60;
 
@@ -18,16 +17,11 @@ public class SaintBlast extends Projectile {
         setOriginalImage(new GreenfootImage("holy_blast.png"));
         physics.setAffectedByGravity(false);
         setWorldRotation(initialVel.xz.angle());
-        this.owner = owner;
         this.target = target;
     }
 
     @Override
     public void movingUpdate() {
-        //Polish this for me lol
-        //if (Math.random() < 0.5) {
-        //    getWorld().addWorldObject(new StatueParticle(), getWorldPos());
-        //}
         setWorldRotation(physics.getVelocity().xz.angle());
         if (homing > 0) {
             homing -= 1;
