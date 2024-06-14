@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.stream.Stream;
 import java.util.stream.Collectors;
+import java.util.Random;
 
 public class SprackWorld extends PixelWorld {
     private WorldData worldData;
@@ -28,10 +29,11 @@ public class SprackWorld extends PixelWorld {
         collisionControllers = new ArrayList<>();
 
         Cluster.clearClusters();
-        if (seeded)
-            worldData = new WorldData();
-        else
-            worldData = new WorldData(seed);
+
+        if (seeded) {
+            seed = new Random().nextLong();
+        }
+        worldData = new WorldData(seed);
 
         Vector2 playerPos = worldData.getPlayerLocation();
         player = new Player();

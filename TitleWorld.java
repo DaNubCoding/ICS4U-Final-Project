@@ -11,6 +11,9 @@ public class TitleWorld extends PixelWorld {
         applyAdditions();
         render();
         updateImage();
+
+        // clear previous keys
+        Greenfoot.getKey();
     }
 
     @Override

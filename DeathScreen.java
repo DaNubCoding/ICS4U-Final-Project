@@ -1,6 +1,7 @@
 import java.io.File;
 
 import greenfoot.Color;
+import greenfoot.Greenfoot;
 import greenfoot.GreenfootImage;
 
 public class DeathScreen extends PixelWorld {
@@ -20,17 +21,24 @@ public class DeathScreen extends PixelWorld {
         addSprite(new Text("Time Played: " + data.getTimePlayed() / 60 + " seconds",
                             Text.AnchorX.CENTER, Text.AnchorY.CENTER),
                             125, 140);
-        addSprite(new Text("Weapons discovered: " + data.getNumDicoveredWeapons() + " / " + Item.NAMES.size(),
+        addSprite(new Text("Weapons discovered: " + data.getNumDicoveredWeapons() + " / " + Weapon.NAMES.size(),
                             Text.AnchorX.CENTER, Text.AnchorY.CENTER),
                             125, 160);
         File file = new File("saves/save_" + data.getSeed() + ".csv");
         file.delete();
 
         Music.stop();
+
+        // clear previous keys
+        Greenfoot.getKey();
     }
 
     @Override
     public void update() {
+        if (Greenfoot.getKey() != null) {
+            Greenfoot.setWorld(new TitleWorld());
+            return;
+        }
         updateSprites();
     }
 
@@ -42,7 +50,3 @@ public class DeathScreen extends PixelWorld {
         renderSprites();
     }
 }
-
-
-
-

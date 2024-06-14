@@ -54,9 +54,9 @@ public class Player extends Entity {
         heldIndex = 0;
         healthBar = new HealthBar(this);
         armorBar = new HealthBar(this);
-        armorBar.setLostColor(new Color(0, 0, 0, 0));
         armorBar.setHaveColor(new Color(84, 164, 255));
         armorBar.setHealth(armor);
+        armorBar.setYOffset(14);
         setHealth(200);
         footstepTimer = new Timer(8);
         footstepOffset = new Vector3(0, 0, 4);
@@ -92,9 +92,6 @@ public class Player extends Entity {
             playOneTimeAnimation(dashAnimation);
             dashTimer.restart();
         }
-
-        // Update player's held item
-        if (hotbar.size() > 0) hotbar.get(heldIndex).update();
 
         // Apply weapon changing
         if (Greenfoot.isKeyDown("tab") && !tabFlag) {
@@ -252,7 +249,8 @@ public class Player extends Entity {
     public void pickupItem(Item i) {
         hotbar.add(i);
         getWorld().getWorldData().setHotbar(hotbar);
-        getWorld().getWorldData().tryAddNewWeapon(i);
+        if(i instanceof Weapon)
+            getWorld().getWorldData().tryAddNewWeapon((Weapon) i);
         if(hotbar.size() > 1)
             getWorld().removeSprite(i);
     }

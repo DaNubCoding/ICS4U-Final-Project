@@ -1,15 +1,17 @@
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.nio.ByteBuffer;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Random;
+import java.security.SecureRandom;
 import java.util.Scanner;
 import java.util.StringTokenizer;
 import java.util.function.BiConsumer;
 import java.util.List;
+import java.util.Random;
 
 /**
  * A class that stores and handles all the data to be used inside the world.
@@ -38,8 +40,7 @@ public class WorldData {
         }
     }
 
-    private Random worldRand;
-    private static Random rand;
+    private static SecureRandom rand;
 
     // settings
     private static final int generationRadius = 20;
@@ -59,26 +60,7 @@ public class WorldData {
     private double playerDmgTaken;
     private int enemiesKilled;
     private long timePlayedActs;
-    private ArrayList<Class <? extends Item>> weaponsDiscovered;
-
-    /**
-     * Create a new WorldData object with default settings.
-     */
-    public WorldData() {
-        worldRand = new Random();
-        seed = worldRand.nextLong();
-        playerLocation = new Vector2(0, 0);
-        surroundings = new HashMap<Vector2, Feature>();
-        modifiedFeatures = new HashMap<Long, FeatureData>();
-        storedItems = new HashMap<Long, ItemPosPair>();
-        storedEntities = new HashMap<Long, EntityPosPair>();
-        playerHotbar = new ArrayList<Item>();
-        playerDmgDone = 0;
-        playerDmgTaken = 0;
-        enemiesKilled = 0;
-        timePlayedActs = 0;
-        weaponsDiscovered = new ArrayList<Class <? extends Item>>();
-    }
+    private ArrayList<Class <? extends Weapon>> weaponsDiscovered;
 
     /**
      * Create a WorldData object from a seed.
@@ -89,7 +71,20 @@ public class WorldData {
      * @param seed the seed to be used when creating the WorldData
      */
     public WorldData(long seed) {
-        this();
+        // Set up default settings
+        playerLocation = new Vector2(0, 0);
+        surroundings = new HashMap<Vector2, Feature>();
+        modifiedFeatures = new HashMap<Long, FeatureData>();
+        storedItems = new HashMap<Long, ItemPosPair>();
+        storedEntities = new HashMap<Long, EntityPosPair>();
+        playerHotbar = new ArrayList<Item>();
+        playerDmgDone = 0;
+        playerDmgTaken = 0;
+        enemiesKilled = 0;
+        timePlayedActs = 0;
+        weaponsDiscovered = new ArrayList<Class <? extends Weapon>>();
+
+        // Load changes from save file
         Scanner scf;
         try {
             scf = new Scanner(new File("saves/save_" + seed + ".csv"));
@@ -117,7 +112,10 @@ public class WorldData {
             timePlayedActs = Long.valueOf(scf.nextLine());
             st = new StringTokenizer(scf.nextLine(), ",");
             while (st.hasMoreTokens()) {
-                weaponsDiscovered.add(Item.NAMES.get(st.nextToken()).get().getClass());
+                Item item = Item.NAMES.get(st.nextToken()).get();
+                if (item instanceof Weapon) {
+                    weaponsDiscovered.add(((Weapon) item).getClass());
+                }
             }
 
             while (scf.hasNextLine()) {
@@ -169,6 +167,8 @@ public class WorldData {
 
         } catch(FileNotFoundException e) {
             this.seed = seed;
+            // New world, give the player a manual
+            playerHotbar.add(new Manual());
         }
     }
 
@@ -208,7 +208,7 @@ public class WorldData {
     }
 
     private static Feature generateFeature(WorldData data, long id, Vector2 coord, FeatureData featureData) {
-        rand = new Random(id);
+        rand = new SecureRandom(ByteBuffer.allocate(8).putLong(id).array());
 
         // init spawn rates
         int[] spawnRates = new int[Feature.Type.length()];
@@ -252,7 +252,7 @@ public class WorldData {
     }
 
     private static Cluster generateCluster(long id) {
-        rand = new Random(id);
+        rand = new SecureRandom(ByteBuffer.allocate(8).putLong(id).array());
         // clusters currently use a probability system
         int roll = rand.nextInt(5000);
         int sum = 0;
@@ -574,7 +574,7 @@ public class WorldData {
 
     /**
      * Get the generation radius.
-     * 
+     *
      * @return the generation radius, in # of grid tiles
      */
     public int getGenerationRadius() {
@@ -583,7 +583,7 @@ public class WorldData {
 
     /**
      * Set the player's hotbar to a list of items
-     * 
+     *
      * @param hotbar the list of item representing the player's hotbar
      */
     public void setHotbar(ArrayList<Item> hotbar) {
@@ -592,7 +592,7 @@ public class WorldData {
 
     /**
      * Add damage to the player's damage done statistic.
-     * 
+     *
      * @param damage the amount of damage done
      */
     public void addPlayerDamageDone(double damage) {
@@ -601,7 +601,7 @@ public class WorldData {
 
     /**
      * Get the player's damage done statistic.
-     * 
+     *
      * @return the total amount of damage done by the player
      */
     public double getPlayerDamageDone() {
@@ -610,7 +610,7 @@ public class WorldData {
 
     /**
      * Add damage to the player's damage taken statistic.
-     * 
+     *
      * @param damage the amount of taken
      */
     public void addPlayerDamageTaken(double damage) {
@@ -619,7 +619,7 @@ public class WorldData {
 
     /**
      * Get the total amount of damage taken statistic.
-     * 
+     *
      * @return the total amount of damage taken by the player
      */
     public double getPlayerDamageTaken() {
@@ -635,7 +635,7 @@ public class WorldData {
 
     /**
      * Get the total amount of enemies killed by the player.
-     * 
+     *
      * @return the number of enemies killed by the player
      */
     public int getPlayerEnemiesKilled() {
@@ -651,7 +651,7 @@ public class WorldData {
 
     /**
      * Get the total amount of time the player has been playing in this world.
-     * 
+     *
      * @return the amount of time played, in acts
      */
     public long getTimePlayed() {
@@ -660,10 +660,10 @@ public class WorldData {
 
     /**
      * Try adding a new weapon to the list of discovered weapons.
-     * 
+     *
      * @param w the weapon that is trying to be added
      */
-    public void tryAddNewWeapon(Item w) {
+    public void tryAddNewWeapon(Weapon w) {
         if (!weaponsDiscovered.contains(w.getClass())) {
             weaponsDiscovered.add(w.getClass());
         }
@@ -671,7 +671,7 @@ public class WorldData {
 
     /**
      * Get the number of discovered weapons.
-     * 
+     *
      * @return the number of discovered weapons.
      */
     public int getNumDicoveredWeapons() {
@@ -709,7 +709,7 @@ public class WorldData {
         fileOutput.println(enemiesKilled);
         fileOutput.println(timePlayedActs);
         sb = new StringBuilder();
-        for (Class<? extends Item> c : weaponsDiscovered) {
+        for (Class<? extends Weapon> c : weaponsDiscovered) {
             sb.append(c.getName().toLowerCase() + ",");
         }
         if (sb.length() > 0)

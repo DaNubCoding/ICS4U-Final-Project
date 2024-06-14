@@ -6,6 +6,7 @@ import greenfoot.GreenfootImage;
  * A projectile shot by the testing pistol, also for testing pyrposes :)
  *
  * @author Lucas Fu
+ * @author Martin Baldwin
  * @version June 2024
  */
 public class PistolBullet extends Projectile {
@@ -20,8 +21,13 @@ public class PistolBullet extends Projectile {
     @Override
     public boolean hitCondition() {
         List<Sprack> l = getWorld().getSpracksInRange(getWorldPos(), 10);
-        if(l.size() > 0 && l.contains(getOwner())) return false;
-        return l.size() > 0;
+        for (Sprack s : l) {
+            if (s == getOwner() || !Projectile.isSprackSolid(s)) {
+                continue;
+            }
+            return true;
+        }
+        return false;
     }
 
     @Override

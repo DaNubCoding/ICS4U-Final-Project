@@ -9,7 +9,7 @@ import java.util.function.Supplier;
  * @author Andrew Wang
  * @version June 2024
  */
-public class Entity extends Sprack { // TODO: entity loading and unloading
+public abstract class Entity extends Sprack { // TODO: entity loading and unloading
     /**
      * The default acceleration due to the entity's internal forces.
      */
@@ -42,6 +42,7 @@ public class Entity extends Sprack { // TODO: entity loading and unloading
         NAMES.put("jester", Jester::new);
         NAMES.put("saint", Saint::new);
         NAMES.put("skeleton", Skeleton::new);
+        NAMES.put("saintshield", SaintShield::new);
     }
 
     /**

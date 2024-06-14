@@ -14,7 +14,7 @@
  * @author Lucas Fu
  * @version May 2024
  */
-public class Feature extends Sprack {
+public abstract class Feature extends Sprack {
     /**
      * A functional interface that creates a new Feature with the given id.
      *
@@ -52,15 +52,6 @@ public class Feature extends Sprack {
         POND_SPAWNER(PondSpawner.class, PondSpawner::new, 2),
         DIRT_SPAWNER(DirtSpawner.class, DirtSpawner::new, 5);
         ;
-
-        private static int[] spawnRates = new int[Type.length()];
-
-        static {
-            spawnRates[0] = values()[0].spawnRate;
-            for (int i = 0; i < Type.length(); i++) {
-                spawnRates[i] = values()[i].spawnRate;
-            }
-        }
 
         /**
          * Get the number of different types of features.

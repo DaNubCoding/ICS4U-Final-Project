@@ -8,6 +8,7 @@ import greenfoot.*;
  *
  * @author Andrew Wang
  * @author Lucas Fu
+ * @author Martin Baldwin
  * @version June 2024
  */
 public class HealthBar extends WorldSprite {
@@ -16,6 +17,7 @@ public class HealthBar extends WorldSprite {
     private boolean maxHealthSet;
     private Color lostColor;
     private Color haveColor;
+    private int yOffset;
 
     /**
      * Create a new health bar for the given entity.
@@ -25,17 +27,18 @@ public class HealthBar extends WorldSprite {
         this.owner = owner;
         lostColor = Color.GRAY;
         haveColor = Color.RED;
+        yOffset = 10;
     }
 
     @Override
     public void update() {
-        setWorldPos(owner.getWorldPos().add(new Vector3(0, owner.getHeight() + 10, 0)));
+        setWorldPos(owner.getWorldPos().add(new Vector3(0, owner.getHeight() + yOffset, 0)));
         setWorldRotation(Camera.getRotation());
     }
 
     /**
      * Set the color of the missing health
-     * 
+     *
      * @param c the color to set the missing health to
      */
     public void setLostColor(Color c) {
@@ -44,11 +47,20 @@ public class HealthBar extends WorldSprite {
 
     /**
      * Set the color of the non-missing health
-     * 
+     *
      * @param c the color to set the non-missing health to
      */
     public void setHaveColor(Color c) {
         haveColor = c;
+    }
+
+    /**
+     * Set the offset of this health bar's y-position relative to its owner.
+     *
+     * @param offset the offset of the bar on the y-axis
+     */
+    public void setYOffset(int offset) {
+        yOffset = offset;
     }
 
     /**
