@@ -57,6 +57,9 @@ public abstract class TransformableSprite extends Sprite {
      */
     @Override
     public void render(GreenfootImage canvas) {
+        if (originalImage == null || transformedImage == null) {
+            return;
+        }
         double finalWidth = Math.ceil(transformedWidth * scale);
         double finalHeight = Math.ceil(transformedHeight * scale);
         Vector2 center = getImageOffsetGlobalPosition(new Vector2(originalWidth / 2, originalHeight / 2));
