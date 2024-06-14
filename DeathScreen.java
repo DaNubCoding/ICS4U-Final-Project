@@ -1,6 +1,7 @@
 import java.io.File;
 
 import greenfoot.Color;
+import greenfoot.Greenfoot;
 import greenfoot.GreenfootImage;
 
 public class DeathScreen extends PixelWorld {
@@ -27,10 +28,17 @@ public class DeathScreen extends PixelWorld {
         file.delete();
 
         Music.stop();
+
+        // clear previous keys
+        Greenfoot.getKey();
     }
 
     @Override
     public void update() {
+        if (Greenfoot.getKey() != null) {
+            Greenfoot.setWorld(new TitleWorld());
+            return;
+        }
         updateSprites();
     }
 
@@ -42,7 +50,3 @@ public class DeathScreen extends PixelWorld {
         renderSprites();
     }
 }
-
-
-
-
