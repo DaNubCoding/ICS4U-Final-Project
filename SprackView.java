@@ -43,14 +43,9 @@ public class SprackView {
      */
     public static final int LAYERS_PER_PIXEL = 6;
 
-    public static AtomicInteger totalCaches = new AtomicInteger();
-    public static AtomicInteger loadedCaches = new AtomicInteger();
-
-    /**
-     * Load and cache all SprackView objects to be used in the game.
-     */
-    public static void loadAll() {
-        Map<String, Integer> sheetInfo = new HashMap<>();
+    /** All Sprack sheets to be cached mapped to the number of layers in them. */
+    private static final Map<String, Integer> sheetInfo = new HashMap<>();
+    static {
         sheetInfo.put("crate", 16);
         sheetInfo.put("tree_oak_trunk", 29);
         sheetInfo.put("tree_oak_canopy", 21);
@@ -85,8 +80,17 @@ public class SprackView {
         sheetInfo.put("jester_flip4", 28);
         sheetInfo.put("boulder", 17);
         sheetInfo.put("rock", 5);
-        totalCaches.set(sheetInfo.size() * IMAGE_CACHE_ANGLE_COUNT);
+    }
 
+    private static AtomicInteger totalCaches = new AtomicInteger(sheetInfo.size() * IMAGE_CACHE_ANGLE_COUNT);
+    private static AtomicInteger loadedCaches = new AtomicInteger(0);
+
+    /**
+     * Load and cache all SprackView objects to be used in the game.
+     */
+    public static void loadAll() {
+        viewMap.clear();
+        loadedCaches.set(0);
         ExecutorService service = Executors.newFixedThreadPool(sheetInfo.size());
         for (Map.Entry<String, Integer> entry : sheetInfo.entrySet()) {
             final String name = entry.getKey();
