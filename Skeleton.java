@@ -1,15 +1,15 @@
 /**
- * The Skeleton is your average enemy, fully kitted out for you to test your 
+ * The Skeleton is your average enemy, fully kitted out for you to test your
  * weapons!
  * <p>
  * Despite it being a damage sponge, if you let them alone for too long, you'll
  * regret it!
- * 
+ *
  * @author Lucas Fu
  * @version June 2024
  */
 public class Skeleton extends Enemy {
-    private static final Animation walkingAnimation = new Animation(60, 
+    private static final Animation walkingAnimation = new Animation(60,
             "skeleton_step1",
             "skeleton_step2"
         );
@@ -25,7 +25,7 @@ public class Skeleton extends Enemy {
         super("skeleton_idle");
 
         setNoticeRange(120);
-        setForgetRange(250);
+        setForgetRange(220);
         setHealth(MAX_HP);
 
         physics.setMaxSpeed(0.8);
@@ -57,7 +57,7 @@ public class Skeleton extends Enemy {
         } else {
             setLoopingAnimation(idleAnimation);
         }
-    } 
+    }
 
     @Override
     public void notice(Player player) {
