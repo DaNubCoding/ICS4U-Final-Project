@@ -23,7 +23,7 @@ import greenfoot.*;
  *
  * @see SprackView
  */
-public class Sprack extends Sprite implements WorldObject {
+public abstract class Sprack extends Sprite implements WorldObject {
     // The current looping animation of this Sprack
     private Animation loopingAnimation;
     // The current one-time animation of this Sprack, or null if none

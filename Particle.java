@@ -6,7 +6,7 @@ import greenfoot.*;
  * @author Andrew Wang
  * @version June 2024
  */
-public class Particle extends WorldSprite {
+public abstract class Particle extends WorldSprite {
     private Timer lifeTimer;
     public final PhysicsController physics = new PhysicsController(this);
 

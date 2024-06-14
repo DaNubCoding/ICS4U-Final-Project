@@ -14,7 +14,7 @@
  * @author Lucas Fu
  * @version May 2024
  */
-public class Feature extends Sprack {
+public abstract class Feature extends Sprack {
     /**
      * A functional interface that creates a new Feature with the given id.
      *
