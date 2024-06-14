@@ -34,6 +34,8 @@ public class LoadingWorld extends PixelWorld {
         applyAdditions();
         render();
         updateImage();
+
+        Music.stop();
     }
 
     @Override

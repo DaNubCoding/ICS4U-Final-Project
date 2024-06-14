@@ -8,7 +8,7 @@ public class DeathScreen extends PixelWorld {
     public DeathScreen(WorldData worldData) {
         super(SprackWorld.WORLD_WIDTH, SprackWorld.WORLD_HEIGHT);
         data = worldData;
-        addSprite(new Text("Damage Dealt: " + data.getPlayerDamageDone(), 
+        addSprite(new Text("Damage Dealt: " + data.getPlayerDamageDone(),
                             Text.AnchorX.CENTER, Text.AnchorY.CENTER),
                             125, 80);
         addSprite(new Text("Damage Received: " + data.getPlayerDamageTaken(),
@@ -25,6 +25,8 @@ public class DeathScreen extends PixelWorld {
                             125, 160);
         File file = new File("saves/save_" + data.getSeed() + ".csv");
         file.delete();
+
+        Music.stop();
     }
 
     @Override

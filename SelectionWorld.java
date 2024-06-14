@@ -53,6 +53,8 @@ public class SelectionWorld extends PixelWorld {
         applyAdditions();
         render();
         updateImage();
+
+        Music.set("title_music.wav");
     }
 
     /**
