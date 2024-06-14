@@ -86,11 +86,17 @@ public class WorldSelection extends PixelWorld {
     }
 
     private void scrollUp() {
+        if (worldSeeds.length == 0) {
+            return;
+        }
         topIndex = ((topIndex - 1) + worldSeeds.length) % worldSeeds.length;
         updateButtonText();
     }
 
     private void scrollDown() {
+        if (worldSeeds.length == 0) {
+            return;
+        }
         topIndex = (topIndex + 1) % worldSeeds.length;
         updateButtonText();
     }
