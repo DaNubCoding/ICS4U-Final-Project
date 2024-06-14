@@ -9,7 +9,7 @@ import greenfoot.GreenfootImage;
  * @author Lucas Fu
  * @version June 2024
  */
-public class Item extends WorldSprite {
+public abstract class Item extends WorldSprite {
     public final long id = Math.round(Math.random() * (Long.MAX_VALUE - 1));
     private Player player;
     private boolean isOnGround;

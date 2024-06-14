@@ -6,7 +6,7 @@ import greenfoot.*;
  * @author Andrew Wang
  * @version May 2024
  */
-public class WorldSprite extends TransformableSprite implements WorldObject {
+public abstract class WorldSprite extends TransformableSprite implements WorldObject {
     private Vector3 worldPos;
     private double worldRotation;
 

@@ -9,7 +9,7 @@ import java.util.function.Supplier;
  * @author Andrew Wang
  * @version June 2024
  */
-public class Entity extends Sprack { // TODO: entity loading and unloading
+public abstract class Entity extends Sprack { // TODO: entity loading and unloading
     /**
      * The default acceleration due to the entity's internal forces.
      */
