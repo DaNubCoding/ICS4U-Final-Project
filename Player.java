@@ -100,7 +100,10 @@ public class Player extends Entity {
         if (Greenfoot.isKeyDown("tab") && !tabFlag) {
             if (hotbar.size() > 1) {
                 getWorld().removeSprite(hotbar.get(heldIndex));
-                heldIndex = (heldIndex + 1) % hotbar.size();
+                heldIndex = (heldIndex + (Greenfoot.isKeyDown("shift") ? -1 : 1)) % hotbar.size();
+                if (heldIndex < 0) {
+                    heldIndex += hotbar.size();
+                }
                 getWorld().addWorldObject(hotbar.get(heldIndex), getWorldPos().add(HAND_LOCATION.rotateY(getWorldRotation())));
             }
             tabFlag = true;
@@ -132,19 +135,19 @@ public class Player extends Entity {
             physics.setAlwaysTurnTowardsMovement(false);
             Vector2 mousePos = MouseManager.getMouseWorldPos();
             if (mousePos != null) {
-				double prevRot = physics.getWorldRotation();
+                double prevRot = physics.getWorldRotation();
                 physics.turnTowards(mousePos);
 
                 // Rotate the camera to drift slightly based on the amount of rotation of the player
-				double diff = physics.getWorldRotation() - prevRot;
-				if (diff > 180.0) {
-					diff -= 360.0;
-				} else if (diff < -180.0) {
-					diff += 360.0;
-				}
-				cameraRotDriftVel += diff * 0.02;
-			}
-			cameraRotDriftVel *= 0.9;
+                double diff = physics.getWorldRotation() - prevRot;
+                if (diff > 180.0) {
+                    diff -= 360.0;
+                } else if (diff < -180.0) {
+                    diff += 360.0;
+                }
+                cameraRotDriftVel += diff * 0.02;
+            }
+            cameraRotDriftVel *= 0.9;
         }
         Camera.targetRotation(Camera.getRotation() + cameraRotDriftVel);
 
