@@ -48,7 +48,7 @@ public class SaintBlast extends Projectile {
         for (Sprack s:l) {
             if (s instanceof Player || s instanceof Feature) {
                 return true;
-            } 
+            }
         }
         return false;
     }
@@ -60,10 +60,14 @@ public class SaintBlast extends Projectile {
         Damage dmg = new Damage(owner, owner, 15, getWorldPos(), 12);
         List<Sprack> l = getWorld().getSpracksInRange(getWorldPos(), 12);
         for (Sprack s:l) {
-            if (s instanceof SaintShield || s instanceof Saint || s instanceof Feature) { continue; }
-            else { ((Entity)s).damage(dmg); }
+            try {
+                if (s instanceof SaintShield || s instanceof Saint || s instanceof Feature) { continue; }
+                else { ((Entity)s).damage(dmg); }
+            } catch (ClassCastException e) {
+                // do nothing if the sprack is not an entity
+            }
         }
-        
+
         disappear();
     }
 }
