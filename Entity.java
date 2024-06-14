@@ -41,6 +41,7 @@ public class Entity extends Sprack { // TODO: entity loading and unloading
         NAMES.put("statue", Statue::new);
         NAMES.put("jester", Jester::new);
         NAMES.put("saint", Saint::new);
+        NAMES.put("skeleton", Skeleton::new);
     }
 
     /**
