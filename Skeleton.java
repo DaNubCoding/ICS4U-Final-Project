@@ -16,14 +16,13 @@ public class Skeleton extends Enemy {
     private static final Animation idleAnimation = new Animation(-1, "skeleton_idle");
     private static final Animation attackAnimation = new Animation(4, "skeleton_attack");
 
-    private final int MAX_HP = 100;
+    private final int MAX_HP = 50;
     private Timer moveTimer;
-    private Timer summonTimer;
     private Timer punchTimer;
     private Timer shootTimer;
 
     public Skeleton() {
-        super("skeleton_idle.png");
+        super("skeleton_idle");
 
         setNoticeRange(120);
         setForgetRange(250);
@@ -34,7 +33,6 @@ public class Skeleton extends Enemy {
         physics.setAlwaysTurnTowardsMovement(true);
 
         moveTimer = new Timer(150);
-        summonTimer = new Timer(1200);
         punchTimer = new Timer(60);
         shootTimer = new Timer(180);
     }
@@ -68,13 +66,11 @@ public class Skeleton extends Enemy {
         Vector3 enemyPos = getWorldPos();
         Bone bone = new Bone(this, playerPos.subtract(enemyPos).normalize().multiply(5), enemyPos);
         getWorld().addWorldObject(bone, enemyPos);
-        summonTimer.restart();
     }
 
     @Override
     public void forget(Player player) {
         setLoopingAnimation(idleAnimation);
-        summonTimer.restart();
     }
 
     @Override
@@ -94,11 +90,6 @@ public class Skeleton extends Enemy {
             Bone bone = new Bone(this, playerPos.subtract(enemyPos).normalize(), enemyPos);
             getWorld().addWorldObject(bone, enemyPos);
             shootTimer.restart();
-        }
-
-        if (summonTimer.ended()) {
-            getWorld().addWorldObject(new Skeleton(), enemyPos);
-            summonTimer.restart();
         }
     }
 }
