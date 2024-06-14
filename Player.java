@@ -93,9 +93,6 @@ public class Player extends Entity {
             dashTimer.restart();
         }
 
-        // Update player's held item
-        if (hotbar.size() > 0) hotbar.get(heldIndex).update();
-
         // Apply weapon changing
         if (Greenfoot.isKeyDown("tab") && !tabFlag) {
             if (hotbar.size() > 1) {

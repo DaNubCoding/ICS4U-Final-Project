@@ -38,7 +38,6 @@ public class WorldData {
         }
     }
 
-    private Random worldRand;
     private static Random rand;
 
     // settings
@@ -62,26 +61,6 @@ public class WorldData {
     private ArrayList<Class <? extends Weapon>> weaponsDiscovered;
 
     /**
-     * Create a new WorldData object with default settings.
-     */
-    public WorldData() {
-        worldRand = new Random();
-        seed = worldRand.nextLong();
-        playerLocation = new Vector2(0, 0);
-        surroundings = new HashMap<Vector2, Feature>();
-        modifiedFeatures = new HashMap<Long, FeatureData>();
-        storedItems = new HashMap<Long, ItemPosPair>();
-        storedEntities = new HashMap<Long, EntityPosPair>();
-        playerHotbar = new ArrayList<Item>();
-        playerHotbar.add(new Manual());
-        playerDmgDone = 0;
-        playerDmgTaken = 0;
-        enemiesKilled = 0;
-        timePlayedActs = 0;
-        weaponsDiscovered = new ArrayList<Class <? extends Weapon>>();
-    }
-
-    /**
      * Create a WorldData object from a seed.
      * <p>
      * This attempts to load a file using the seed number. If this fails to find
@@ -90,7 +69,20 @@ public class WorldData {
      * @param seed the seed to be used when creating the WorldData
      */
     public WorldData(long seed) {
-        this();
+        // Set up default settings
+        playerLocation = new Vector2(0, 0);
+        surroundings = new HashMap<Vector2, Feature>();
+        modifiedFeatures = new HashMap<Long, FeatureData>();
+        storedItems = new HashMap<Long, ItemPosPair>();
+        storedEntities = new HashMap<Long, EntityPosPair>();
+        playerHotbar = new ArrayList<Item>();
+        playerDmgDone = 0;
+        playerDmgTaken = 0;
+        enemiesKilled = 0;
+        timePlayedActs = 0;
+        weaponsDiscovered = new ArrayList<Class <? extends Weapon>>();
+
+        // Load changes from save file
         Scanner scf;
         try {
             scf = new Scanner(new File("saves/save_" + seed + ".csv"));
@@ -173,6 +165,8 @@ public class WorldData {
 
         } catch(FileNotFoundException e) {
             this.seed = seed;
+            // New world, give the player a manual
+            playerHotbar.add(new Manual());
         }
     }
 
