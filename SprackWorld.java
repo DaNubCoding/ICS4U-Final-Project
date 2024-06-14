@@ -60,6 +60,7 @@ public class SprackWorld extends PixelWorld {
         applyAdditions();
         render();
         updateImage();
+        updateElements();
     }
 
     @Override
@@ -94,69 +95,73 @@ public class SprackWorld extends PixelWorld {
         int cameraGridX = (int) (Camera.getX() / 20);
         int cameraGridZ = (int) (Camera.getZ() / 20);
         if (worldData.updatePlayerLocation(cameraGridX, cameraGridZ)) {
-            List<? extends Sprite> features = getSprites(Feature.class);
-            Vector2 playerPos = worldData.getPlayerLocation();
-            int genRad = worldData.getGenerationRadius();
-            // remove objects not present in world data
-            for (Sprite sprite : features) {
-                Feature feature = (Feature) sprite;
-                if (!worldData.getSurroundings().containsValue(feature)) {
-                    removeSprite(feature);
-                }
-            }
-            // add objects not already in world
-            for (Vector2 coord : worldData.getSurroundings().keySet()) {
-                if (worldData.getSurroundings().get(coord) != null
-                && !features.contains(worldData.getSurroundings().get(coord))) {
-                    final int x = (int) coord.x * 20, z = (int) coord.y * 20;
-                    addWorldObject(worldData.getSurroundings().get(coord), x, 0, z);
-                }
-            }
-            // remove offscreen items and add onscreen items
-            List<? extends Sprite> items = getSprites(Item.class);
-            for (long id : worldData.getStoredItems().keySet()) {
-                Item i = worldData.getStoredItems().get(id).item;
-                Vector2 pos = worldData.getStoredItems().get(id).pos;
-                // remove if offscreen
-                if (pos.distanceTo(playerPos) > genRad && items.contains(i)) {
-                    removeSprite(i);
-                }
-                // add if onscreen
-                if (pos.distanceTo(playerPos) <= genRad && !items.contains(i)) {
-                    addWorldObject(i, Vector3.fromXZ(pos).multiply(20));
-                }
-            }
-
-            // refresh all entities
-            List<? extends Sprite> entities = getSprites(Entity.class);
-            // add all entities without repeating
-            for (long id : worldData.getStoredEntities().keySet()) {
-                Entity e = worldData.getStoredEntities().get(id).entity;
-                Vector2 pos = worldData.getStoredEntities().get(id).pos;
-                if(!entities.contains(e)) {
-                    addWorldObject(e, Vector3.fromXZ(pos).multiply(20));
-                }
-            }
-            // force addition
-            applyAdditions();
-            // store all entities
-            worldData.getStoredEntities().clear();
-            entities = getSprites(Entity.class);
-            for (Sprite s : entities) {
-                Entity e = (Entity) s;
-                Vector3 v = e.getWorldPos();
-                worldData.storeEntity(new Vector2(v.x / 20, v.z / 20), e);
-            }
-            // unload all entities offscreen
-            for (long id : worldData.getStoredEntities().keySet()) {
-                Entity e = worldData.getStoredEntities().get(id).entity;
-                Vector2 pos = worldData.getStoredEntities().get(id).pos;
-                if (pos.distanceTo(worldData.getPlayerLocation()) > genRad) {
-                    removeSprite(e);
-                }
-            }
-            applyRemovals();
+            updateElements();
         }
+    }
+
+    private void updateElements() {
+        List<? extends Sprite> features = getSprites(Feature.class);
+        Vector2 playerPos = worldData.getPlayerLocation();
+        int genRad = worldData.getGenerationRadius();
+        // remove objects not present in world data
+        for (Sprite sprite : features) {
+            Feature feature = (Feature) sprite;
+            if (!worldData.getSurroundings().containsValue(feature)) {
+                removeSprite(feature);
+            }
+        }
+        // add objects not already in world
+        for (Vector2 coord : worldData.getSurroundings().keySet()) {
+            if (worldData.getSurroundings().get(coord) != null
+            && !features.contains(worldData.getSurroundings().get(coord))) {
+                final int x = (int) coord.x * 20, z = (int) coord.y * 20;
+                addWorldObject(worldData.getSurroundings().get(coord), x, 0, z);
+            }
+        }
+        // remove offscreen items and add onscreen items
+        List<? extends Sprite> items = getSprites(Item.class);
+        for (long id : worldData.getStoredItems().keySet()) {
+            Item i = worldData.getStoredItems().get(id).item;
+            Vector2 pos = worldData.getStoredItems().get(id).pos;
+            // remove if offscreen
+            if (pos.distanceTo(playerPos) > genRad && items.contains(i)) {
+                removeSprite(i);
+            }
+            // add if onscreen
+            if (pos.distanceTo(playerPos) <= genRad && !items.contains(i)) {
+                addWorldObject(i, Vector3.fromXZ(pos).multiply(20));
+            }
+        }
+
+        // refresh all entities
+        List<? extends Sprite> entities = getSprites(Entity.class);
+        // add all entities without repeating
+        for (long id : worldData.getStoredEntities().keySet()) {
+            Entity e = worldData.getStoredEntities().get(id).entity;
+            Vector2 pos = worldData.getStoredEntities().get(id).pos;
+            if(!entities.contains(e)) {
+                addWorldObject(e, Vector3.fromXZ(pos).multiply(20));
+            }
+        }
+        // force addition
+        applyAdditions();
+        // store all entities
+        worldData.getStoredEntities().clear();
+        entities = getSprites(Entity.class);
+        for (Sprite s : entities) {
+            Entity e = (Entity) s;
+            Vector3 v = e.getWorldPos();
+            worldData.storeEntity(new Vector2(v.x / 20, v.z / 20), e);
+        }
+        // unload all entities offscreen
+        for (long id : worldData.getStoredEntities().keySet()) {
+            Entity e = worldData.getStoredEntities().get(id).entity;
+            Vector2 pos = worldData.getStoredEntities().get(id).pos;
+            if (pos.distanceTo(worldData.getPlayerLocation()) > genRad) {
+                removeSprite(e);
+            }
+        }
+        applyRemovals();
     }
 
     private void updateDamages() {
