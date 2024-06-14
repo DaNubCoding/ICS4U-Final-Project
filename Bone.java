@@ -13,9 +13,8 @@ public class Bone extends Projectile {
 
     public Bone(Entity owner, Vector3 direction, Vector3 startpos) {
         super(owner, direction, startpos, 200);
-        setOriginalImage(new GreenfootImage("repeater_projectile.png"));
+        setOriginalImage(new GreenfootImage("bone.png"));
         physics.setWorldRotation(direction.xz.angle());
-        //TODO: bone.png
         pierces = 3;
     }
 
