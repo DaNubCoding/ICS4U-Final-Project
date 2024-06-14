@@ -3,7 +3,7 @@ import greenfoot.GreenfootImage;
 import java.util.ArrayList;
 
 /**
- * A projectile shot by the testing pistol, also for testing pyrposes :)
+ * A projectile shot en masse by the Saint.
  *
  * @author Lucas Fu
  * @author Martin Baldwin
