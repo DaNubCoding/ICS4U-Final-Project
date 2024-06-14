@@ -13,13 +13,14 @@ import greenfoot.GreenfootImage;
  * @version June 2024
  */
 public class SelectionWorld extends PixelWorld {
-    private static final Color WORLD_BOX_COLOR = new Color(112, 112, 112);
+    private static final Color WORLD_BOX_COLOR = new Color(0, 0, 0, 100);
 
     private long[] worldSeeds;
     private int topIndex = 0;
     private Button[] buttons;
+    private GifSprite panorama;
 
-    public SelectionWorld() {
+    public SelectionWorld(GifSprite panorama) {
         super(SprackWorld.WORLD_WIDTH, SprackWorld.WORLD_HEIGHT);
         File path = new File("saves");
         // Create saves directory if it doesn't exist
@@ -44,6 +45,7 @@ public class SelectionWorld extends PixelWorld {
         }
         updateButtonText();
 
+        this.panorama = panorama;
         addSprite(new Button("Generate Random World", SelectionWorld::openNewRandomWorld), 104, 45);
         addSprite(new Button("up", this::scrollUp, 40, -1), 222, 101);
         addSprite(new Button("down", this::scrollDown, 40, -1), 222, 129);
@@ -103,18 +105,22 @@ public class SelectionWorld extends PixelWorld {
 
     @Override
     public void update() {
+        panorama.updateImage();
         updateSprites();
+
+        Timer.incrementAct();
     }
 
     @Override
     public void render() {
-        GreenfootImage background = getCanvas();
-        background.setColor(Color.GRAY);
-        background.fill();
+        GreenfootImage canvas = getCanvas();
+        panorama.render(canvas);
+        canvas.setColor(new Color(0, 0, 0, 65));
+        canvas.fill();
         // Draw backgrounds behind world buttons
-        background.setColor(WORLD_BOX_COLOR);
-        background.fillRect(14, 27, 180, 36);
-        background.fillRect(14, 71, 180, 92);
+        canvas.setColor(WORLD_BOX_COLOR);
+        canvas.fillRect(14, 27, 180, 36);
+        canvas.fillRect(14, 71, 180, 92);
         renderSprites();
     }
 }
