@@ -53,15 +53,6 @@ public abstract class Feature extends Sprack {
         DIRT_SPAWNER(DirtSpawner.class, DirtSpawner::new, 5);
         ;
 
-        private static int[] spawnRates = new int[Type.length()];
-
-        static {
-            spawnRates[0] = values()[0].spawnRate;
-            for (int i = 0; i < Type.length(); i++) {
-                spawnRates[i] = values()[i].spawnRate;
-            }
-        }
-
         /**
          * Get the number of different types of features.
          *
