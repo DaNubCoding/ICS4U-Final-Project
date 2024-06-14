@@ -30,6 +30,7 @@ public class Player extends Entity {
     };
 
     private double cameraTargetRotation;
+    private double cameraRotDriftVel;
     private Timer dashTimer;
     private Timer footstepTimer;
     private Vector3 footstepOffset;
@@ -132,9 +133,21 @@ public class Player extends Entity {
             physics.setAlwaysTurnTowardsMovement(false);
             Vector2 mousePos = MouseManager.getMouseWorldPos();
             if (mousePos != null) {
+				double prevRot = physics.getWorldRotation();
                 physics.turnTowards(mousePos);
-            }
+
+                // Rotate the camera to drift slightly based on the amount of rotation of the player
+				double diff = physics.getWorldRotation() - prevRot;
+				if (diff > 180.0) {
+					diff -= 360.0;
+				} else if (diff < -180.0) {
+					diff += 360.0;
+				}
+				cameraRotDriftVel += diff * 0.02;
+			}
+			cameraRotDriftVel *= 0.9;
         }
+        Camera.targetRotation(Camera.getRotation() + cameraRotDriftVel);
 
         // Set the animation based on whether the player is moving
         if (physics.isMoving()) {
@@ -185,6 +198,7 @@ public class Player extends Entity {
         if (mouse != null && mouse.getButton() == 3) {
             if (Greenfoot.mousePressed(null)) {
                 MouseManager.initMouseLock();
+                cameraTargetRotation = Camera.getRotation();
             }
         }
         if (Greenfoot.mouseClicked(null)) {
