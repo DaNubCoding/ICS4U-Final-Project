@@ -3,7 +3,7 @@ import java.util.List;
 /**
  * A sword that teleports the attacker behind the enemy before delivering an
  * uppercut.
- * 
+ *
  * @author Lucas Fu
  * @version June 2024
  */

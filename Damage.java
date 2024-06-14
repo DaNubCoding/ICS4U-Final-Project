@@ -1,3 +1,6 @@
+import java.util.List;
+import java.util.ArrayList;
+
 /**
  * A class that represents a damage source. It is a spherical area of effect
  * inside which entities can take damage.
@@ -20,6 +23,8 @@ public class Damage {
     private boolean removed;
     private Timer lifeTimer;
     private Timer damageTimer;
+    private Class<? extends WorldObject>[] deletables;
+    private List<WorldObject> deletedObjects;
 
     /**
      * Create a new damage source.
@@ -41,6 +46,7 @@ public class Damage {
         lifeTimer = new Timer(0);
         damageTimer = new Timer(0);
         damageOwner = false;
+        deletedObjects = new ArrayList<>();
     }
 
     /**
@@ -125,9 +131,24 @@ public class Damage {
     }
 
     /**
+     * Set the classes of world objects that can be deleted by the damage
+     * source.
+     * <p>
+     * By default, the damage source will not delete any world objects.
+     *
+     * @param deletables the classes of world objects that can be deleted by the
+     *                   damage source
+     */
+    @SafeVarargs
+    public final void setDeletables(Class<? extends WorldObject>... deletables) {
+        this.deletables = deletables;
+    }
+
+    /**
      * Update the damage source. This will deal damage to entities within the
      * area of effect.
      */
+    @SuppressWarnings("unchecked")
     public void update() {
         if (damageTimer.ended()) {
             SprackWorld world = owner.getWorld();
@@ -136,28 +157,49 @@ public class Damage {
                 removed = true;
                 return;
             }
+
             for (Entity entity : world.getEntitiesInRange(center, radius)) {
                 if (entity == owner && !damageOwner) continue;
                 if (target != null && entity != target) continue;
-                if (minAngle == 0 && maxAngle == 0) {
-                    entity.damage(this);
-                    continue;
-                }
-                double angle = entity.getWorldPos().subtract(center).xz.angle();
-                double angle2 = angle + 360;
-                double angle3 = angle - 360;
-                if (angle > minAngle && angle < maxAngle
-                    || angle2 > minAngle && angle2 < maxAngle
-                    || angle3 > minAngle && angle3 < maxAngle) {
+                if ((minAngle == 0 && maxAngle == 0)
+                || inAngularRange(entity.getWorldPos())) {
                     entity.damage(this);
                 }
             }
+
+            if (deletables != null) {
+                for (Class<? extends WorldObject> deletable : deletables) {
+                    for (Sprite sprite : world.getSprites((Class<? extends Sprite>) deletable)) {
+                        WorldObject obj = (WorldObject) sprite;
+                        if (obj.getWorldPos().distanceTo(center) > radius) continue;
+                        if ((minAngle == 0 && maxAngle == 0)
+                        || inAngularRange(obj.getWorldPos())) {
+                            if (obj instanceof Feature) {
+                                ((Feature) obj).removeFromWorld();
+                            } else {
+                                world.removeSprite(sprite);
+                            }
+                            deletedObjects.add(obj);
+                        }
+                    }
+                }
+            }
+
             damageTimer.restart();
         }
 
         if (lifeTimer.ended()) {
             removed = true;
         }
+    }
+
+    private boolean inAngularRange(Vector3 pos) {
+        final double angle = pos.subtract(center).xz.angle();
+        final double angle2 = angle + 360;
+        final double angle3 = angle - 360;
+        return angle > minAngle && angle < maxAngle
+            || angle2 > minAngle && angle2 < maxAngle
+            || angle3 > minAngle && angle3 < maxAngle;
     }
 
     /**
@@ -300,5 +342,14 @@ public class Damage {
 
     public void setDamageOwner(boolean damageOwner) {
         this.damageOwner = damageOwner;
+    }
+
+    /**
+     * Get the list of world objects that has been deleted by this Damage.
+     *
+     * @return the list of world objects that has been deleted by this Damage
+     */
+    public List<WorldObject> getDeletedObjects() {
+        return deletedObjects;
     }
 }

@@ -17,7 +17,6 @@ public class Crate extends Feature {
         Pitchfork::new,
         Axe::new,
         Bat::new,
-        WandOfManyCanopies::new,
         Hammer::new,
         Repeater::new,
         RPG::new,

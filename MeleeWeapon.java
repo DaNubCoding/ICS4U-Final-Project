@@ -13,6 +13,7 @@ public abstract class MeleeWeapon extends Weapon {
     private Timer swingTimer;
     private int swingDuration;
     private Timer unswingTimer;
+    private Damage damageObject;
 
     /**
      * Create a new melee weapon.
@@ -62,7 +63,7 @@ public abstract class MeleeWeapon extends Weapon {
 
     /**
      * Get the angle with which to perform the attack.
-     * 
+     *
      * @return the angle obtained
      */
     public double getTargetAngle() {
@@ -77,6 +78,7 @@ public abstract class MeleeWeapon extends Weapon {
     public void attack() {
         Player player = getPlayer();
         Damage damage = new Damage(player, this, this.damage, player.getWorldPos(), range);
+        this.damageObject = damage;
 
         double targetAngle = getTargetAngle();
         if (targetAngle == -1) return;
@@ -91,8 +93,17 @@ public abstract class MeleeWeapon extends Weapon {
     }
 
     /**
+     * Get the damage object this weapon produces.
+     *
+     * @return the damage object
+     */
+    public Damage getDamageObject() {
+        return damageObject;
+    }
+
+    /**
      * Get the swing timer.
-     * 
+     *
      * @return the swing timer
      */
     public Timer getSwingTimer() {

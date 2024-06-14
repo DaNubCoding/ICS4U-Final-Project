@@ -18,6 +18,10 @@ public class WillowTree extends Feature {
     public WillowTree(FeatureData data) {
         super("tree_willow_trunk", data);
         setWorldRotation(Greenfoot.getRandomNumber(360));
+        if (data.containsKey("stumped")) {
+            setLoopingAnimation(new Animation(-1, "stump"));
+            return;
+        }
         canopy = new TreeCanopy("tree_willow_canopy");
     }
 
@@ -30,11 +34,12 @@ public class WillowTree extends Feature {
 
     @Override
     public void update() {
-        super.update();
         List<? extends Sprite> ponds = getWorld().getSprites(Pond.class);
         for (Sprite s : ponds){
             Pond pond = (Pond) s;
             if (pond.getWorldPos().distanceTo(getWorldPos()) < pond.getSize() / 2){
+                // remove the tree completely, including the resulting stump
+                removeFromWorld();
                 removeFromWorld();
                 break;
             }
@@ -42,7 +47,23 @@ public class WillowTree extends Feature {
     }
 
     @Override
+    public void removeFromWorld() {
+        if (getData().containsKey("stumped")) {
+            super.removeFromWorld();
+            return;
+        }
+        modify("stumped", null);
+        setLoopingAnimation(new Animation(-1, "stump"));
+        getWorld().removeSprite(canopy);
+
+        if (Math.random() < 0.08) {
+            getWorld().addWorldObject(new WandOfManyCanopies(), getWorldPos());
+        }
+    }
+
+    @Override
     public void removedFromWorld(PixelWorld world) {
+        if (getData().containsKey("stumped")) return;
         world.removeSprite(canopy);
     }
 }

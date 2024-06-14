@@ -9,4 +9,11 @@ public class Axe extends MeleeWeapon {
         super("axe.png", 16, 50, 40, 40, 120, 6);
         setCenterOfRotation(new Vector2(0, 7));
     }
+
+    @Override
+    public void attack() {
+        super.attack();
+        Damage damage = getDamageObject();
+        damage.setDeletables(OakTree.class, WillowTree.class);
+    }
 }
