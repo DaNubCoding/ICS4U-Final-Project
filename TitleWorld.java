@@ -7,6 +7,10 @@ public class TitleWorld extends PixelWorld {
         super(256, 196);
         addSprite(panorama, getWidth() / 2, getHeight() / 2);
         Music.set("title_music.wav");
+
+        applyAdditions();
+        render();
+        updateImage();
     }
 
     @Override
