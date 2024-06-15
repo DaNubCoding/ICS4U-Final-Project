@@ -279,11 +279,13 @@ public class Player extends Entity {
     @Override
     public void damage(Damage damage) {
         double dmg = damage.getDamage();
-        getWorld().getWorldData().addPlayerDamageTaken(damage.getDamage());
+        if (!dashTimer.ended()) return;
+
+        getWorld().getWorldData().addPlayerDamageTaken(dmg);
 
         armorTimer.restart(480);
         if(armor > 0) {
-            for (int i = 0; i < damage.getDamage() + 4; i++) {
+            for (int i = 0; i < dmg + 4; i++) {
                 ArmorParticle particle = new ArmorParticle();
                 Vector3 offset = new Vector3(
                     Math.random() * 20 - 10,
