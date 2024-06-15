@@ -40,6 +40,8 @@ public class TitleWorld extends PixelWorld {
     public void render() {
         GreenfootImage canvas = getCanvas();
         renderSprites();
+        canvas.setColor(new Color(0, 0, 0, 35));
+        canvas.fill();
         canvas.drawImage(title, getWidth() / 2 - title.getWidth() / 2, 30);
     }
 }
