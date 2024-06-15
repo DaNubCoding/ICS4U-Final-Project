@@ -12,7 +12,8 @@ public class SwordOfSurprise extends MeleeWeapon {
     Vector3 diff;
 
     public SwordOfSurprise() {
-        super("statue_projectile.png", 10, 100, 40, 40, 60, 30, 3);
+        super("sword_of_surprise.png", 10, 100, 40, 40, 60, 30, 3);
+        setCenterOfRotation(new Vector2(2, 7));
     }
 
     @Override

@@ -26,6 +26,7 @@ public abstract class MeleeWeapon extends Weapon {
      * @param damage the amount if damage dealt
      * @param sweepAngle the angle of the weapon swing
      * @param swingDuration the time it takes to complete a swing
+     * @param knockback the amount of knockback dealt
      */
     public MeleeWeapon(String image, int windup, int cooldown,
                        int range, double damage, int sweepAngle,
