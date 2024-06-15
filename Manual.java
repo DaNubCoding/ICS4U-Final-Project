@@ -14,6 +14,8 @@ public class Manual extends Item {
         + "Dash - Space\n"
         + "Drop item - Q\n"
         + "Change item - Tab\n"
+        + "Open map - M\n"
+        + "Add waypoint - B\n"
         + "Use item - Left Click\n"
         + "Move camera - Right Click Drag\n"
         + "\n"
