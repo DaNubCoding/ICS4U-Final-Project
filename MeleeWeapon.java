@@ -13,6 +13,7 @@ public abstract class MeleeWeapon extends Weapon {
     private Timer swingTimer;
     private int swingDuration;
     private Timer unswingTimer;
+    private double knockback;
     private Damage damageObject;
 
     /**
@@ -28,12 +29,13 @@ public abstract class MeleeWeapon extends Weapon {
      */
     public MeleeWeapon(String image, int windup, int cooldown,
                        int range, double damage, int sweepAngle,
-                       int swingDuration) {
+                       int swingDuration, double knockback) {
         super(image, windup, cooldown);
         this.range = range;
         this.damage = damage;
         this.sweepAngle = sweepAngle;
         this.swingDuration = swingDuration;
+        this.knockback = knockback;
     }
 
     @Override
@@ -83,6 +85,7 @@ public abstract class MeleeWeapon extends Weapon {
         double targetAngle = getTargetAngle();
         if (targetAngle == -1) return;
         damage.setAngularRange(targetAngle, sweepAngle);
+        damage.knockback(knockback);
 
         try {
             getWorld().getDamages().add(damage);

@@ -203,6 +203,22 @@ public class Damage {
     }
 
     /**
+     * Apply knockback to entities within the area of effect.
+     *
+     * @param strength the strength of the knockback
+     */
+    public void knockback(double strength) {
+        for (Entity entity : owner.getWorld().getEntitiesInRange(center, radius)) {
+            if (entity == owner && !damageOwner) continue;
+            if (target != null && entity != target) continue;
+            if ((minAngle == 0 && maxAngle == 0)
+            || inAngularRange(entity.getWorldPos())) {
+                entity.physics.applyForce(entity.getWorldPos().subtract(center).xz.normalize().multiply(strength));
+            }
+        }
+    }
+
+    /**
      * Returns a new damage source that is a copy of this damage source but with
      * the damage multiplied by a scalar.
      *

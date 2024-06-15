@@ -12,7 +12,7 @@ public class StatueMagicSword extends MeleeWeapon {
     Vector3 diff;
 
     public StatueMagicSword() {
-        super("statue_projectile.png", 10, 100, 40, 40, 60, 30);
+        super("statue_projectile.png", 10, 100, 40, 40, 60, 30, 3);
     }
 
     @Override
