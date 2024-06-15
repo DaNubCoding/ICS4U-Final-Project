@@ -9,10 +9,9 @@ import greenfoot.*;
  */
 public class Manual extends Item {
     private final Text page = new Text(
-        "Turn - Point mouse"
+        "Turn - Point mouse\n"
         + "Move around - WASD\n"
         + "Dash - Space\n"
-        + "Leap - E\n"
         + "Drop item - Q\n"
         + "Change item - Tab\n"
         + "Use item - Left Click\n"
