@@ -36,7 +36,7 @@ public class SaintFire extends Projectile {
 
     @Override
     public void hit() {
-        Damage dmg = new Damage(owner, owner, 0.2, getWorldPos(), 5);
+        Damage dmg = new Damage(owner, owner, 1, getWorldPos(), 5);
         getWorld().getDamages().add(dmg);
         List<Sprack> l = getWorld().getSpracksInRange(getWorldPos(), 5);
         for (Sprack s:l) {
