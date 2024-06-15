@@ -13,6 +13,7 @@ public class Ghost extends Enemy {
     private boolean isPhasingIn;
     private boolean isPhasingOut;
     private Timer moveTimer;
+    private Timer invisTimer;
 
     public Ghost() {
         super("ghost_idle");
@@ -26,6 +27,7 @@ public class Ghost extends Enemy {
         physics.setAlwaysTurnTowardsMovement(true);
 
         moveTimer = new Timer(150);
+        invisTimer = new Timer(120);
         isPhasingIn = false;
         isPhasingOut = false;
     }
@@ -63,10 +65,9 @@ public class Ghost extends Enemy {
         if (!isPhasingOut) physics.moveToNearPlayer(1);
 
         // if at low transparency, teleport and start phasing in
-        if (getTransparency() <= 5) {
+        if (getTransparency() < 3 && invisTimer.ended()) {
             isPhasingIn = true;
-            isPhasingOut = false;
-            setWorldPos(player.getWorldPos().addXZ(new Vector2(Math.random() * 200 - 100, Math.random() * 200 - 100)));
+            setWorldPos(player.getWorldPos().addXZ(new Vector2(Math.random() * 300 - 150, Math.random() * 300 - 150)));
         }
 
         // if close to player, hit them and start phasing out
@@ -81,6 +82,7 @@ public class Ghost extends Enemy {
         // end of phase-in
         if (getTransparency() < 3) {
             isPhasingOut = false;
+            invisTimer.restart();
             hideHealth();
             hideShadow();
         }
