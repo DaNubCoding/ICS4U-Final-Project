@@ -108,13 +108,15 @@ public class Saint extends Enemy
                 setLoopingAnimation(saintAnimations[2]);
                 charge += 2-super.getHealth()/MAX_HP;
                 holyBlasts -= 1;
-                SaintBlast sBlast = new SaintBlast(
-                        this,
-                        playerPos.subtract(enemyPos).scaleToMagnitude(3.5),
-                        enemyPos,
-                        (Entity)player
-                    );
-                getWorld().addSprite(sBlast, 0, 0);
+                if (Math.random() < 0.2) {
+                    SaintBlast sBlast = new SaintBlast(
+                            this,
+                            playerPos.subtract(enemyPos).scaleToMagnitude(3.5),
+                            enemyPos,
+                            (Entity)player
+                        );
+                    getWorld().addSprite(sBlast, 0, 0);
+                }
                 rageTime(30);
                 if (holyBlasts == 0) {
                     rageTime(45);
