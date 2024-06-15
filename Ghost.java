@@ -59,13 +59,16 @@ public class Ghost extends Enemy {
         Vector3 enemyPos = getWorldPos();
         double distanceToPlayer = playerPos.subtract(enemyPos).magnitude();
 
+        // move towards the player as long this is not phasing out
         if (!isPhasingOut) physics.moveToNearPlayer(1);
+
+        // if at low transparency, teleport and start phasing in
         if (getTransparency() <= 5) {
             isPhasingIn = true;
-            isPhasingOut = false;
             setWorldPos(player.getWorldPos().addXZ(new Vector2(Math.random() * 200 - 100, Math.random() * 200 - 100)));
         }
 
+        // if close to player, hit them and start phasing out
         if (distanceToPlayer <= 25 && !isPhasingIn && !isPhasingOut) {
             meleePlayer(10, 25);
             isPhasingOut = true;
@@ -74,12 +77,15 @@ public class Ghost extends Enemy {
 
     public void update() {
         super.update();
+        // end of phase-in
         if (getTransparency() < 3) {
             isPhasingOut = false;
         }
+        // end of phase-out
         if (getTransparency() > 252) {
             isPhasingIn = false;
         }
+        // actions to perform while phasing in and out
         if (isPhasingIn) setTransparency(getTransparency() + 3);
         if (isPhasingOut) {
             setTransparency(getTransparency() - 3);
