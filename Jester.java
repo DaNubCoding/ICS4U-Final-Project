@@ -5,7 +5,7 @@
  * @version June 2024
  */
 public class Jester extends Enemy {
-    int MAX_HP = 120;
+    int MAX_HP = 150;
 
     private static final Animation walkingAnimation = new Animation(12,
             "jester_walk1",

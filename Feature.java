@@ -42,7 +42,7 @@ public abstract class Feature extends Sprack {
         OAK_TREE(OakTree.class, OakTree::new, 30),
         WILLOW_TREE(WillowTree.class, WillowTree::new, 15),
         CRATE(Crate.class, Crate::new, 80),
-        TOMBSTONE(Tombstone.class, Tombstone::new, 30),
+        TOMBSTONE(Tombstone.class, Tombstone::new, 10),
         STATUE_CAMPFIRE(StatueCampfire.class, StatueCampfire::new, 2),
         JESTER_SPAWNER(JesterSpawner.class, JesterSpawner::new, 2),
         SAINT_SPAWNER(SaintSpawner.class, SaintSpawner::new, 1),
