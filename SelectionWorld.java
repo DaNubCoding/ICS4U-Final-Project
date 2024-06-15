@@ -117,7 +117,7 @@ public class SelectionWorld extends PixelWorld {
     public void render() {
         GreenfootImage canvas = getCanvas();
         panorama.render(canvas);
-        canvas.setColor(new Color(0, 0, 0, 65));
+        canvas.setColor(new Color(0, 0, 0, 80));
         canvas.fill();
         // Draw backgrounds behind world buttons
         canvas.setColor(WORLD_BOX_COLOR);

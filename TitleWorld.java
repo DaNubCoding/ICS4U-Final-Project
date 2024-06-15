@@ -2,6 +2,7 @@ import greenfoot.*;
 
 public class TitleWorld extends PixelWorld {
     private GifSprite panorama = new GifSprite(new GifImage("panorama.gif"), Layer.UI);
+    private static GreenfootImage title = new GreenfootImage("title.png");
 
     public TitleWorld() {
         super(256, 196);
@@ -37,6 +38,10 @@ public class TitleWorld extends PixelWorld {
 
     @Override
     public void render() {
+        GreenfootImage canvas = getCanvas();
         renderSprites();
+        canvas.setColor(new Color(0, 0, 0, 25));
+        canvas.fill();
+        canvas.drawImage(title, getWidth() / 2 - title.getWidth() / 2, 30);
     }
 }
