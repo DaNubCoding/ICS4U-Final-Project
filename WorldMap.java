@@ -3,6 +3,12 @@ import greenfoot.Color;
 import greenfoot.Greenfoot;
 import greenfoot.GreenfootImage;
 
+/**
+ * The world map that shows the player's surroundings.
+ *
+ * @author Lucas Fu
+ * @version June 2024
+ */
 public class WorldMap extends PixelWorld {
     private SprackWorld initialWorld;
     private Color[][] map;
@@ -28,7 +34,7 @@ public class WorldMap extends PixelWorld {
         worldData.saveData();
 
         // define variables
-        int genRad = worldData.getGenerationRadius();
+        int genRad = worldData.getGenerationRadius() - 4;
         Vector2 playerPos = worldData.getPlayerLocation();
         HashMap<Vector2, Feature> surroundings = worldData.getSurroundings();
         HashMap<Long, WorldData.ItemPosPair> items = worldData.getStoredItems();
@@ -105,8 +111,8 @@ public class WorldMap extends PixelWorld {
     public void render() {
         // the map
         GreenfootImage background = getCanvas();
-        int widAdj = (initialWorld.getWidth() - CELL_SIZE * map.length) - 5;
-        int heiAdj = (initialWorld.getHeight() - CELL_SIZE * map.length) / 2 + 5;
+        int widAdj = (initialWorld.getWidth() - CELL_SIZE * map.length) - 8;
+        int heiAdj = (initialWorld.getHeight() - CELL_SIZE * map.length) / 2 + 8;
         background.setColor(new Color(56, 56, 56));
         background.fill();
         // feature map
@@ -148,6 +154,15 @@ public class WorldMap extends PixelWorld {
         background.setColor(new Color(180, 180, 180));
         background.drawRect(widAdj - 1, heiAdj - 1,
                             CELL_SIZE * map.length + 1, CELL_SIZE * map.length + 1);
+
+        background.setColor(new Color(255, 255, 255, 100));
+        int endX = widAdj + CELL_SIZE * map.length / 2;
+        int endY = heiAdj + CELL_SIZE * map.length / 2;
+        endX += (int) (Math.cos(Math.toRadians(Camera.getRotation() - 90)) * 24);
+        endY += (int) (Math.sin(Math.toRadians(Camera.getRotation() - 90)) * 24);
+        background.drawLine(widAdj + CELL_SIZE * map.length / 2,
+                            heiAdj + CELL_SIZE * map.length / 2,
+                            endX, endY);
 
         renderSprites();
     }
