@@ -115,6 +115,23 @@ public abstract class Enemy extends Entity {
     public abstract void engage(Player player);
 
     /**
+     * Aggro the enemy, this will set make the enemy notice the player.
+     */
+    public void aggro() {
+        notice(getWorld().getPlayer());
+        noticed = true;
+    }
+
+    /**
+     * Check if the enemy is aggroed.
+     *
+     * @return true if the enemy is aggroed, false otherwise
+     */
+    public boolean isAggroed() {
+        return noticed;
+    }
+
+    /**
      * Damage the enemy with the given damage.
      * <p>
      * This method is called when the enemy takes damage.
@@ -129,6 +146,7 @@ public abstract class Enemy extends Entity {
         super.damage(damage);
         if (damage.getOwner() instanceof Player)
             getWorld().getWorldData().addPlayerDamageDone(damage.getDamage());
+        if (!isAggroed()) aggro();
     }
 
     /**
