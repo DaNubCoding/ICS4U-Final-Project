@@ -19,7 +19,10 @@ public class Tombstone extends Feature {
         if (getWorld().getPlayer().getWorldPos().distanceTo(getWorldPos()) < 80
         && !getData().containsKey("spawnedEnemies")) {
             getData().put("spawnedEnemies", null);
-            getWorld().addWorldObject(new Skeleton(), getWorldPos().subtract(new Vector3(0, 10, 0)));
+            Enemy toBeSpawned;
+            if (Math.random() < 0.8) toBeSpawned = new Skeleton();
+            else toBeSpawned = new Ghost();
+            getWorld().addWorldObject(toBeSpawned, getWorldPos());
         }
     }
 }

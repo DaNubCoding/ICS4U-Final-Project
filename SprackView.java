@@ -93,6 +93,8 @@ public class SprackView {
         sheetInfo.put("skeleton_step1", 27);
         sheetInfo.put("skeleton_step2", 27);
         sheetInfo.put("stump", 10);
+        sheetInfo.put("ghost_idle", 22);
+        sheetInfo.put("ghost_chase", 22);
     }
 
     private static AtomicInteger totalCaches = new AtomicInteger(sheetInfo.size() * IMAGE_CACHE_ANGLE_COUNT);

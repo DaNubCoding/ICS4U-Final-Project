@@ -359,6 +359,18 @@ public abstract class Sprack extends Sprite implements WorldObject {
      *                     255 (opaque)
      */
     public void setTransparency(int transparency) {
+        if (transparency > 255 || transparency < 0) 
+            throw new IllegalArgumentException("invalid transparency");
         this.transparency = transparency;
+    }
+
+    /**
+     * Get the transparency of the Sprack.
+     * 
+     * @return the transparency of the Sprack, from 0 (invisible) to
+     *         255 (opaque)
+     */
+    public int getTransparency() {
+        return transparency;
     }
 }
