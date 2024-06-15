@@ -2,6 +2,7 @@ import java.util.HashMap;
 import greenfoot.Color;
 import greenfoot.Greenfoot;
 import greenfoot.GreenfootImage;
+import java.util.HashSet;
 
 /**
  * The world map that shows the player's surroundings.
@@ -17,6 +18,7 @@ public class WorldMap extends PixelWorld {
 
     private static final int CELL_SIZE = 5;
     private static final HashMap<Class<? extends Feature>, Color> colors = new HashMap<>();
+    private static GreenfootImage flag = new GreenfootImage("small_flag.png");
 
     static {
         colors.put(Crate.class, new Color(230, 190, 70));
@@ -151,9 +153,23 @@ public class WorldMap extends PixelWorld {
                 }
             }
         }
+
         background.setColor(new Color(180, 180, 180));
         background.drawRect(widAdj - 1, heiAdj - 1,
                             CELL_SIZE * map.length + 1, CELL_SIZE * map.length + 1);
+
+        // waypoints
+        for (Vector2 waypoint : initialWorld.getWorldData().getWaypoints()) {
+            Vector2 v = waypoint.subtract(initialWorld.getWorldData().getPlayerLocation());
+            v = v.add(new Vector2(map.length / 2, map.length / 2));
+            if (v.y > -1 && v.y < map.length && v.x > -1 && v.x < map[0].length) {
+                background.drawImage(flag, widAdj + CELL_SIZE * (int) v.x, heiAdj + CELL_SIZE * (int) v.y);
+            } else {
+                double x = Math.max(-1, Math.min(map.length, v.x));
+                double y = Math.max(-1, Math.min(map.length, v.y));
+                background.drawImage(flag, widAdj + CELL_SIZE * (int) x, heiAdj + CELL_SIZE * (int) y);
+            }
+        }
 
         background.setColor(new Color(255, 255, 255, 100));
         int endX = widAdj + CELL_SIZE * map.length / 2;

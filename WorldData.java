@@ -11,6 +11,7 @@ import java.util.Scanner;
 import java.util.StringTokenizer;
 import java.util.function.BiConsumer;
 import java.util.List;
+import java.util.HashSet;
 
 /**
  * A class that stores and handles all the data to be used inside the world.
@@ -53,6 +54,7 @@ public class WorldData {
     private HashMap<Long, ItemPosPair> storedItems;
     private HashMap<Long, EntityPosPair> storedEntities;
     private ArrayList<Item> playerHotbar;
+    private HashSet<Vector2> waypoints;
 
     // world stats
     private double playerDmgDone;
@@ -77,6 +79,7 @@ public class WorldData {
         storedItems = new HashMap<Long, ItemPosPair>();
         storedEntities = new HashMap<Long, EntityPosPair>();
         playerHotbar = new ArrayList<Item>();
+        waypoints = new HashSet<Vector2>();
         playerDmgDone = 0;
         playerDmgTaken = 0;
         enemiesKilled = 0;
@@ -119,6 +122,16 @@ public class WorldData {
 
             while (scf.hasNextLine()) {
                 String check = scf.nextLine();
+
+                // get the waypoints
+                if (check.contains("waypoint")) {
+                    st = new StringTokenizer(check, ",");
+                    st.nextToken(); // remove waypoint token
+                    int waypointX = Integer.valueOf(st.nextToken());
+                    int waypointY = Integer.valueOf(st.nextToken());
+                    waypoints.add(new Vector2(waypointX, waypointY));
+                    continue;
+                }
 
                 // get the modified features
                 if (check.contains("feature")) {
@@ -679,6 +692,43 @@ public class WorldData {
     }
 
     /**
+     * Get the set of waypoints.
+     *
+     * @return the set of waypoints
+     */
+    public HashSet<Vector2> getWaypoints() {
+        return waypoints;
+    }
+
+    /**
+     * Add a waypoint to the set of waypoints.
+     *
+     * @param waypoint the waypoint to be added
+     */
+    public void addWaypoint(Vector2 waypoint) {
+        waypoints.add(waypoint);
+    }
+
+    /**
+     * Remove a waypoint from the set of waypoints.
+     *
+     * @param waypoint the waypoint to be removed
+     */
+    public void removeWaypoint(Vector2 waypoint) {
+        waypoints.remove(waypoint);
+    }
+
+    /**
+     * Check if a waypoint is in the set of waypoints.
+     *
+     * @param waypoint the waypoint to be checked
+     * @return whether the waypoint is in the set of waypoints
+     */
+    public boolean hasWaypoint(Vector2 waypoint) {
+        return waypoints.contains(waypoint);
+    }
+
+    /**
      * Save the data to a csv file called save_{seed}.
      * <p>
      * The file contains the seed, the player location, and the modified elements.
@@ -715,6 +765,10 @@ public class WorldData {
         if (sb.length() > 0)
             sb.deleteCharAt(sb.length() - 1);
         fileOutput.println(sb);
+        // waypoints
+        for (Vector2 waypoint : waypoints) {
+            fileOutput.println("waypoint," + (int) waypoint.x + "," + (int) waypoint.y);
+        }
         // modified features
         for (FeatureData featureData : modifiedFeatures.values()) {
             fileOutput.print("feature,");

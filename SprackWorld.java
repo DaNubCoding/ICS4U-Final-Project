@@ -81,12 +81,17 @@ public class SprackWorld extends PixelWorld {
 
         updateSurroundings();
 
-        if (Greenfoot.isKeyDown("enter")) {
-            worldData.saveData();
-        }
-
         if (Greenfoot.isKeyDown("m")) {
             Greenfoot.setWorld(new WorldMap(this, worldData));
+        }
+
+        if (Greenfoot.isKeyDown("b")) {
+            Vector2 playerPos = player.getWorldPos().xz.divide(20);
+            if (worldData.hasWaypoint(playerPos)) {
+                worldData.removeWaypoint(playerPos);
+            } else {
+                worldData.addWaypoint(playerPos);
+            }
         }
 
         Timer.incrementAct();
