@@ -38,8 +38,8 @@ public class Player extends Entity {
     private ArrayList<Item> hotbar;
     private int heldIndex;
 
-    private static final double maxArmor = 60;
-    private double armor = 60;
+    private static final double maxArmor = 80;
+    private double armor = 80;
     private Timer armorTimer = new Timer(0);
     private HealthBar armorBar;
     private HealthBar healthBar;
