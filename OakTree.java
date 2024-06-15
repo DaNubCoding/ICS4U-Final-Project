@@ -29,8 +29,8 @@ public class OakTree extends Feature {
         // if it is already stumped
         if (canopy != null) {
             getWorld().addWorldObject(canopy, getWorldX(), getWorldY() + 29, getWorldZ());
+            canopy.setWorldRotation(Greenfoot.getRandomNumber(360));
         }
-        canopy.setWorldRotation(Greenfoot.getRandomNumber(360));
         getWorld().addCollisionController(new CollisionController(this, 3, 1.0, 1.0));
     }
 
