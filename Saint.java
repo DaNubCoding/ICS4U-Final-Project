@@ -79,13 +79,15 @@ public class Saint extends Enemy
 
         if (attackPhase == 3) {
             if (attackType == 3) {
-                setLoopingAnimation(saintAnimations[4]);
-                SaintFire sFire = new SaintFire(
-                        this,
-                        playerPos.subtract(enemyPos).scaleToMagnitude(Math.random()*2+1.5),
-                        enemyPos.add(dist.normalize().multiply(4))
-                    );
-                getWorld().addSprite(sFire, 0, 0);
+                if (Math.random() < 0.2) {
+                    setLoopingAnimation(saintAnimations[4]);
+                    SaintFire sFire = new SaintFire(
+                            this,
+                            playerPos.subtract(enemyPos).scaleToMagnitude(Math.random()*2+1.5),
+                            enemyPos.add(dist.normalize().multiply(4))
+                        );
+                    getWorld().addSprite(sFire, 0, 0);
+                }
             }
             if (attackTimer.ended()) {
                 if (attackType == 3) {
@@ -108,15 +110,13 @@ public class Saint extends Enemy
                 setLoopingAnimation(saintAnimations[2]);
                 charge += 2-super.getHealth()/MAX_HP;
                 holyBlasts -= 1;
-                if (Math.random() < 0.2) {
-                    SaintBlast sBlast = new SaintBlast(
-                            this,
-                            playerPos.subtract(enemyPos).scaleToMagnitude(3.5),
-                            enemyPos,
-                            (Entity)player
-                        );
-                    getWorld().addSprite(sBlast, 0, 0);
-                }
+                SaintBlast sBlast = new SaintBlast(
+                        this,
+                        playerPos.subtract(enemyPos).scaleToMagnitude(3.5),
+                        enemyPos,
+                        (Entity)player
+                    );
+                getWorld().addSprite(sBlast, 0, 0);
                 rageTime(30);
                 if (holyBlasts == 0) {
                     rageTime(45);

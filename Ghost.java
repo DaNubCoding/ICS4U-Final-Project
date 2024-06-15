@@ -65,6 +65,7 @@ public class Ghost extends Enemy {
         // if at low transparency, teleport and start phasing in
         if (getTransparency() <= 5) {
             isPhasingIn = true;
+            isPhasingOut = false;
             setWorldPos(player.getWorldPos().addXZ(new Vector2(Math.random() * 200 - 100, Math.random() * 200 - 100)));
         }
 
