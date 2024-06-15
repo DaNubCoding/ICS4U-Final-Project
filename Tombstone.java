@@ -14,6 +14,8 @@ public class Tombstone extends Feature {
     }
 
     public void update() {
+        if (getWorldPos().xz.magnitude() < 500) return;
+
         if (getWorld().getPlayer().getWorldPos().distanceTo(getWorldPos()) < 80
         && !getData().containsKey("spawnedEnemies")) {
             getData().put("spawnedEnemies", null);
