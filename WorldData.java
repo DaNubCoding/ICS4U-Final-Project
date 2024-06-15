@@ -414,7 +414,7 @@ public class WorldData {
         if (feature != null) {
             surroundings.put(coord, feature);
 
-            if (coord.magnitude() > 40) return;
+            if (coord.magnitude() < 40) return;
             // if it's an enemy spawner
             if (feature instanceof EnemySpawner && !featureData.containsKey("spawnedEnemies")) {
                 EnemySpawner es = (EnemySpawner) feature;
