@@ -38,9 +38,7 @@ public class WillowTree extends Feature {
         for (Sprite s : ponds){
             Pond pond = (Pond) s;
             if (pond.getWorldPos().distanceTo(getWorldPos()) < pond.getSize() / 2){
-                // remove the tree completely, including the resulting stump
-                removeFromWorld();
-                removeFromWorld();
+                super.removeFromWorld();
                 break;
             }
         }
