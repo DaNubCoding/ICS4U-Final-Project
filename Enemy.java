@@ -26,9 +26,23 @@ public abstract class Enemy extends Entity {
         healthBar.setHealth(health);
     }
 
+    /**
+     * Hide the health bar.
+     */
+    public void hideHealth() {
+        healthBar.hide();
+    }
+
+    /**
+     * Show the health bar.
+     */
+    public void showHealth() {
+        healthBar.show();
+    }
+
     @Override
     public void addedToWorld(PixelWorld world) {
-        ((SprackWorld) world).addWorldObject(healthBar, 
+        ((SprackWorld) world).addWorldObject(healthBar,
                     ((SprackWorld) world).getPlayer().getWorldPos().add(new Vector3(0, 300, 0)));
     }
 

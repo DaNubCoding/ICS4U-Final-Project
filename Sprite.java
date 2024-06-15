@@ -14,6 +14,7 @@ public abstract class Sprite {
     private GreenfootImage image;
     private PixelWorld world;
     private boolean updating = true;
+    private boolean rendering = true;
     private boolean removed = false;
 
     /**
@@ -211,12 +212,35 @@ public abstract class Sprite {
     }
 
     /**
+     * Hide this sprite, preventing it from being rendered.
+     */
+    public void hide() {
+        rendering = false;
+    }
+
+    /**
+     * Show this sprite, allowing it to be rendered.
+     */
+    public void show() {
+        rendering = true;
+    }
+
+    /**
      * Check if updates are enabled.
      *
      * @return true if updates are enabled, false otherwise
      */
     public boolean isUpdating() {
         return updating;
+    }
+
+    /**
+     * Check if this sprite is being rendered.
+     *
+     * @return true if this sprite is rendering, false otherwise
+     */
+    public boolean isRendering() {
+        return rendering;
     }
 
     /**

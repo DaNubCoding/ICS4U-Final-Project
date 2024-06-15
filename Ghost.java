@@ -26,6 +26,7 @@ public class Ghost extends Enemy {
         physics.setAlwaysTurnTowardsMovement(true);
 
         moveTimer = new Timer(150);
+        invisTimer = new Timer(60);
         isPhasingIn = false;
         isPhasingOut = false;
     }
@@ -80,13 +81,19 @@ public class Ghost extends Enemy {
         // end of phase-in
         if (getTransparency() < 3) {
             isPhasingOut = false;
+            hideHealth();
+            hideShadow();
         }
         // end of phase-out
         if (getTransparency() > 252) {
             isPhasingIn = false;
+            showHealth();
+            showShadow();
         }
         // actions to perform while phasing in and out
-        if (isPhasingIn) setTransparency(getTransparency() + 3);
+        if (isPhasingIn) {
+            setTransparency(getTransparency() + 3);
+        }
         if (isPhasingOut) {
             setTransparency(getTransparency() - 3);
             physics.moveToTarget(getWorldPos().addXZ(new Vector2(getWorldRotation())));

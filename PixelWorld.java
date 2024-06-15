@@ -195,7 +195,7 @@ public abstract class PixelWorld extends World {
     public void renderSprites() {
         for (List<Sprite> layerSprites : spritesByLayer.values()) {
             for (Sprite sprite : layerSprites) {
-                if (sprite.isRemoved()) continue;
+                if (sprite.isRemoved() || !sprite.isRendering()) continue;
                 sprite.render(canvas);
             }
         }
