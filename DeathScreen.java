@@ -37,6 +37,7 @@ public class DeathScreen extends PixelWorld {
 
     @Override
     public void update() {
+        if (!delayTimer.ended()) Greenfoot.getKey(); // clear previous keys
         if (delayTimer.ended() && (Greenfoot.getKey() != null || Greenfoot.mouseClicked(null))) {
             Greenfoot.setWorld(new TitleWorld());
             return;
