@@ -17,7 +17,7 @@ public class DamageParticle extends Particle {
         physics.applyForce(new Vector2(Math.random() * 360).multiply(Math.random() * 0.7 + 0.5));
         physics.setAffectedByGravity(true);
         loadedParticles.offer(this);
-        if (loadedParticles.size() > 50) loadedParticles.poll();
+        if (loadedParticles.size() > 20) loadedParticles.poll();
     }
 
     private static GreenfootImage getBloodImage() {
