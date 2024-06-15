@@ -14,7 +14,6 @@ public class Ghost extends Enemy {
     private boolean isPhasingOut;
     private Timer moveTimer;
     private Timer invisTimer;
-    private Timer attackTimer;
 
     public Ghost() {
         super("ghost_idle");
@@ -29,7 +28,6 @@ public class Ghost extends Enemy {
 
         moveTimer = new Timer(150);
         invisTimer = new Timer(120);
-        attackTimer = new Timer(40);
         isPhasingIn = false;
         isPhasingOut = false;
     }
@@ -73,10 +71,9 @@ public class Ghost extends Enemy {
         }
 
         // if close to player, hit them and start phasing out
-        if (distanceToPlayer <= 25 && !isPhasingIn && !isPhasingOut && attackTimer.ended()) {
+        if (distanceToPlayer <= 25 && !isPhasingIn && !isPhasingOut) {
             meleePlayer(10, 25);
             isPhasingOut = true;
-            attackTimer.restart(40);
         }
     }
 
