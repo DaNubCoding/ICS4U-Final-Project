@@ -19,9 +19,9 @@ import java.util.ArrayList;
  * @version May 2024
  */
 public enum Cluster {
-    OAK_TREE(OakTree.class, 6, 18, 12),
-    WILLOW_TREE(WillowTree.class, 4, 16, 10),
-    TOMBSTONE(Tombstone.class, 10, 100, 3),
+    OAK_TREE(OakTree.class, 6, 90, 12),
+    WILLOW_TREE(WillowTree.class, 4, 80, 10),
+    TOMBSTONE(Tombstone.class, 10, 500, 3),
     ;
 
     public final Class<? extends Feature> cls;
