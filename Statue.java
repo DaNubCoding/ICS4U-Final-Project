@@ -40,12 +40,15 @@ public class Statue extends Enemy {
     }
 
     @Override
-    public void idle(Player player) {} // Does nothing
+    public void idle(Player player) {
+        hideHealth();
+    }
 
     @Override
     public void notice(Player player) {
         playOneTimeAnimation(activatingAnimation);
         setLoopingAnimation(activeAnimation);
+        showHealth();
     }
 
     @Override
