@@ -93,7 +93,7 @@ public class JesterSword extends MeleeWeapon {
                     world.addWorldObject(particle, getWorldPos().addXZ(offset));
                 }
 
-                WandOfRickAstley wand = new WandOfRickAstley();
+                RickOnAStick wand = new RickOnAStick();
                 world.addWorldObject(wand, getWorldPos());
                 wand.physics.applyForce(new Vector3(
                     Math.random() * 6 - 3,

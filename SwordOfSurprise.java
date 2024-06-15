@@ -7,11 +7,11 @@ import java.util.List;
  * @author Lucas Fu
  * @version June 2024
  */
-public class StatueMagicSword extends MeleeWeapon {
+public class SwordOfSurprise extends MeleeWeapon {
     Entity target;
     Vector3 diff;
 
-    public StatueMagicSword() {
+    public SwordOfSurprise() {
         super("statue_projectile.png", 10, 100, 40, 40, 60, 30, 3);
     }
 

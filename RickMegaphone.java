@@ -1,7 +1,7 @@
 import greenfoot.GreenfootImage;
 
 /**
- * Rick's boombox is a Magic created by the Wand of Rick Astley!
+ * Rick's megaphone is a Magic created by the Wand of Rick Astley!
  * <p>
  * This creates a shockwave every 32 frames approximately, just like the beats
  * in Never Gonna Give You Up.
@@ -9,11 +9,11 @@ import greenfoot.GreenfootImage;
  * @author Lucas Fu
  * @version June 2024
  */
-public class RickBoombox extends Magic {
+public class RickMegaphone extends Magic {
     private long startTime = System.currentTimeMillis();
     private int count;
 
-    public RickBoombox(Vector3 startpos, int inaccuracy) {
+    public RickMegaphone(Vector3 startpos, int inaccuracy) {
         super(startpos.add(new Vector3(0, 5, 0)), inaccuracy, -1, 100000, 0);
         setOriginalImage(new GreenfootImage("megaphone.png"));
     }

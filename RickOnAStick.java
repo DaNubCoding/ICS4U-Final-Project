@@ -1,4 +1,4 @@
-public class WandOfRickAstley extends MagicWeapon {
+public class RickOnAStick extends MagicWeapon {
     private static SoundEffect[] sounds = {
         new SoundEffect("never_gonna_give_you_up1.wav"),
         new SoundEffect("never_gonna_give_you_up2.wav"),
@@ -11,8 +11,8 @@ public class WandOfRickAstley extends MagicWeapon {
         }
     }
 
-    public WandOfRickAstley() {
-        super("wand_of_rick_astley.png", 0, 1, 0, 480, RickBoombox::new);
+    public RickOnAStick() {
+        super("wand_of_rick_astley.png", 0, 1, 0, 480, RickMegaphone::new);
         setCenterOfRotation(new Vector2(1, 6));
     }
 

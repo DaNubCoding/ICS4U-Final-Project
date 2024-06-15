@@ -86,7 +86,7 @@ public class PearlGun extends RangedWeapon {
                     world.addWorldObject(particle, getWorldPos().addXZ(offset));
                 }
 
-                StatueMagicSword sword = new StatueMagicSword();
+                SwordOfSurprise sword = new SwordOfSurprise();
                 world.addWorldObject(sword, getWorldPos());
                 sword.physics.applyForce(new Vector3(
                     Math.random() * 6 - 3,
