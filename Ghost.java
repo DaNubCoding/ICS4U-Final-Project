@@ -26,7 +26,6 @@ public class Ghost extends Enemy {
         physics.setAlwaysTurnTowardsMovement(true);
 
         moveTimer = new Timer(150);
-        invisTimer = new Timer(60);
         isPhasingIn = false;
         isPhasingOut = false;
     }
