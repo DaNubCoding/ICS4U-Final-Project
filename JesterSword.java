@@ -106,7 +106,6 @@ public class JesterSword extends MeleeWeapon {
 
     @Override
     public void windup() {
-        if (initialPos == null) initialPos = getPlayer().getWorldPos();
         PhysicsController playerPhysics = getPlayer().physics;
         if (timer.ended() && dashes++ < 7) {
             timer.restart(8);
@@ -114,9 +113,9 @@ public class JesterSword extends MeleeWeapon {
         }
         if (timer.ended()) {
             timer.restart(50);
-            playerPhysics.setWorldPos(initialPos);
             Camera.shake(2, 50);
             getPlayer().restartDashTimer();
+            initialPos = getWorldPos();
         }
         playerPhysics.reduceMomentum(0.15);
     }
@@ -125,11 +124,10 @@ public class JesterSword extends MeleeWeapon {
     public void attack() {
         Vector2 playerFacingVector = new Vector2(getPlayer().getWorldRotation());
         PhysicsController playerPhysics = getPlayer().physics;
-        playerPhysics.setWorldPos(initialPos);
         for (int i = 0; i < 150; i += 30) {
             Damage damage = new Damage(getPlayer(), this, 50,
                                        initialPos.addXZ(playerFacingVector.multiply(i)),
-                                       15);
+                                       20);
             for (int j = 0; j < 4; j++)
                 getWorld().addWorldObject(new JesterParticle(), initialPos.addXZ(playerFacingVector.multiply(i + j * 10)));
             try {
