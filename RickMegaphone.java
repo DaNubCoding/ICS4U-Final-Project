@@ -1,7 +1,7 @@
 import greenfoot.GreenfootImage;
 
 /**
- * Rick's megaphone is a Magic created by the Wand of Rick Astley!
+ * Rick's megaphone is a Magic created by the Rick on a Stick!
  * <p>
  * This creates a shockwave every 32 frames approximately, just like the beats
  * in Never Gonna Give You Up.
