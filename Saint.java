@@ -20,10 +20,6 @@ public class Saint extends Enemy
     private static final SoundEffect summonSound = new SoundEffect("saint_summon.wav");
     private static final SoundEffect attackSound = new SoundEffect("saint_attack.wav");
 
-    static {
-        summonSound.setVolume(95);
-    }
-
     private Timer moveTimer = new Timer(185);
     private Timer attackTimer = new Timer(250);
 
