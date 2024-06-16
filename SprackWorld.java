@@ -11,6 +11,7 @@ public class SprackWorld extends PixelWorld {
     private Player player;
     private List<Damage> damages;
     private List<CollisionController> collisionControllers;
+    private boolean bFlag = false;
 
     // world information
     public static final int WORLD_WIDTH = 256;
@@ -85,13 +86,23 @@ public class SprackWorld extends PixelWorld {
             Greenfoot.setWorld(new WorldMap(this, worldData));
         }
 
-        if (Greenfoot.isKeyDown("b")) {
+        if (Greenfoot.isKeyDown("b") && !bFlag) {
             Vector2 playerPos = player.getWorldPos().xz.divide(20);
-            if (worldData.hasWaypoint(playerPos)) {
-                worldData.removeWaypoint(playerPos);
-            } else {
-                worldData.addWaypoint(playerPos);
+            Vector2 found = null;
+            for (Vector2 waypoint : worldData.getWaypoints()) {
+                if (waypoint.distanceTo(playerPos) < 5) {
+                    found = waypoint;
+                    break;
+                }
             }
+            if (found == null) {
+                worldData.addWaypoint(playerPos);
+            } else {
+                worldData.removeWaypoint(found);
+            }
+            bFlag = true;
+        } else if (bFlag && !Greenfoot.isKeyDown("b")) {
+            bFlag = false;
         }
 
         Timer.incrementAct();
