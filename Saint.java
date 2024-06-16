@@ -17,6 +17,12 @@ public class Saint extends Enemy
             new Animation(12, "saint_side_charge"),
             new Animation(12, "saint_side_spell"),
         };
+    private static final SoundEffect summonSound = new SoundEffect("saint_summon.wav");
+    private static final SoundEffect attackSound = new SoundEffect("saint_attack.wav");
+
+    static {
+        summonSound.setVolume(95);
+    }
 
     private Timer moveTimer = new Timer(185);
     private Timer attackTimer = new Timer(250);
@@ -125,6 +131,7 @@ public class Saint extends Enemy
             } else if (attackType == 2) {
                 setLoopingAnimation(saintAnimations[6]);
                 getWorld().addWorldObject(new SaintShield(getWorldRotation(), this), enemyPos.add(dist.normalize().multiply(15)));
+                summonSound.play();
                 rageTime(40);
             } else if (attackType == 3) {
                 attackTimer.restart(250);
@@ -149,6 +156,7 @@ public class Saint extends Enemy
             if (charge > 20) {
                 attackType = 3;
                 charge -= 20;
+                attackSound.play();
                 rageTime(150);
             } else if (charge >= 8 && Math.random() < 0.5) {
                 attackType = 2;
