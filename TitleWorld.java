@@ -19,7 +19,7 @@ public class TitleWorld extends PixelWorld {
 
     @Override
     public void update() {
-        if (Greenfoot.getKey() != null) {
+        if (Greenfoot.getKey() != null || Greenfoot.mouseClicked(null)) {
             Greenfoot.setWorld(new SelectionWorld(panorama));
             return;
         }
