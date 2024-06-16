@@ -38,8 +38,9 @@ public class Player extends Entity {
     private ArrayList<Item> hotbar;
     private int heldIndex;
 
-    private static final double maxArmor = 80;
-    private double armor = 80;
+    public static final double MAX_ARMOR = 80;
+    public static final double MAX_HP = 200;
+    private double armor = MAX_ARMOR;
     private Timer armorTimer = new Timer(0);
     private HealthBar armorBar;
     private HealthBar healthBar;
@@ -57,7 +58,7 @@ public class Player extends Entity {
         armorBar.setHaveColor(new Color(84, 164, 255));
         armorBar.setHealth(armor);
         armorBar.setYOffset(14);
-        setHealth(200);
+        setHealth(MAX_HP);
         footstepTimer = new Timer(8);
         footstepOffset = new Vector3(0, 0, 4);
         footstepSoundTimer = new Timer(15);
@@ -167,10 +168,11 @@ public class Player extends Entity {
             footstepSounds[(int) (Math.random() * footstepSounds.length)].play();
         }
 
-        // update armor if out of combat for long enough
+        // restore armor if out of combat for long enough
         if (armorTimer.ended()) {
-            armor = Math.min(armor + 0.2, maxArmor);
+            armor = Math.min(armor + 0.2, MAX_ARMOR);
             armorBar.setHealth(armor);
+            getWorld().getWorldData().setPlayerArmor(armor);
         }
 
         // Update camera
@@ -277,6 +279,16 @@ public class Player extends Entity {
     }
 
     /**
+     * Set the armor of this player.
+     * 
+     * @param armor the armor value
+     */
+    public void setArmor(double armor) {
+        this.armor = armor;
+        armorBar.setHealth(armor);
+    }
+
+    /**
      * Restart the dash timer.
      */
     public void restartDashTimer() {
@@ -313,6 +325,9 @@ public class Player extends Entity {
                                     damage.getRadius()));
             armor = 0;
         }
+
+        getWorld().getWorldData().setPlayerArmor(armor);
+        getWorld().getWorldData().setPlayerHp(getHealth());
     }
 
     @Override

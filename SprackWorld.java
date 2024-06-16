@@ -38,6 +38,8 @@ public class SprackWorld extends PixelWorld {
 
         Vector2 playerPos = worldData.getPlayerLocation();
         player = new Player();
+        player.setHealth(worldData.getPlayerHp());
+        player.setArmor(worldData.getPlayerArmor());
         addWorldObject(player, playerPos.x * 20, 0, playerPos.y * 20);
         applyAdditions();
 

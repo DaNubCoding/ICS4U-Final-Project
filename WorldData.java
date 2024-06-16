@@ -55,6 +55,8 @@ public class WorldData {
     private HashMap<Long, EntityPosPair> storedEntities;
     private ArrayList<Item> playerHotbar;
     private HashSet<Vector2> waypoints;
+    private double playerHp;
+    private double playerArmor;
 
     // world stats
     private double playerDmgDone;
@@ -79,6 +81,8 @@ public class WorldData {
         storedItems = new HashMap<Long, ItemPosPair>();
         storedEntities = new HashMap<Long, EntityPosPair>();
         playerHotbar = new ArrayList<Item>();
+        playerHp = Player.MAX_HP;
+        playerArmor = Player.MAX_ARMOR;
         waypoints = new HashSet<Vector2>();
         playerDmgDone = 0;
         playerDmgTaken = 0;
@@ -96,9 +100,14 @@ public class WorldData {
 
             // get the player coordinates
             StringTokenizer st = new StringTokenizer(scf.nextLine(), ",");
-            int x = (int)(double) Double.valueOf(st.nextToken());
-            int y = (int)(double) Double.valueOf(st.nextToken());
+            int x = Integer.valueOf(st.nextToken());
+            int y = Integer.valueOf(st.nextToken());
             playerLocation = new Vector2(x, y);
+
+            // get the player's armor and hp
+            st = new StringTokenizer(scf.nextLine(), ",");
+            playerArmor = Double.valueOf(st.nextToken());
+            playerHp = Double.valueOf(st.nextToken());
 
             // get the player hotbar
             st = new StringTokenizer(scf.nextLine(), ",");
@@ -595,6 +604,42 @@ public class WorldData {
     }
 
     /**
+     * Get the player's saved armor value.
+     * 
+     * @return the armor value
+     */
+    public double getPlayerArmor() {
+        return playerArmor;
+    }
+
+    /**
+     * Set the player's saved armor value.
+     * 
+     * @param armor the armor value
+     */
+    public void setPlayerArmor(double armor) {
+        playerArmor = armor;
+    }   
+
+    /**
+     * Get the player's saved health value.
+     * 
+     * @return the hp value
+     */
+    public double getPlayerHp() {
+        return playerHp;
+    }
+
+    /**
+     * Set the player's saved health value.
+     * 
+     * @param hp the hp value
+     */
+    public void setPlayerHp(double hp) {
+        playerHp = hp;
+    }   
+
+    /**
      * Set the player's hotbar to a list of items
      *
      * @param hotbar the list of item representing the player's hotbar
@@ -745,6 +790,8 @@ public class WorldData {
         fileOutput.println(seed);
         // player location
         fileOutput.println((int) (playerLocation.x) + "," + (int) playerLocation.y);
+        // player armor and hp
+        fileOutput.println(playerArmor + "," + playerHp);
         // player hotbar
         StringBuilder sb = new StringBuilder();
         sb.append("hotbar,");
