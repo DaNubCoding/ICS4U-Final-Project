@@ -6,14 +6,14 @@
  */
 public class SaintShield extends Enemy
 {
-    private Saint owner;
+    private Entity owner;
     private double angle;
 
     public SaintShield() {
         super("saint_shield");
     }
 
-    public SaintShield(double direction, Saint owner)
+    public SaintShield(double direction, Entity owner)
     {
         super("saint_shield");
         setHealth(200);
@@ -54,6 +54,7 @@ public class SaintShield extends Enemy
 
     @Override
     public void damage(Damage damage) {
+        if (damage.getOwner() == owner) return;
         //Redirects a portion of all melee damage back
         Entity o = damage.getOwner();
         if (!(damage.getSource() instanceof Projectile 

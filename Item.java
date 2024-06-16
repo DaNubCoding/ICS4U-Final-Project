@@ -35,6 +35,7 @@ public abstract class Item extends WorldSprite {
         NAMES.put("rickonastick", RickOnAStick::new);
         NAMES.put("swordofsurprise", SwordOfSurprise::new);
         NAMES.put("manual", Manual::new);
+        NAMES.put("tomeofprotectionv", TomeOfProtectionV::new);
     }
 
     /**

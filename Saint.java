@@ -189,4 +189,17 @@ public class Saint extends Enemy
             attackTimer.restart(time);
         }
     }
+
+    @Override
+    public void die() {
+        super.die();
+
+        TomeOfProtectionV item = new TomeOfProtectionV();
+        getWorld().addWorldObject(item, getWorldPos());
+        item.physics.applyForce(new Vector3(
+            Math.random() * 6 - 3,
+            3,
+            Math.random() * 6 - 3
+        ));
+    }
 }
