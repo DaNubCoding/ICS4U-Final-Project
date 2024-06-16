@@ -26,6 +26,7 @@ public class Jester extends Enemy {
             new Animation(12, "jester_spin"),
             new Animation(12, "jester_counter")
         };
+    private static final SoundEffect giggleSound = new SoundEffect("jester_giggle.wav");
 
     private Timer moveTimer = new Timer(150);
     private Timer attackTimer = new Timer(120);
@@ -113,6 +114,7 @@ public class Jester extends Enemy {
             if (attack < 3) {
                 physics.turnTowards(playerPos.xz);
                 preDashTimer = new Timer(30);
+                giggleSound.play();
             } else if (attack == 3) {
                 physics.applyForce(dist.rotateY((Math.random()*40)-20).scaleToMagnitude(4.5));
                 playOneTimeAnimation(staticAnimations[3]);
