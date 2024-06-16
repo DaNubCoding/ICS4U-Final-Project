@@ -276,6 +276,13 @@ public class Player extends Entity {
         healthBar.setHealth(health);
     }
 
+    /**
+     * Restart the dash timer.
+     */
+    public void restartDashTimer() {
+        dashTimer.restart();
+    }
+
     @Override
     public void damage(Damage damage) {
         double dmg = damage.getDamage();

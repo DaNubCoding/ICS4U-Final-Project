@@ -116,6 +116,7 @@ public class JesterSword extends MeleeWeapon {
             timer.restart(50);
             playerPhysics.setWorldPos(initialPos);
             Camera.shake(2, 50);
+            getPlayer().restartDashTimer();
         }
         playerPhysics.reduceMomentum(0.15);
     }
