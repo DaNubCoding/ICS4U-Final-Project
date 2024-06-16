@@ -259,6 +259,34 @@ public class SprackWorld extends PixelWorld {
     }
 
     /**
+     * Get all WorldSprites within a certain range of a center point as a stream.
+     * <p>
+     * You generally do not need to call this method. Instead, use the
+     * {@link #getWorldSpritesInRange(Vector3, double)} method to get a list of
+     * WorldSprites within a range.
+     *
+     * @param center the center point
+     * @param range the range
+     * @return a stream of WorldSprites within the range
+     */
+    public Stream<WorldSprite> getWorldSpritesInRangeAsStream(Vector3 center, double range) {
+        return getSpritesAsStream(WorldSprite.class)
+            .map(sprite -> (WorldSprite) sprite)
+            .filter(sprite -> sprite.getWorldPos().distanceTo(center) < range);
+    }
+
+    /**
+     * Get all WorldSprites within a certain range of a center point.
+     *
+     * @param center the center point
+     * @param range the range
+     * @return a list of WorldSprites within the range
+     */
+    public List<WorldSprite> getWorldSpritesInRange(Vector3 center, double range) {
+        return getWorldSpritesInRangeAsStream(center, range).collect(Collectors.toList());
+    }
+
+    /**
      * Get all Entities within a certain range of a center point as a stream.
      * <p>
      * You generally do not need to call this method. Instead, use the
