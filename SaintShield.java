@@ -1,7 +1,12 @@
+import java.util.List;
+
 /**
- * Saint's barrior
+ * Saint's barrier.
+ * <p>
+ * Compatibility as the player's shield added by Lucas.
  *
  * @author Stanley
+ * @author Lucas Fu
  * @version June 2024
  */
 public class SaintShield extends Enemy
@@ -40,7 +45,23 @@ public class SaintShield extends Enemy
     public void idle(Player player) {
         setHealth(super.getHealth()-0.05);
         physics.moveToTarget(owner.getWorldPos().xz.add(new Vector2(angle).multiply(20)));
-    } // Takes damage over time, follows castor around
+
+        // player shield custom behaviour
+        if (owner instanceof Player) {
+            if (getHealth() <= 0) die();
+            Vector3 pos = getWorldPos();
+            List<WorldSprite> inRange = getWorld().getWorldSpritesInRange(pos, 10);
+            if (inRange.size() > 0) {
+                for (WorldSprite ws : inRange) {
+                    if (ws instanceof Projectile) {
+                        ((Projectile)ws).disappear();
+                        damage(new Damage(this, this, 20, pos, 0));
+                    }
+                }
+            }
+        }
+
+    } // Takes damage over time, follows caster around
 
     @Override
     public void notice(Player player) {}
@@ -49,25 +70,24 @@ public class SaintShield extends Enemy
     public void forget(Player player) {}
 
     @Override
-    public void engage(Player player) {
-    }
+    public void engage(Player player) {}
 
     @Override
     public void damage(Damage damage) {
         if (damage.getOwner() == owner) return;
-        //Redirects a portion of all melee damage back
+        // redirects a portion of all melee damage back
         Entity o = damage.getOwner();
-        if (!(damage.getSource() instanceof Projectile 
-           || damage.getSource() instanceof Magic
-           || damage.getSource() instanceof Sprack)) {
+        if (damage.getSource() instanceof MeleeWeapon) {
+            // damage owner takes 40% of damage while this only takes 60%
             super.damage(damage.multiply(0.6));
-            if (!(damage.getSource() instanceof Statue)) {
-                Vector3 ownerPos = o.getWorldPos();
-                Vector3 shieldPos = getWorldPos();
-                final Vector3 dist = shieldPos.subtract(ownerPos);
-                o.physics.applyForce(dist.normalize().multiply(-2));
-            }
             o.damage(damage.multiply(0.4));
+            // special knockback when attacked by statue
+            if (!(damage.getSource() instanceof Statue)) {
+                Vector3 statuePos = o.getWorldPos();
+                Vector3 shieldPos = getWorldPos();
+                final Vector3 direction = shieldPos.subtract(statuePos).normalize();
+                o.physics.applyForce(direction.multiply(-2));
+            }
         } else {
             super.damage(damage);
         }
