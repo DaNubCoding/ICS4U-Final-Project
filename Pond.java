@@ -30,12 +30,12 @@ public class Pond extends WorldSprite
         this.rand = rand;
 
         cattails = new ArrayList<>();
-        numCattails = rand.nextInt(5, 14);
+        numCattails = rand.nextInt(14 - 5) + 5;
         for(int i=0; i<numCattails; i++){
             cattails.add(new Cattail(rand.nextInt(4)));
         }
         lilyPads = new ArrayList<>();
-        numLilyPads = rand.nextInt(3, 8);
+        numLilyPads = rand.nextInt(8 - 3) + 3;
         for(int i=0; i<numLilyPads; i++){
             lilyPads.add(new LilyPad(rand.nextInt(4)));
         }

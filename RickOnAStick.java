@@ -11,7 +11,7 @@ public class RickOnAStick extends MagicWeapon {
 
     static {
         for (SoundEffect sound : sounds) {
-            sound.setVolume(25);
+            sound.setVolume(50);
         }
     }
 
@@ -35,5 +35,6 @@ public class RickOnAStick extends MagicWeapon {
             super.attack();
         }
         sounds[(int) (Math.random() * sounds.length)].play();
+        Music.pause();
     }
 }

@@ -46,4 +46,10 @@ public class RickMegaphone extends Magic {
             }
         }
     }
+
+    @Override
+    public void disappear() {
+        super.disappear();
+        Music.play();
+    }
 }
