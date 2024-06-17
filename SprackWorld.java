@@ -6,6 +6,23 @@ import java.util.stream.Stream;
 import java.util.stream.Collectors;
 import java.util.Random;
 
+/**
+ * The main world of the game.
+ * <p>
+ * List of features that we would like you to take note :)
+ * <ul>
+ * <li>Try and collect 5 Jester Swords, and put them in the same place, we'll let the rest play out :)</li>
+ * <li>Try and collect 5 Pearl Guns, same idea!</li>
+ * <li>Use the map and waypoints to help you remember where you left your items!</li>
+ * <li>Full seed consistency!</li>
+ * <li>Chopping trees??? This ain't Minecraft!</li>
+ * <li>
+ *
+ * @author Martin Baldwin
+ * @author Lucas Fu
+ * @author Andrew Wang
+ * @version May 2024
+ */
 public class SprackWorld extends PixelWorld {
     private WorldData worldData;
     private Player player;
