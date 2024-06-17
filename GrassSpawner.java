@@ -16,7 +16,7 @@ public class GrassSpawner extends Feature
     public GrassSpawner(FeatureData data){
         super(null, data);
         rand = new Random(data.id);
-        numGrass = rand.nextInt(1, 10);
+        numGrass = rand.nextInt(10 - 1) + 1;
         allGrass = new ArrayList<Grass>();
         for(int i=0; i<numGrass; i++){
             allGrass.add(new Grass(rand.nextInt(4)));
