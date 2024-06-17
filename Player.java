@@ -14,6 +14,7 @@ import greenfoot.*;
 public class Player extends Entity {
     private static final SoundEffect itemSound = new SoundEffect("pick_up.wav");
     private static final SoundEffect armorSound = new SoundEffect("armor_hit.wav");
+    private static final SoundEffect dashSound = new SoundEffect("dash.wav");
 
     private static final Animation walkingAnimation = new Animation(6,
         "knight_walk1",
@@ -96,6 +97,7 @@ public class Player extends Entity {
             physics.applyForce(new Vector2(getWorldRotation()).multiply(6));
             playOneTimeAnimation(dashAnimation);
             dashTimer.restart();
+            dashSound.play();
         }
 
         // Apply weapon changing
