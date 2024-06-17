@@ -11,7 +11,7 @@ import java.util.function.Supplier;
  * @version June 2024
  */
 public class Crate extends Feature {
-    private static final SoundEffect breakSound = new SoundEffect("crate_break.wav");
+    public static final SoundEffect breakSound = new SoundEffect("crate_break.wav");
 
     private static final List<Supplier<Item>> itemSuppliers = Arrays.asList(
         Pistol::new,

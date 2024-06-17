@@ -48,6 +48,7 @@ public class OakTree extends Feature {
 
     @Override
     public void removeFromWorld() {
+        Crate.breakSound.play();
         if (getData().containsKey("stumped")) {
             super.removeFromWorld();
             return;

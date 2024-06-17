@@ -49,6 +49,7 @@ public class WillowTree extends Feature {
 
     @Override
     public void removeFromWorld() {
+        Crate.breakSound.play();
         if (getData().containsKey("stumped")) {
             super.removeFromWorld();
             return;

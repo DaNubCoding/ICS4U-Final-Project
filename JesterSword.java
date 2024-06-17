@@ -6,6 +6,7 @@ import java.util.ArrayList;
  *
  * @author Lucas Fu
  * @author Andrew Wang
+ * @author Martin Baldwin
  * @version June 2024
  */
 public class JesterSword extends MeleeWeapon {
@@ -142,5 +143,6 @@ public class JesterSword extends MeleeWeapon {
         dashes = 0;
         initialPos = null;
         Camera.shake(4, 24);
+        swingSound.play();
     }
 }

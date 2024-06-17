@@ -3,10 +3,11 @@
  *
  * @author Andrew Wang
  * @author Sandra Huang
+ * @author Martin Baldwin
  * @version May 2024
  */
 public abstract class MeleeWeapon extends Weapon {
-    private static final SoundEffect swingSound = new SoundEffect("swing.wav");
+    public static final SoundEffect swingSound = new SoundEffect("swing.wav");
 
     private int range;
     private double damage;
