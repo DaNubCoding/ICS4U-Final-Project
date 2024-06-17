@@ -120,13 +120,13 @@ public class Saint extends Enemy
                     attackPhase = 4;
                     rageTime(30);
                     setLoopingAnimation(saintAnimations[3]);
-                } 
+                }
                 // if SaintBlast was previously used and there are still more left,
                 // pause attacks for 30 frames and continue using SaintBlasts
                 else if (attackType == 1 && holyBlasts > 0) {
                     attackPhase = 1;
                     rageTime(30);
-                } 
+                }
                 // otherwise, pause attacks for 200 frames
                 else {
                     attackPhase = 0;
@@ -158,14 +158,14 @@ public class Saint extends Enemy
                     rageTime(45);
                     attackPhase = 3;
                 }
-            } 
+            }
             // if currently selecting ShieldSummon, create a SaintShield and pause attacks for 40 frames
             else if (attackType == 2) {
                 setLoopingAnimation(saintAnimations[6]);
                 getWorld().addWorldObject(new SaintShield(getWorldRotation(), this), enemyPos.add(dist.normalize().multiply(15)));
                 summonSound.play();
                 rageTime(40);
-            } 
+            }
             // if currently selecting SaintFire, restart attack timer for 250 frames
             else if (attackType == 3) {
                 attackTimer.restart(250);
@@ -197,13 +197,13 @@ public class Saint extends Enemy
                 charge -= 20;
                 attackSound.play();
                 rageTime(150);
-            } 
+            }
             // 50% chance to consume 8 charges to schedule a shield summon in 65 frames
             else if (charge >= 8 && Math.random() < 0.5) {
                 attackType = 2;
                 charge -= 8;
                 rageTime(65);
-            } 
+            }
             // schedule between 3 to 6 holy blasts in 35 seconds
             else {
                 holyBlasts = (int)(Math.random()*4+3);
@@ -243,8 +243,8 @@ public class Saint extends Enemy
     }
 
     @Override
-    public void die() {
-        super.die();
+    public void die(Entity killer) {
+        super.die(killer);
 
         TomeOfProtectionV item = new TomeOfProtectionV();
         getWorld().addWorldObject(item, getWorldPos());

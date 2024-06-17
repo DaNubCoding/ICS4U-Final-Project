@@ -282,7 +282,7 @@ public class Player extends Entity {
 
     /**
      * Set the armor of this player.
-     * 
+     *
      * @param armor the armor value
      */
     public void setArmor(double armor) {
@@ -333,8 +333,8 @@ public class Player extends Entity {
     }
 
     @Override
-    public void die() {
+    public void die(Entity killer) {
         getWorld().getWorldData().saveData();
-        Greenfoot.setWorld(new DeathScreen(getWorld().getWorldData()));
+        Greenfoot.setWorld(new DeathScreen(getWorld().getWorldData(), killer));
     }
 }

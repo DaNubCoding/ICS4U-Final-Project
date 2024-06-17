@@ -82,22 +82,23 @@ public class WorldMap extends PixelWorld {
         // show coordinates
         String coords = "Coordinates:\n(" + (int) playerPos.x + ", " + (int) playerPos.y + ")";
         addSprite(new Text(coords,
-                           Text.AnchorX.LEFT,
+                           Text.AnchorX.RIGHT,
                            Text.AnchorY.CENTER,
-                           new Color(180, 180, 180, 200)),
-                           2, 50);
-
-        applyAdditions();
-        render();
-        updateImage();
+                           new Color(180, 180, 180)),
+                           (getWidth() - CELL_SIZE * map.length) - 9, 50);
 
         // show seed
         String seed = "Seed: " + worldData.getSeed();
         addSprite(new Text(seed,
-                           Text.AnchorX.LEFT,
-                           Text.AnchorY.CENTER,
-                           new Color(180, 180, 180, 200)),
-                           2, 10);
+                           Text.AnchorX.CENTER,
+                           Text.AnchorY.TOP),
+                           getWidth() / 2, 6);
+
+        addSprite(new Button("Back", () -> Greenfoot.setWorld(initialWorld)), 25, getHeight() - 17);
+
+        applyAdditions();
+        render();
+        updateImage();
     }
 
     @Override
@@ -178,6 +179,10 @@ public class WorldMap extends PixelWorld {
         background.drawLine(widAdj + CELL_SIZE * map.length / 2,
                             heiAdj + CELL_SIZE * map.length / 2,
                             endX, endY);
+
+        // seed title background
+        background.setColor(new Color(100, 100, 100));
+        background.fillRect(0, 4, getWidth(), 14);
 
         renderSprites();
     }

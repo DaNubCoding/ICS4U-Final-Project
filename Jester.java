@@ -42,7 +42,7 @@ public class Jester extends Enemy {
      * The "Attack String" is the amount of short-cooldown attacks left before
      * a longer cooldown.
      * <p>
-     * The number of consecutive attacks is equal to the rage level, and the 
+     * The number of consecutive attacks is equal to the rage level, and the
      * attackTimer cooldowns are as follows:
      * <ul>
      * <li> 110 - 160 frames when the whole attack string has been performed
@@ -50,8 +50,8 @@ public class Jester extends Enemy {
      */
     private int attackString = 1;
     /**
-     * The "actionCount" is the amount of frames the Jester gets to try and 
-     * melee the player at range 18. The attack that is trying to be performed 
+     * The "actionCount" is the amount of frames the Jester gets to try and
+     * melee the player at range 18. The attack that is trying to be performed
      * depends on the current "hitBox" value.
      */
     private int actionCount = 0;
@@ -132,12 +132,12 @@ public class Jester extends Enemy {
                 physics.setWorldRotation(getWorldRotation()-20);
             }
             actionCount -= 1;
-        } 
+        }
         // if jester is guarding, play the guard animation and turn towards the player
         else if (!guardTimer.ended()) {
             setLoopingAnimation(staticAnimations[1]);
             physics.turnTowards(playerPos.xz);
-        } 
+        }
         // if ready to perform a new attack, consume an attack in the string and perform attack logic
         else if (attackTimer.ended()) {
             attackString -= 1;
@@ -150,15 +150,15 @@ public class Jester extends Enemy {
             }
             /**
              * Prepares to dash towards the player when attack value is 1 or 2.
-             * This has a 40% chance of happening at close range, 
+             * This has a 40% chance of happening at close range,
              * and a 100% chance of happening at long range
              */
             if (attack < 3) {
                 physics.turnTowards(playerPos.xz);
                 preDashTimer = new Timer(30);
                 giggleSound.play();
-            } 
-            /** 
+            }
+            /**
              * Performs a spin when attack value is 3.
              * This makes the Jester roll towards the general direction of the
              * player and prepare a weak attack lasting 18 frames.
@@ -168,11 +168,11 @@ public class Jester extends Enemy {
                 playOneTimeAnimation(staticAnimations[3]);
                 actionCount = 18;
                 hitBox = 2;
-            } 
+            }
             /**
              * Performs a flip when attack value is 4.
              * This makes the Jester flip towards the general direction of the
-             * player and adding 12 frames to the previously prepared attack if 
+             * player and adding 12 frames to the previously prepared attack if
              * said attack missed.
              */
             else if (attack == 4){
@@ -181,11 +181,11 @@ public class Jester extends Enemy {
                 playOneTimeAnimation(flippingAnimation);
                 actionCount = 12;
                 physics.turnTowards(playerPos.xz.rotate(a+90));
-            } 
+            }
             /**
              * Performs a stab when attack value is 5.
              * This makes the Jester attempt to stab the player for 16 damage
-             * before dashing away and adding 12 frames to the previously 
+             * before dashing away and adding 12 frames to the previously
              * prepared attack if said attack missed.
              */
             else {
@@ -208,7 +208,7 @@ public class Jester extends Enemy {
         // This gets more and more likely as the Jester's range meter increases.
         } else if (Math.random() * 500 < rage) {
             guardTimer.restart(45+(int)Math.random() * 65);
-        } 
+        }
         // if none of the above actions happened, perform movement logic
         else {
             physics.moveToNearPlayer(70);
@@ -233,7 +233,7 @@ public class Jester extends Enemy {
 
         // if the jester has an intention to dash..
         if (preDashTimer != null) {
-            /** 
+            /**
              * If the dash timer has ended, dash toward the player proportional
              * to the distance to the player, preparing a medium-strength attack
              * lasting 15 frames.
@@ -260,7 +260,7 @@ public class Jester extends Enemy {
         }
     }
 
-    /** 
+    /**
      * Performs "dodges" instead of taking damage when hit with an attack
      * while guard is still on, interrupting any attack this was trying to
      * perform, and canceling any prepared attacks.
@@ -280,8 +280,8 @@ public class Jester extends Enemy {
     }
 
     @Override
-    public void die() {
-        super.die();
+    public void die(Entity killer) {
+        super.die(killer);
 
         JesterSword item = new JesterSword();
         getWorld().addWorldObject(item, getWorldPos());

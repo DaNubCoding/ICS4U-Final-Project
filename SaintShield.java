@@ -48,7 +48,7 @@ public class SaintShield extends Enemy
 
         // player shield custom behaviour
         if (owner instanceof Player) {
-            if (getHealth() <= 0) die();
+            if (getHealth() <= 0) die(null);
             Vector3 pos = getWorldPos();
             List<WorldSprite> inRange = getWorld().getWorldSpritesInRange(pos, 10);
             if (inRange.size() > 0) {

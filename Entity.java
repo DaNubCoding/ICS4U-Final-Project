@@ -138,7 +138,7 @@ public abstract class Entity extends Sprack {
             if (damage.getOwner() instanceof Player)
                 getWorld().getWorldData().addPlayerEnemiesKilled();
             health = 10000;
-            die();
+            die(damage.getOwner());
             return;
         }
         for (int i = 0; i < damage.getDamage() + 4; i++) {
@@ -152,7 +152,7 @@ public abstract class Entity extends Sprack {
         }
     }
 
-    public void die() {
+    public void die(Entity killer) {
         for (int i = 0; i < 20; i++) {
             DeathParticle particle = new DeathParticle();
             Vector3 offset = new Vector3(

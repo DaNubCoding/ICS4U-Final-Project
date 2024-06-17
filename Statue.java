@@ -117,8 +117,8 @@ public class Statue extends Enemy {
     }
 
     @Override
-    public void die() {
-        super.die();
+    public void die(Entity killer) {
+        super.die(killer);
 
         PearlGun item = new PearlGun();
         getWorld().addWorldObject(item, getWorldPos());

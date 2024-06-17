@@ -3,12 +3,13 @@ import greenfoot.*;
  * The TitleWorld is the first world the player sees. It displays the title.
  */
 public class TitleWorld extends PixelWorld {
-    private GifSprite panorama = new GifSprite(new GifImage("panorama.gif"), Layer.UI);
+    private GifSprite panorama = new GifSprite(new GifImage("panorama.gif"), Layer.GROUND);
     private static GreenfootImage title = new GreenfootImage("title.png");
 
     public TitleWorld() {
         super(256, 196);
         addSprite(panorama, getWidth() / 2, getHeight() / 2);
+        addSprite(new Text("Press any button", Text.AnchorX.CENTER, Text.AnchorY.BOTTOM, new Color(227, 250, 175, 128)), getWidth() / 2, getHeight() - 30);
         Music.set("title_music.wav");
 
         applyAdditions();
