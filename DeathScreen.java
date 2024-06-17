@@ -36,7 +36,7 @@ public class DeathScreen extends PixelWorld {
         addSprite(new Text("Time Played: " + (seconds / 60) + ":" + (seconds % 60 < 10 ? "0" : "") + (seconds % 60),
                            Text.AnchorX.CENTER, Text.AnchorY.CENTER),
                            125, 120);
-        addSprite(new Text("Weapons Discovered: " + data.getNumDicoveredWeapons() + " / " + Weapon.NAMES.size(),
+        addSprite(new Text("Weapons Discovered: " + data.getNumDicoveredWeapons() + " / " + (Weapon.NAMES.size() - 1),
                            Text.AnchorX.CENTER, Text.AnchorY.CENTER),
                            125, 140);
         addSprite(new Button("Back", () -> Greenfoot.setWorld(new TitleWorld())), getWidth() / 2, 170);
