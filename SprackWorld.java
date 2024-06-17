@@ -70,6 +70,12 @@ public class SprackWorld extends PixelWorld {
     }
 
     @Override
+    public void stopped() {
+        super.stopped();
+        worldData.saveData();
+    }
+
+    @Override
     public void update() {
         Music.set("main_music.wav");
         List<? extends Sprite> spracks = getSpritesByLayer(Layer.SPRACK_DEFAULT);
