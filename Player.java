@@ -118,12 +118,6 @@ public class Player extends Entity {
             qFlag = false;
         }
 
-        if (Greenfoot.isKeyDown("e") && getWorldY() == 0) {
-            physics.reduceMomentum(0.9);
-            Vector2 horImpulse = new Vector2(getWorldRotation()).multiply(5);
-            physics.applyForce(Vector3.fromXZ(horImpulse).add(new Vector3(0, 6, 0)));
-        }
-
         // Update physics
         physics.update();
 
