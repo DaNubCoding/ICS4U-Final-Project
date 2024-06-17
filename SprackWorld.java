@@ -17,6 +17,11 @@ import java.util.Random;
  * <li>Full seed consistency!</li>
  * <li>Chopping trees??? This ain't Minecraft!</li>
  * <li>
+ * IMPORTANT: This game is VERY memory intensive due to the cached images of the
+ * sprite stacks, and may run out of memory at times, if this happens, please
+ * restart Greenfoot. If the game refuses to start due to memory issues, please
+ * head to {@link SprackView} and change the value of {@code IMAGE_CACHE_ANGLE_COUNT}
+ * to a lower value.
  *
  * @author Martin Baldwin
  * @author Lucas Fu

@@ -24,6 +24,9 @@ public class SprackView {
     /**
      * The number of different rotation angles, evenly spaced, to make available
      * in the cache.
+     * <p>
+     * Decrease this number to a smaller value divisible by 360 to decrease the
+     * memory usage of the cache.
      */
     private static final int IMAGE_CACHE_ANGLE_COUNT = 120;
 
