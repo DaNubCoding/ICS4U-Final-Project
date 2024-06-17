@@ -6,7 +6,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.security.SecureRandom;
+import java.util.Random;
 import java.util.Scanner;
 import java.util.StringTokenizer;
 import java.util.function.BiConsumer;
@@ -40,7 +40,7 @@ public class WorldData {
         }
     }
 
-    private static SecureRandom rand;
+    private static Random rand;
 
     // settings
     private static final int generationRadius = 20;
@@ -229,7 +229,7 @@ public class WorldData {
     }
 
     private static Feature generateFeature(WorldData data, long id, Vector2 coord, FeatureData featureData) {
-        rand = new SecureRandom(ByteBuffer.allocate(8).putLong(id).array());
+        rand = new Random(id);
 
         // init spawn rates
         int[] spawnRates = new int[Feature.Type.length()];
@@ -273,7 +273,7 @@ public class WorldData {
     }
 
     private static Cluster generateCluster(long id) {
-        rand = new SecureRandom(ByteBuffer.allocate(8).putLong(id).array());
+        rand = new Random(id);
         // clusters currently use a probability system
         int roll = rand.nextInt(5000);
         int sum = 0;
@@ -605,7 +605,7 @@ public class WorldData {
 
     /**
      * Get the player's saved armor value.
-     * 
+     *
      * @return the armor value
      */
     public double getPlayerArmor() {
@@ -614,16 +614,16 @@ public class WorldData {
 
     /**
      * Set the player's saved armor value.
-     * 
+     *
      * @param armor the armor value
      */
     public void setPlayerArmor(double armor) {
         playerArmor = armor;
-    }   
+    }
 
     /**
      * Get the player's saved health value.
-     * 
+     *
      * @return the hp value
      */
     public double getPlayerHp() {
@@ -632,12 +632,12 @@ public class WorldData {
 
     /**
      * Set the player's saved health value.
-     * 
+     *
      * @param hp the hp value
      */
     public void setPlayerHp(double hp) {
         playerHp = hp;
-    }   
+    }
 
     /**
      * Set the player's hotbar to a list of items
