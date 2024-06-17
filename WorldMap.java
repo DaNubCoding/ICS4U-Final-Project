@@ -7,6 +7,7 @@ import greenfoot.GreenfootImage;
  * The world map that shows the player's surroundings.
  *
  * @author Lucas Fu
+ * @author Martin Baldwin
  * @version June 2024
  */
 public class WorldMap extends PixelWorld {

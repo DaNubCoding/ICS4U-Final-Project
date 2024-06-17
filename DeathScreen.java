@@ -9,6 +9,7 @@ import greenfoot.GreenfootImage;
  * world.
  *
  * @author Lucas Fu
+ * @author Martin Baldwin
  * @version June 2024
  */
 public class DeathScreen extends PixelWorld {

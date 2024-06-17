@@ -1,6 +1,11 @@
 import greenfoot.*;
+
 /**
  * The TitleWorld is the first world the player sees. It displays the title.
+ *
+ * @author Andrew Wang
+ * @author Martin Baldwin
+ * @version June 2024
  */
 public class TitleWorld extends PixelWorld {
     private GifSprite panorama = new GifSprite(new GifImage("panorama.gif"), Layer.GROUND);

@@ -7,6 +7,7 @@ import greenfoot.*;
  *
  * @author Andrew Wang
  * @author Sandra Huang
+ * @author Martin Baldwin
  * @version May 2024
  */
 public class WillowTree extends Feature {

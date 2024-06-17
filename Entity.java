@@ -7,6 +7,7 @@ import java.util.function.Supplier;
  * with different movement patterns.
  *
  * @author Andrew Wang
+ * @author Martin Baldwin
  * @version June 2024
  */
 public abstract class Entity extends Sprack {

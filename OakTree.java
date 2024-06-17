@@ -6,6 +6,7 @@ import greenfoot.*;
  *
  * @author Lucas Fu
  * @author Sandra Huang
+ * @author Martin Baldwin
  * @version May 2024
  */
 public class OakTree extends Feature {
