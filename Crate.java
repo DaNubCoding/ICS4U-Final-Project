@@ -11,6 +11,8 @@ import java.util.function.Supplier;
  * @version June 2024
  */
 public class Crate extends Feature {
+    private static final SoundEffect breakSound = new SoundEffect("crate_break.wav");
+
     private static final List<Supplier<Item>> itemSuppliers = Arrays.asList(
         Pistol::new,
         Sword::new,
@@ -46,6 +48,7 @@ public class Crate extends Feature {
         if(getWorld().getPlayer().getWorldPos().distanceTo(getWorldPos()) <= 20) {
             getWorld().addWorldObject(content, getWorldPos());
             removeFromWorld();
+            breakSound.play();
         }
     }
 }

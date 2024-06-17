@@ -31,6 +31,8 @@ public abstract class Entity extends Sprack {
      */
     public static final double MAX_SPEED = 2.0;
 
+    private static final SoundEffect damageSound = new SoundEffect("hit.wav");
+
     public final long id = Math.round(Math.random() * (Long.MAX_VALUE - 1));
     public final PhysicsController physics;
     private double health;
@@ -134,6 +136,7 @@ public abstract class Entity extends Sprack {
      */
     public void damage(Damage damage) {
         setHealth(health - damage.getDamage());
+        damageSound.play();
         if (health <= 0) {
             if (damage.getOwner() instanceof Player)
                 getWorld().getWorldData().addPlayerEnemiesKilled();

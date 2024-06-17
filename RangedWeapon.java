@@ -6,6 +6,7 @@
  * @version May 2024
  */
 public abstract class RangedWeapon extends Weapon {
+    private static final SoundEffect shootSound = new SoundEffect("shoot.wav");
 
     @FunctionalInterface
     public static interface ProjectileFactory {
@@ -19,7 +20,7 @@ public abstract class RangedWeapon extends Weapon {
 
     /**
      * Create a new ranged weapon with all specifications.
-     * 
+     *
      * @param image the file name of the image
      * @param inaccuracy the spread angle of the weapon
      * @param speed the projectile speed of projectiles shot
@@ -56,11 +57,12 @@ public abstract class RangedWeapon extends Weapon {
             Projectile proj = projFactory.create(getPlayer(), newDir, spawnPos);
             getPlayer().getWorld().addSprite(proj, 0, 0);
         }
+        shootSound.play();
     }
 
     /**
      * Modifies the initial velocity using inaccuracy.
-     * 
+     *
      * @param initialVel the velocity before modifications
      * @param inaccuracy the inaccuracy modifier
      * @return the new modified velocity

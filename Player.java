@@ -12,6 +12,8 @@ import greenfoot.*;
  * @version May 2024
  */
 public class Player extends Entity {
+    private static final SoundEffect itemSound = new SoundEffect("pick_up.wav");
+
     private static final Animation walkingAnimation = new Animation(6,
         "knight_walk1",
         "knight_walk2",
@@ -251,6 +253,7 @@ public class Player extends Entity {
             getWorld().getWorldData().tryAddNewWeapon((Weapon) i);
         if(hotbar.size() > 1)
             getWorld().removeSprite(i);
+        itemSound.play();
     }
 
     /**

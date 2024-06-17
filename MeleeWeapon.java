@@ -6,6 +6,8 @@
  * @version May 2024
  */
 public abstract class MeleeWeapon extends Weapon {
+    private static final SoundEffect swingSound = new SoundEffect("swing.wav");
+
     private int range;
     private double damage;
     private int sweepAngle;
@@ -94,6 +96,7 @@ public abstract class MeleeWeapon extends Weapon {
         catch (NullPointerException e) {} // if the weapon got switched out before doing damage
 
         swingTimer = new Timer(swingDuration);
+        swingSound.play();
     }
 
     /**

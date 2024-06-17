@@ -17,6 +17,8 @@ import greenfoot.*;
  * @version April 2024
  */
 public class Button extends Sprite {
+    private static final SoundEffect clickSound = new SoundEffect("button_click.wav");
+
     private static final int PADX = 8;
     private static final int PADY = 5;
 
@@ -166,6 +168,7 @@ public class Button extends Sprite {
                 if (hovering && mouseDownOnThis) {
                     mouseDownOnThis = false;
                     setImage(hovering ? hoverImage : idleImage);
+                    clickSound.play();
                     method.run();
                 }
                 mouseDownOnThis = false;
