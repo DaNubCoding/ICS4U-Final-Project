@@ -42,11 +42,6 @@ public class Crate extends Feature {
     }
 
     @Override
-    public void addedToWorld(PixelWorld world) {
-        getWorld().addCollisionController(new CollisionController(this, 10, 1.0, 0.0));
-    }
-
-    @Override
     public void update() {
         if(getWorld().getPlayer().getWorldPos().distanceTo(getWorldPos()) <= 20) {
             getWorld().addWorldObject(content, getWorldPos());
