@@ -57,7 +57,7 @@ public class WillowTree extends Feature {
         setLoopingAnimation(new Animation(-1, "stump"));
         getWorld().removeSprite(canopy);
 
-        if (Math.random() < 0.08) {
+        if (Math.random() < 0.05) {
             getWorld().addWorldObject(new WandOfManyCanopies(), getWorldPos());
         }
     }
