@@ -12,6 +12,7 @@ public class SprackWorld extends PixelWorld {
     private List<Damage> damages;
     private List<CollisionController> collisionControllers;
     private boolean bFlag = false;
+    private Timer saveTimer = new Timer(1800);
 
     // world information
     public static final int WORLD_WIDTH = 256;
@@ -105,6 +106,11 @@ public class SprackWorld extends PixelWorld {
             bFlag = true;
         } else if (bFlag && !Greenfoot.isKeyDown("b")) {
             bFlag = false;
+        }
+
+        if (saveTimer.ended()) {
+            worldData.saveData();
+            saveTimer.restart();
         }
 
         Timer.incrementAct();
