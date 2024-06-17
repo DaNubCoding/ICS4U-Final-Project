@@ -1,5 +1,10 @@
 import greenfoot.GreenfootImage;
 
+/**
+ * The SaintShieldMaker is a Magic creates by the {@link TomeOfProtectionV}.
+ * <p>
+ * This summons a {@link SaintShield} for the player to use.
+ */
 public class SaintShieldMaker extends Magic {
     public SaintShieldMaker(Vector3 startpos, double inaccuracy) {
         super(startpos, inaccuracy, -1, 3600, 0);

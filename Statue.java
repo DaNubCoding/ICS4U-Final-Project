@@ -67,6 +67,7 @@ public class Statue extends Enemy {
         Vector3 playerPos = player.getWorldPos();
         Vector3 enemyPos = getWorldPos();
 
+        // throw a statue pearl when off cooldown
         if (attackTimer.ended()) {
             StatuePearl sPearl = new StatuePearl(
                     this,

@@ -1,5 +1,5 @@
 /**
- * Write a description of class Repeater here.
+ * The Repeater is a gun that fires fast, strong bullets at a low rate.
  *
  * @author Matthew Li
  * @version June 2024

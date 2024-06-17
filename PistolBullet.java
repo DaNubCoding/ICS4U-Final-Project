@@ -3,7 +3,7 @@ import java.util.Random;
 import greenfoot.GreenfootImage;
 
 /**
- * A projectile shot by the testing pistol, also for testing pyrposes :)
+ * A projectile shot {@link Pistol} that bounces around on hit.
  *
  * @author Lucas Fu
  * @author Martin Baldwin

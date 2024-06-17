@@ -1,7 +1,7 @@
 import java.util.Random;
 
 /**
- * Spawns ponds
+ * A Feature that creates {@link Pond}s.
  *
  * @author Sandra Huang
  * @version June 2024

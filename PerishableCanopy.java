@@ -1,6 +1,6 @@
 /**
  * A purely cosmetic Sprack created by CanopyBomb that resembles a canopy, but
- * perishes after a while.
+ * sucks in entities and perishes after a while.
  *
  * @author Lucas Fu
  * @version June 2024

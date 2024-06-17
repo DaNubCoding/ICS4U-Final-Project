@@ -81,11 +81,13 @@ public class Skeleton extends Enemy {
 
         physics.moveToNearPlayer(15);
 
+        // try to punch player when close enough
         if (distanceToPlayer <= 25 && punchTimer.ended()) {
             meleePlayer(2, 25);
             punchTimer.restart();
         }
 
+        // try to shoot player if not close enough
         if (distanceToPlayer > 25 && shootTimer.ended()) {
             Bone bone = new Bone(this, playerPos.subtract(enemyPos).normalize(), enemyPos);
             getWorld().addWorldObject(bone, enemyPos);

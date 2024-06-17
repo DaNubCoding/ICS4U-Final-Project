@@ -32,6 +32,11 @@ public abstract class EnemySpawner extends Feature {
         return spawner;
     }
 
+    /**
+     * Get the number of enemies this spawner should spawn.
+     * 
+     * @return the number of enemies to spawn
+     */
     public int getSpawnCount() {
         return spawnCount;
     }

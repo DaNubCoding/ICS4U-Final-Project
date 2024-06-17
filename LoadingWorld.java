@@ -55,6 +55,7 @@ public class LoadingWorld extends PixelWorld {
         Timer.incrementAct();
     }
 
+    @Override
     public void render() {
         GreenfootImage canvas = getCanvas();
         canvas.setColor(BACKGROUND_COLOR);

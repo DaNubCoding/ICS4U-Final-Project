@@ -1,7 +1,7 @@
 import greenfoot.GreenfootImage;
 
 /**
- * A standard projectile with a constantly increasing velocity and piercing.
+ * A standard projectile with a constantly increasing velocity and infinite* piercing.
  * <p>
  * <i> How do skeletons even toss an accelerating bone? </i>
  * 

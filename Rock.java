@@ -1,6 +1,6 @@
 import greenfoot.*;
 /**
- * A rough and edgy music genre
+ * A rough and edgy music genre.
  *
  * @author Sandra Huang
  * @version June 2024

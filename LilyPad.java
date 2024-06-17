@@ -1,7 +1,7 @@
 import greenfoot.GreenfootImage;
 
 /**
- * A lily pad
+ * A lily pad is a background decoration that appears near water.
  *
  * @author Andrew Wang
  * @version June 2024

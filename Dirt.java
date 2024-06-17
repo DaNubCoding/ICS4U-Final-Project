@@ -1,6 +1,6 @@
 import greenfoot.*;
 /**
- * A small patch of brown
+ * A small patch of brown dirt.
  *
  * @author Sandra Huang
  * @version June 2024

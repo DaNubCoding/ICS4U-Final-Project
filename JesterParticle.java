@@ -1,7 +1,7 @@
 import greenfoot.*;
 
 /**
- * A particle used by the {@link JesterSword}.
+ * A particle used by the {@link JesterSword} and the {@link Jester}.
  *
  * @author Andrew Wang
  * @version June 2024

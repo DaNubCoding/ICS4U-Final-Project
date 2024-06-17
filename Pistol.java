@@ -1,5 +1,5 @@
 /**
- * A pistol weapon.
+ * A pistol weapon that shoots a barrage of bullets.
  *
  * @author Matthew Li
  * @author Lucas Fu

@@ -4,7 +4,7 @@ import java.util.Random;
 import java.util.ArrayList;
 
 /**
- * A medium-sized body of water
+ * A medium-sized body of water.
  *
  * @author Sandra Huang
  * @version June 2024
@@ -21,7 +21,7 @@ public class Pond extends WorldSprite
     private int numLilyPads;
 
     /**
-     * Makes a pond
+     * Make a pond with a defined seeded Random.
      */
     public Pond(Random rand, int pondType, int rotation){
         super(Layer.GROUND);

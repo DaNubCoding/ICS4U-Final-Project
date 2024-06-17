@@ -1,5 +1,6 @@
 /**
- * Write a description of class Hammer here.
+ * The Hammer, the slowest melee weapon that also deals the largest amount of
+ * damage.
  *
  * @author Matthew Li
  * @version June 2024

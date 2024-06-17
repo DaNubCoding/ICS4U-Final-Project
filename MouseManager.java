@@ -40,6 +40,7 @@ public class MouseManager {
 
     /**
      * Get the position of the cursor relative to the world.
+     * 
      * @return the world position of the cursor
      */
     public static Vector2 getMouseWorldPos() {

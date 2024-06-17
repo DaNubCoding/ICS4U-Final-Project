@@ -2,7 +2,6 @@ import java.util.HashMap;
 import greenfoot.Color;
 import greenfoot.Greenfoot;
 import greenfoot.GreenfootImage;
-import java.util.HashSet;
 
 /**
  * The world map that shows the player's surroundings.

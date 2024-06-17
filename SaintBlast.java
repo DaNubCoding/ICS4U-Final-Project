@@ -2,7 +2,7 @@ import greenfoot.GreenfootImage;
 import java.util.List;
 
 /**
- * A projectile homes in on a target.
+ * A projectile that homes in on a target.
  *
  * @author Stanley Wang
  * @author Martin Baldwin

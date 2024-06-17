@@ -1,7 +1,7 @@
 import java.util.Random;
 
 /**
- * Magic summoned by magic weapons.
+ * Magic is summoned by magic weapons.
  * 
  * @author Lucas Fu
  * @version June 2024

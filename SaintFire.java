@@ -5,7 +5,7 @@ import java.util.ArrayList;
 /**
  * A projectile shot en masse by the Saint.
  *
- * @author Lucas Fu
+ * @author Stanley
  * @author Martin Baldwin
  * @version June 2024
  */

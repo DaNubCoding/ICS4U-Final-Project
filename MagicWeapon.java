@@ -1,5 +1,5 @@
 /**
- * A type of weapon that creates world-anchored attacks.
+ * A type of weapon that creates world-anchored attacks by summoning {@link Magic}s.
  *
  * @author Andrew Wang
  * @author Lucas Fu

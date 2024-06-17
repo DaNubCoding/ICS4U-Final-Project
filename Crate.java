@@ -4,7 +4,7 @@ import java.util.Arrays;
 import java.util.function.Supplier;
 
 /**
- * A box that holds an item available for the player to collect by walking into it.
+ * A box that holds an item, available for the player to collect by walking into it.
  *
  * @author Andrew Wang
  * @author Martin Baldwin

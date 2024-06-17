@@ -1,7 +1,7 @@
 import greenfoot.GreenfootImage;
 
 /**
- * A cattail
+ * A cattail is a background decoration that exists near water.
  *
  * @author Andrew Wang
  * @version June 2024

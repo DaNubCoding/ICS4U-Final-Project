@@ -1,5 +1,7 @@
 /**
  * The axe.
+ * <p>
+ * You can also use this to chop trees :)
  *
  * @author Sandra Huang
  * @version June 2024

@@ -1,5 +1,4 @@
 import greenfoot.*;
-import greenfoot.sound.Sound;
 
 import java.util.ArrayList;
 import java.util.List;

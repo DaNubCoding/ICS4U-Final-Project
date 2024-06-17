@@ -107,10 +107,12 @@ public class JesterSword extends MeleeWeapon {
     @Override
     public void windup() {
         PhysicsController playerPhysics = getPlayer().physics;
+        // dash around
         if (timer.ended() && dashes++ < 7) {
             timer.restart(8);
             playerPhysics.applyForce(new Vector2(Math.random() * 360).multiply(Math.random() * 10 + 6));
         }
+        // prepare for the final dash while gaining dash invulnerability
         if (timer.ended()) {
             timer.restart(50);
             Camera.shake(2, 50);

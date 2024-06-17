@@ -4,6 +4,13 @@ import greenfoot.Color;
 import greenfoot.Greenfoot;
 import greenfoot.GreenfootImage;
 
+/**
+ * A world that is shown when the player dies, displaying their stats for that
+ * world.
+ * 
+ * @author Lucas Fu
+ * @version June 2024
+ */
 public class DeathScreen extends PixelWorld {
     private WorldData data;
     private Timer delayTimer;
@@ -37,7 +44,7 @@ public class DeathScreen extends PixelWorld {
 
     @Override
     public void update() {
-        if (!delayTimer.ended()) Greenfoot.getKey(); // clear previous keys
+        if (!delayTimer.ended()) Greenfoot.getKey(); // clear previous keys, again
         if (delayTimer.ended() && (Greenfoot.getKey() != null || Greenfoot.mouseClicked(null))) {
             Greenfoot.setWorld(new TitleWorld());
             return;

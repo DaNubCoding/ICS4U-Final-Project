@@ -2,7 +2,7 @@ import java.util.List;
 import greenfoot.GreenfootImage;
 
 /**
- * Write a description of class RepeaterProjectile here.
+ * A projectile shot by the {@link Repeater} that hits non-entities too.
  *
  * @author Matthew Li
  * @author Martin Baldwin

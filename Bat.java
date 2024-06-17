@@ -1,5 +1,5 @@
 /**
- * The bat.
+ * The bat, a fast attacking melee weapon that has a small arc and low damage.
  *
  * @author Sandra Huang
  * @version June 2024

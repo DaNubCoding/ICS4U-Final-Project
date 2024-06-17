@@ -1,7 +1,8 @@
 import java.util.List;
 import greenfoot.GreenfootImage;
 /**
- * Write a description of class RPGProjectile here.
+ * A projectile with a limited lifespan that creates an {@link RPGExplosion} on
+ * expiry.
  *
  * @author Matthew Li
  * @author Martin Baldwin

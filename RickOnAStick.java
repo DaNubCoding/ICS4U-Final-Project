@@ -1,3 +1,7 @@
+/**
+ * The Rick on a Stick is a magic weapon creates by merging 5 {@link JesterSword}s
+ * together. It creates 3 {@link RickMegaphone}s on the click location.
+ */
 public class RickOnAStick extends MagicWeapon {
     private static SoundEffect[] sounds = {
         new SoundEffect("never_gonna_give_you_up1.wav"),

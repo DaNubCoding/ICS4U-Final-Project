@@ -164,12 +164,13 @@ public class Player extends Entity {
             setLoopingAnimation(standingAnimation);
         }
 
+        // Play footstep sounds when moving
         if (physics.isMoving() && footstepSoundTimer.ended()) {
             footstepSoundTimer.restart(15);
             footstepSounds[(int) (Math.random() * footstepSounds.length)].play();
         }
 
-        // restore armor if out of combat for long enough
+        // Restore armor if out of combat for long enough
         if (armorTimer.ended()) {
             armor = Math.min(armor + 0.2, MAX_ARMOR);
             armorBar.setHealth(armor);

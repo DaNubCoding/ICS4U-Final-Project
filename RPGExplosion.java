@@ -1,7 +1,7 @@
 import greenfoot.*;
 
 /**
- * Explosion created by RPGProjectile.
+ * Explosion created by {@link RPGProjectile}.
  *
  * @author Andrew Wang
  * @version June 2024

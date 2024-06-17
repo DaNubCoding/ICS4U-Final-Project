@@ -13,7 +13,6 @@ import java.util.ArrayList;
  * <li>The density of the cluster</li>
  * <li>The maximum radius of the cluster (actually a square)</li>
  * </ul>
- *
  * @author Lucas Fu
  * @author Andrew Wang
  * @version May 2024

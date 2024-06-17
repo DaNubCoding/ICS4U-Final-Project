@@ -1,6 +1,6 @@
 import greenfoot.*;
 /**
- * Write a description of class Boulder here.
+ * Boulders are a form of background decoration with a collision box.
  *
  * @author Sandra Huang
  * @version June 2024

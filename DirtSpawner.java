@@ -1,7 +1,7 @@
 import java.util.Random;
 
 /**
- * Spawns dirt
+ * A Feature that spawns a random patch of Dirt.
  *
  * @author Sandra Huang
  * @version June 2024

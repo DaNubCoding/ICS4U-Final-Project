@@ -1,7 +1,7 @@
 import greenfoot.*;
 
 /**
- * A weapon that does something and follows the player rotation.
+ * A weapon that does attacks and follows the player rotation.
  *
  * @author Andrew Wang
  * @author Lucas Fu
@@ -15,11 +15,10 @@ public abstract class Weapon extends Item {
     private Timer recastTimer;
 
     /**
-     * TODO: add documentation here when weapons are finalized
-     * @param player
-     * @param image
-     * @param windup
-     * @param cooldown
+     * Create a new weapon with windup and cooldown
+     * @param image the image this should use
+     * @param windup the amount of delay after a click before an attack
+     * @param cooldown the amount of delay before the next click gets registered
      */
     public Weapon(String image, int windup, int cooldown) {
         super(image);
@@ -39,6 +38,7 @@ public abstract class Weapon extends Item {
 
         updateImage();
         MouseInfo mouseInfo = Greenfoot.getMouseInfo();
+        // if left click and not attacking and not on cooldown, attack.
         if (Greenfoot.mouseClicked(null) && mouseInfo != null
          && mouseInfo.getButton() == 1
          && !casting && recastTimer.ended()) {

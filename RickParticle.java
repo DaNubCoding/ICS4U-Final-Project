@@ -1,6 +1,9 @@
 import greenfoot.Color;
 import greenfoot.GreenfootImage;
 
+/**
+ * Particles created by {@link RickMegaphone}.
+ */
 public class RickParticle extends Particle {
     public RickParticle() {
         super(getRickImage(), (int) (Math.random() * 40 + 20));
